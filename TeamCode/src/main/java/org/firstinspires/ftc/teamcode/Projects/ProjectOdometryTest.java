@@ -3,6 +3,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class ProjectOdometryTest extends Project{
+    //Project file for testing on odometry chassis
+
     //Setup motors
 
     @Override
