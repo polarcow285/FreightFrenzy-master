@@ -13,11 +13,67 @@ public class TestMecanumAuto extends LinearOpMode{
 
     @Override
     public void runOpMode() throws InterruptedException {
+        robot.init(hardwareMap);
+
+
         waitForStart();
 
-        //write autonomous code here
-
+        forwards(1,3000);
+        right(1,3000);
 
     }
+
+    void forwards(int power, int time){
+        robot.frontright.setPower(power);
+        robot.frontleft.setPower(power);
+        robot.backright.setPower(power);
+        robot.backleft.setPower(power);
+        sleep(time);
+        robot.frontright.setPower(0);
+        robot.frontleft.setPower(0);
+        robot.backright.setPower(0);
+        robot.backleft.setPower(0);
+    }
+
+    void backwards(int power, int time){
+        robot.frontright.setPower(-power);
+        robot.frontleft.setPower(-power);
+        robot.backright.setPower(-power);
+        robot.backleft.setPower(-power);
+        sleep(time);
+        robot.frontright.setPower(0);
+        robot.frontleft.setPower(0);
+        robot.backright.setPower(0);
+        robot.backleft.setPower(0);
+    }
+
+
+
+    void right(int power, int time){
+        robot.frontright.setPower(-power);
+        robot.frontleft.setPower(power);
+        robot.backright.setPower(power);
+        robot.backleft.setPower(-power);
+        sleep(time);
+        robot.frontright.setPower(0);
+        robot.frontleft.setPower(0);
+        robot.backright.setPower(0);
+        robot.backleft.setPower(0);
+    }
+
+    void left(int power, int time){
+        robot.frontright.setPower(power);
+        robot.frontleft.setPower(-power);
+        robot.backright.setPower(-power);
+        robot.backleft.setPower(power);
+        sleep(time);
+        robot.frontright.setPower(0);
+        robot.frontleft.setPower(0);
+        robot.backright.setPower(0);
+        robot.backleft.setPower(0);
+    }
+
 }
+
+
 

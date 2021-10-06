@@ -4,7 +4,9 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class ProjectOdometryTest extends Project{
+
     //Project file for testing on odometry chassis
+
 
     //Setup motors
     public DcMotor frontright = null;
@@ -17,6 +19,7 @@ public class ProjectOdometryTest extends Project{
         //Save reference to Hardware map
         hwMap = ahwMap;
 
+
         //Define and Initialize Motors
         frontright = hwMap.dcMotor.get("frontright");
         frontleft = hwMap.dcMotor.get("frontleft");
@@ -24,10 +27,15 @@ public class ProjectOdometryTest extends Project{
         backleft = hwMap.dcMotor.get("backleft");
 
         //Setup Motor directions and Encoder settings
-        frontright.setDirection((DcMotorSimple.Direction.FORWARD));
-        frontleft.setDirection((DcMotorSimple.Direction.REVERSE));
-        backright.setDirection((DcMotorSimple.Direction.FORWARD));
-        backleft.setDirection((DcMotorSimple.Direction.REVERSE));
+        frontright.setDirection(DcMotor.Direction.FORWARD);
+        frontleft.setDirection(DcMotor.Direction.REVERSE);
+        backright.setDirection(DcMotor.Direction.FORWARD);
+        backleft.setDirection(DcMotor.Direction.REVERSE);
+
+        frontright.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        frontleft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backright.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backleft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         frontright.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontleft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
