@@ -27,10 +27,10 @@ public class ProjectOdometryTest extends Project{
         backleft = hwMap.dcMotor.get("backleft");
 
         //Setup Motor directions and Encoder settings
-        frontright.setDirection(DcMotor.Direction.REVERSE);
-        frontleft.setDirection(DcMotor.Direction.FORWARD);
-        backright.setDirection(DcMotor.Direction.REVERSE);
-        backleft.setDirection(DcMotor.Direction.FORWARD);
+        frontright.setDirection(DcMotor.Direction.FORWARD);
+        frontleft.setDirection(DcMotor.Direction.REVERSE);
+        backright.setDirection(DcMotor.Direction.FORWARD);
+        backleft.setDirection(DcMotor.Direction.REVERSE);
 
         frontright.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         frontleft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

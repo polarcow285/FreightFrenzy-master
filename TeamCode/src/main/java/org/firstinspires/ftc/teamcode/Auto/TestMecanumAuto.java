@@ -13,33 +13,67 @@ public class TestMecanumAuto extends LinearOpMode{
 
     @Override
     public void runOpMode() throws InterruptedException {
+        robot.init(hardwareMap);
+
+
         waitForStart();
 
-        //write autonomous code here
-        //robot move forward for 2 seconds then stop
-        robot.frontright.setPower(1);
-        robot.frontleft.setPower(1);
-        robot.backright.setPower(1);
-        robot.backleft.setPower(1);
-        sleep(2000);
-
-        robot.frontright.setPower(0);
-        robot.frontleft.setPower(0);
-        robot.backright.setPower(0);
-        robot.backleft.setPower(0);
-        sleep(1000);
-
-        robot.frontright.setPower(0.5);
-        robot.frontleft.setPower(0.5);
-        robot.backright.setPower(-0.5);
-        robot.backleft.setPower(-0.5);
-        sleep(3000);
-
-        robot.frontright.setPower(0);
-        robot.frontleft.setPower(0);
-        robot.backright.setPower(0);
-        robot.backleft.setPower(0);
+        forwards(1,3000);
+        right(1,3000);
 
     }
+
+    void forwards(int power, int time){
+        robot.frontright.setPower(power);
+        robot.frontleft.setPower(power);
+        robot.backright.setPower(power);
+        robot.backleft.setPower(power);
+        sleep(time);
+        robot.frontright.setPower(0);
+        robot.frontleft.setPower(0);
+        robot.backright.setPower(0);
+        robot.backleft.setPower(0);
+    }
+
+    void backwards(int power, int time){
+        robot.frontright.setPower(-power);
+        robot.frontleft.setPower(-power);
+        robot.backright.setPower(-power);
+        robot.backleft.setPower(-power);
+        sleep(time);
+        robot.frontright.setPower(0);
+        robot.frontleft.setPower(0);
+        robot.backright.setPower(0);
+        robot.backleft.setPower(0);
+    }
+
+
+
+    void right(int power, int time){
+        robot.frontright.setPower(-power);
+        robot.frontleft.setPower(power);
+        robot.backright.setPower(power);
+        robot.backleft.setPower(-power);
+        sleep(time);
+        robot.frontright.setPower(0);
+        robot.frontleft.setPower(0);
+        robot.backright.setPower(0);
+        robot.backleft.setPower(0);
+    }
+
+    void left(int power, int time){
+        robot.frontright.setPower(power);
+        robot.frontleft.setPower(-power);
+        robot.backright.setPower(-power);
+        robot.backleft.setPower(power);
+        sleep(time);
+        robot.frontright.setPower(0);
+        robot.frontleft.setPower(0);
+        robot.backright.setPower(0);
+        robot.backleft.setPower(0);
+    }
+
 }
+
+
 
