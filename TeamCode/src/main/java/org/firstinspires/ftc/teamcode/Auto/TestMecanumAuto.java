@@ -18,9 +18,10 @@ public class TestMecanumAuto extends LinearOpMode{
 
         waitForStart();
 
-        forwards(1,2000);
-        right(1,2000);
-        diagForwardRight(1,2000);
+
+
+        //forwards(1,3000);
+        //right(1,3000);
 
     }
 
@@ -66,16 +67,6 @@ public class TestMecanumAuto extends LinearOpMode{
         robot.frontright.setPower(power);
         robot.frontleft.setPower(-power);
         robot.backright.setPower(-power);
-        robot.backleft.setPower(power);
-        sleep(time);
-        robot.frontright.setPower(0);
-        robot.frontleft.setPower(0);
-        robot.backright.setPower(0);
-        robot.backleft.setPower(0);
-    }
-
-    void diagForwardRight(int power, int time){
-        robot.frontleft.setPower(power);
         robot.backleft.setPower(power);
         sleep(time);
         robot.frontright.setPower(0);
