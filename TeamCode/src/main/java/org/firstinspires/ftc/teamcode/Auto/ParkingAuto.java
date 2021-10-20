@@ -11,36 +11,42 @@ public class ParkingAuto extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
-        boolean redTeam = true;
+
+        Path p = Path.Red;
 
 
         while(!isStarted()){
             if(gamepad1.b){
-                redTeam = true;
+                p = Path.Red;
             }
             if(gamepad1.x){
-                redTeam = false;
+                p = Path.Blue;
             }
-            telemetry.addData("path:", redTeam);
+            telemetry.addData("Path:", p);
             telemetry.update();
         }
 
         waitForStart();
 
-        right(1, 5000);
+        RunAuto(p == Path.Red);
 
     }
+    public void RunAuto(boolean red){
+        robot.frontright.setPower(1);
+        robot.frontleft.setPower(1);
+        robot.backright.setPower(1);
+        robot.backleft.setPower(1);
+        sleep(2000);
 
-    void right(float power, int time){
-        robot.frontright.setPower(-power);
-        robot.frontleft.setPower(power);
-        robot.backright.setPower(power);
-        robot.backleft.setPower(-power);
-        sleep(time);
         robot.frontright.setPower(0);
         robot.frontleft.setPower(0);
         robot.backright.setPower(0);
         robot.backleft.setPower(0);
     }
 
+}
+
+enum Path{
+    Red,
+    Blue
 }
