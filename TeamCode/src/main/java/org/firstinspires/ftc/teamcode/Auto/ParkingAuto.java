@@ -14,6 +14,8 @@ public class ParkingAuto extends LinearOpMode {
 
         Path p = Path.Red;
 
+        //Distance q = Distance.Close;
+
 
         while(!isStarted()){
             if(gamepad1.b){
@@ -22,21 +24,51 @@ public class ParkingAuto extends LinearOpMode {
             if(gamepad1.x){
                 p = Path.Blue;
             }
+//            if(gamepad1.a){
+//                q = Distance.Close;
+//            }
+//            if(gamepad1.y){
+//                q = Distance.Far;
+//            }
             telemetry.addData("Path:", p);
+            //telemetry.addData("Distance: ", q);
             telemetry.update();
         }
 
-        waitForStart();
+        //waitForStart();
 
         RunAuto(p == Path.Red);
+        //RunAuto(q == Distance.Close);
 
     }
     public void RunAuto(boolean red){
-        robot.frontright.setPower(1);
-        robot.frontleft.setPower(1);
-        robot.backright.setPower(1);
-        robot.backleft.setPower(1);
-        sleep(2000);
+//        robot.frontright.setPower(1f);
+//        robot.frontleft.setPower(1f);
+//        robot.backright.setPower(1f);
+//        robot.backleft.setPower(1f);
+//        sleep(2000);
+
+
+
+
+
+        robot.frontleft.setPower(red ?  1f : -1f);
+        robot.backleft.setPower(red ?  1f : -1f);
+        robot.frontright.setPower(red ?  1f : -1f);
+        robot.backright.setPower(red ? 1f :  -1f);
+        sleep(500);
+
+        robot.frontright.setPower(0);
+        robot.frontleft.setPower(0);
+        robot.backright.setPower(0);
+        robot.backleft.setPower(0);
+        sleep(600);
+
+        robot.frontleft.setPower(red ?  -1f : 1f);
+        robot.backleft.setPower(red ?  1f : -1f);
+        robot.frontright.setPower(red ?  1f : -1f);
+        robot.backright.setPower(red ? -1f :  1f);
+        sleep(1000);
 
         robot.frontright.setPower(0);
         robot.frontleft.setPower(0);
@@ -49,4 +81,8 @@ public class ParkingAuto extends LinearOpMode {
 enum Path{
     Red,
     Blue
+}
+enum Distance{
+    Close,
+    Far
 }
