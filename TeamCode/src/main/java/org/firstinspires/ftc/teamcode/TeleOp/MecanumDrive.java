@@ -5,7 +5,7 @@ import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.teamcode.Projects.ProjectOdometryTest;
 
 @TeleOp(name="MecanumDrive", group="Mecanum")
-public class MecanumDrive extends LinearOpMode {
+public class    MecanumDrive extends LinearOpMode {
     private ProjectOdometryTest robot = new ProjectOdometryTest();
 
 
@@ -32,6 +32,10 @@ public class MecanumDrive extends LinearOpMode {
     float frontright = 0;
     float backleft = 0;
     float backright = 0;
+
+    float intake = 0;
+    float carousel = 0;
+    float storageunit = 0;
 
     //Highest motor power: (used for clipping high speeds above 1)
     private float greatestNum = 0;
@@ -81,6 +85,44 @@ public class MecanumDrive extends LinearOpMode {
             robot.frontright.setPower(Float.isNaN(frontright) ? 0 : frontright * (gamepad1.left_trigger < .8 ? 1 : slowModeMultiplier));
             robot.backleft.setPower(Float.isNaN(backleft) ? 0 : backleft * (gamepad1.left_trigger < .8 ? 1 : slowModeMultiplier));
             robot.backright.setPower(Float.isNaN(backright) ? 0 : backright * (gamepad1.left_trigger < .8 ? 1 : slowModeMultiplier));
+
+
+            //controlling intake, duck spinning, elevator lift
+            if(gamepad2.y == true && gamepad2.right_bumper == true){ //b to make the intake spin forward and slower
+                robot.intake.setPower(0.5);
+            }
+            else{
+                robot.intake.setPower(0);
+            }
+            if(gamepad2.y == true){ //y to make intake spin forward
+                robot.intake.setPower(1);
+            }
+            else{
+                robot.intake.setPower(0);
+            }
+            if(gamepad2.a == true && gamepad2.right_bumper == true){ //b to make the intake spin forward and slower
+                robot.intake.setPower(-0.5);
+            }
+            else {
+                robot.intake.setPower(0);
+            }
+            if(gamepad2.a == true){ //a to make intake spin backward
+                robot.intake.setPower(-1);
+            }
+            else{
+                robot.intake.setPower(0);
+            }
+            if(gamepad2.x == true){ //x to spin the carousel
+                robot.carousel.setPower(1);
+            }
+            else{
+                robot.carousel.setPower(0);
+            }
+
+
+
+
+
         }
     }
 }
