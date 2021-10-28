@@ -37,6 +37,8 @@ public class    MecanumDrive extends LinearOpMode {
     float carousel = 0;
     float storageunit = 0;
 
+    boolean endposition = false;
+
     //Highest motor power: (used for clipping high speeds above 1)
     private float greatestNum = 0;
 
@@ -100,6 +102,8 @@ public class    MecanumDrive extends LinearOpMode {
             else{
                 robot.intake.setPower(0);
             }
+
+
             if(gamepad2.a == true && gamepad2.right_bumper == true){ //b to make the intake spin forward and slower
                 robot.intake.setPower(-0.5);
             }
@@ -112,12 +116,41 @@ public class    MecanumDrive extends LinearOpMode {
             else{
                 robot.intake.setPower(0);
             }
+
+
             if(gamepad2.x == true){ //x to spin the carousel
                 robot.carousel.setPower(1);
             }
             else{
                 robot.carousel.setPower(0);
             }
+
+
+            if(gamepad2.b == true){ //starts the elevator lift
+                robot.storageunit.setPower(1);
+                robot.storageunit.setTargetPosition(3000);
+            }
+            else{
+                robot.storageunit.setPower(0);
+                robot.storageunit.setTargetPosition(0);
+            }
+            if(robot.storageunit.getCurrentPosition() > 3000 || robot.storageunit.getCurrentPosition() < 0){ //limit for the elevator lift
+                robot.storageunit.setPower(0);
+            }
+
+
+            if(gamepad2.left_bumper == true && endposition == false){
+                robot.trapdoor.setPosition(1);
+                endposition = true;
+            }
+            else if(gamepad2.left_bumper == true && endposition == true){
+                robot.trapdoor.setPosition(0);
+                endposition = false;
+            }
+
+
+
+
 
 
 

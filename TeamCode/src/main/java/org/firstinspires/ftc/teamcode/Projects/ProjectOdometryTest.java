@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Projects;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 public class ProjectOdometryTest extends Project{
 
@@ -18,6 +19,8 @@ public class ProjectOdometryTest extends Project{
     public DcMotor carousel = null;
     public DcMotor storageunit = null;
 
+    public Servo trapdoor = null;
+
     @Override
     public void init(HardwareMap ahwMap) {
         //Save reference to Hardware map
@@ -33,6 +36,8 @@ public class ProjectOdometryTest extends Project{
         intake = hwMap.dcMotor.get("intake");
         carousel = hwMap.dcMotor.get("carousel");
         storageunit = hwMap.dcMotor.get("storageunit");
+
+        trapdoor = hwMap.servo.get("trapdoor");
 
         //Setup Motor directions and Encoder settings
         frontright.setDirection(DcMotor.Direction.FORWARD);
@@ -51,7 +56,7 @@ public class ProjectOdometryTest extends Project{
 
         intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         carousel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        storageunit.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //storageunit.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         frontright.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontleft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -75,5 +80,9 @@ public class ProjectOdometryTest extends Project{
         intake.setPower(0);
         carousel.setPower(0);
         storageunit.setPower(0);
+
+        trapdoor.setPosition(0);
+
+
     }
 }
