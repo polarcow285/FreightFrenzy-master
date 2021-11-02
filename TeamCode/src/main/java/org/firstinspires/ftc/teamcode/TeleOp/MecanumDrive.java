@@ -3,6 +3,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.teamcode.Projects.ProjectOdometryTest;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp(name="MecanumDrive", group="Mecanum")
 public class    MecanumDrive extends LinearOpMode {
@@ -39,6 +40,9 @@ public class    MecanumDrive extends LinearOpMode {
 
     boolean endposition = false;
 
+    int elevatorHeight = 1;
+    boolean storageUnitUp = false;
+
     //Highest motor power: (used for clipping high speeds above 1)
     private float greatestNum = 0;
 
@@ -46,6 +50,7 @@ public class    MecanumDrive extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
+        robot.storageunit.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         waitForStart();
 
         while (opModeIsActive()) {
@@ -90,13 +95,13 @@ public class    MecanumDrive extends LinearOpMode {
 
 
             //controlling intake, duck spinning, elevator lift
-            if(gamepad2.y == true && gamepad2.right_bumper == true){ //b to make the intake spin forward and slower
+            if(gamepad1.y == true && gamepad1.right_bumper == true){ //y and right bumper  to make the intake spin forward and slower
                 robot.intake.setPower(0.5);
             }
             else{
                 robot.intake.setPower(0);
             }
-            if(gamepad2.y == true){ //y to make intake spin forward
+            if(gamepad1.y == true){ //y to make intake spin forward
                 robot.intake.setPower(1);
             }
             else{
@@ -104,13 +109,13 @@ public class    MecanumDrive extends LinearOpMode {
             }
 
 
-            if(gamepad2.a == true && gamepad2.right_bumper == true){ //b to make the intake spin forward and slower
+            if(gamepad1.a == true && gamepad1.right_bumper == true){ //a and right bumper to make the intake spin backward and slower
                 robot.intake.setPower(-0.5);
             }
             else {
                 robot.intake.setPower(0);
             }
-            if(gamepad2.a == true){ //a to make intake spin backward
+            if(gamepad1.a == true){ //a to make intake spin backward
                 robot.intake.setPower(-1);
             }
             else{
@@ -125,25 +130,72 @@ public class    MecanumDrive extends LinearOpMode {
                 robot.carousel.setPower(0);
             }
 
+            // Elevator Lift
 
-            if(gamepad2.b == true){ //starts the elevator lift
-                robot.storageunit.setPower(1);
-                robot.storageunit.setTargetPosition(3000);
+            if (gamepad2.right_bumper == true){
+
+                if (elevatorHeight<3){
+                    elevatorHeight++;
+                }
+                else {
+                    elevatorHeight = 1;
+                }
+                telemetry.addData("Elevator Height:", elevatorHeight);
+                telemetry.update();
             }
-            else{
-                robot.storageunit.setPower(0);
+            if (gamepad2.left_bumper == true){
+
+                if(elevatorHeight > 1){
+                    elevatorHeight--;
+                }
+                else {
+                    elevatorHeight = 3;
+                }
+                telemetry.addData("Elevator Height:", elevatorHeight);
+                telemetry.update();
+            }
+
+            if (gamepad2.y && !storageUnitUp){
+
+                if(elevatorHeight == 1){
+                    robot.storageunit.setPower(0.5);
+                    robot.storageunit.setTargetPosition(1000);
+                }
+                if(elevatorHeight == 2){
+                    robot.storageunit.setPower(0.5);
+                    robot.storageunit.setTargetPosition(2000);
+                }
+                if(elevatorHeight == 3){
+                    robot.storageunit.setPower(0.5);
+                    robot.storageunit.setTargetPosition(3000);
+                }
+
+            }
+
+            if (gamepad2.y && storageUnitUp){
+                robot.storageunit.setPower(0.5);
                 robot.storageunit.setTargetPosition(0);
             }
-            if(robot.storageunit.getCurrentPosition() > 3000 || robot.storageunit.getCurrentPosition() < 0){ //limit for the elevator lift
-                robot.storageunit.setPower(0);
-            }
 
 
-            if(gamepad2.left_bumper == true && endposition == false){
+//            if(gamepad2.dpad_up == true){ //starts the elevator lift
+//                robot.storageunit.setPower(0.5);
+//                //robot.storageunit.setTargetPosition(3000);
+//            }
+//            else{
+//                robot.storageunit.setPower(0);
+//                robot.storageunit.setTargetPosition(0);
+//            }
+//            if(robot.storageunit.getCurrentPosition() > 3000 || robot.storageunit.getCurrentPosition() < 0){ //limit for the elevator lift
+//                robot.storageunit.setPower(0);
+//            }
+//
+
+            if(gamepad2.right_trigger > 0 && endposition == false){
                 robot.trapdoor.setPosition(1);
                 endposition = true;
             }
-            else if(gamepad2.left_bumper == true && endposition == true){
+            else if(gamepad2.right_trigger > 0 && endposition == true){
                 robot.trapdoor.setPosition(0);
                 endposition = false;
             }
