@@ -34,14 +34,14 @@ public class    MecanumDrive extends LinearOpMode {
     float backleft = 0;
     float backright = 0;
 
-    float intake = 0;
-    float carousel = 0;
-    float storageunit = 0;
+//    float intake = 0;
+//    float carousel = 0;
+//    float storageunit = 0;
+//
+//    boolean endposition = false;
 
-    boolean endposition = false;
-
-    int elevatorHeight = 1;
-    boolean storageUnitUp = false;
+    //int elevatorHeight = 1;
+    //boolean storageUnitUp = false;
 
     //Highest motor power: (used for clipping high speeds above 1)
     private float greatestNum = 0;
@@ -50,7 +50,7 @@ public class    MecanumDrive extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
-        robot.storageunit.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //robot.storageunit.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         waitForStart();
 
         while (opModeIsActive()) {
@@ -67,6 +67,7 @@ public class    MecanumDrive extends LinearOpMode {
             frontright = (float) (speed * Math.cos(angle + Math.PI / 4)- direction) * speedMultiplier;
             backleft = (float) (speed * Math.cos(angle + Math.PI / 4) + direction) * speedMultiplier;
             backright = (float) (speed * Math.sin(angle + Math.PI / 4) - direction) * speedMultiplier;
+
 
             //Make sure that speed never exceeds 1. If so, divide by largest
             greatestNum = Math.abs(frontleft);
@@ -94,6 +95,7 @@ public class    MecanumDrive extends LinearOpMode {
             robot.backright.setPower(Float.isNaN(backright) ? 0 : backright * (gamepad1.left_trigger < .8 ? 1 : slowModeMultiplier));
 
 
+            /*
             //controlling intake, duck spinning, elevator lift
             if(gamepad1.y == true && gamepad1.right_bumper == true){ //y and right bumper  to make the intake spin forward and slower
                 robot.intake.setPower(0.5);
@@ -123,12 +125,12 @@ public class    MecanumDrive extends LinearOpMode {
             }
 
 
-            if(gamepad2.x == true){ //x to spin the carousel
-                robot.carousel.setPower(1);
-            }
-            else{
-                robot.carousel.setPower(0);
-            }
+//            if(gamepad2.x == true){ //x to spin the carousel
+//                robot.carousel.setPower(1);
+//            }
+//            else{
+//                robot.carousel.setPower(0);
+//            }
 
             // Elevator Lift
 
@@ -158,23 +160,32 @@ public class    MecanumDrive extends LinearOpMode {
             if (gamepad2.y && !storageUnitUp){
 
                 if(elevatorHeight == 1){
-                    robot.storageunit.setPower(0.5);
+                    robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.storageunit.setTargetPosition(1000);
+                    robot.storageunit.setPower(0.5);
+                    robot.storageunit.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
                 }
                 if(elevatorHeight == 2){
-                    robot.storageunit.setPower(0.5);
+                    robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.storageunit.setTargetPosition(2000);
+                    robot.storageunit.setPower(0.5);
+                    robot.storageunit.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 }
                 if(elevatorHeight == 3){
-                    robot.storageunit.setPower(0.5);
+                    robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.storageunit.setTargetPosition(3000);
+                    robot.storageunit.setPower(0.5);
+                    robot.storageunit.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 }
+                storageUnitUp = true;
 
             }
 
             if (gamepad2.y && storageUnitUp){
                 robot.storageunit.setPower(0.5);
                 robot.storageunit.setTargetPosition(0);
+                storageUnitUp = false;
             }
 
 
@@ -199,6 +210,8 @@ public class    MecanumDrive extends LinearOpMode {
                 robot.trapdoor.setPosition(0);
                 endposition = false;
             }
+
+             */
 
 
 
