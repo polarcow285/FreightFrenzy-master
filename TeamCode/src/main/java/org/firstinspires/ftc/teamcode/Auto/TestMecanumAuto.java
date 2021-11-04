@@ -18,9 +18,13 @@ public class TestMecanumAuto extends LinearOpMode{
 
         waitForStart();
 
-        forwards(0.5f, 1000);
-        right(0.5f, 1000);
-        diagonalRight(0.5f, 1000);
+        robot.backleft.setPower(0.5);
+        sleep(2000);
+        robot.backleft.setPower(0);
+
+//        forwards(0.5f, 1000);
+//        right(0.5f, 1000);
+//        diagonalRight(0.5f, 1000);
 
 //motor test
 //        robot.frontleft.setPower(1);
