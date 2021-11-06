@@ -6,131 +6,83 @@ import org.firstinspires.ftc.teamcode.Projects.ProjectOdometryTest;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp(name="MecanumDrive", group="Mecanum")
-public class    MecanumDrive extends LinearOpMode {
+public class MecanumDrive extends LinearOpMode {
     private ProjectOdometryTest robot = new ProjectOdometryTest();
 
 
     /* Setting variables */
 
-    //Speed multiplier. The higher it is, the more likely to clip at high speeds because motor max is 1
-    private float speedMultiplier = 1;
-
     //Speed multiplier when slow mode is active
     private float slowModeMultiplier = .4f;
 
-    /* Calculation variables DO NOT CHANGE */
-
-    //Robot controls:
-    private float speed = 0;
-    private float angle = 0;
-    private float direction = 0;
-    private VectorF vectorF = null;
-    private boolean isTurning = false;
-    private float rotation = 0;
-
-    //Individual motor powers:
-    float frontleft = 0;
-    float frontright = 0;
-    float backleft = 0;
-    float backright = 0;
-
     float intake = 0;
-//    float carousel = 0;
+//   float carousel = 0;
     float storageunit = 0;
-//
-    //boolean endposition = false;
-    //int servoposition = 0;
+//;
+    boolean yPressed = false;
+    boolean isTrapdoorClosed = false;
 
     int elevatorHeight = 1;
-      boolean storageUnitUp = false;
-
-    //Highest motor power: (used for clipping high speeds above 1)
-    private float greatestNum = 0;
+    boolean storageUnitUp = false;
 
 
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
-        //robot.storageunit.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         waitForStart();
 
         while (opModeIsActive()) {
-            //region Mecanum Drive math and controls
-            //Get the 2 dimensional vector of the direction of left stick and rotation based on right stick
-            vectorF = new VectorF(gamepad1.left_stick_x, -gamepad1.left_stick_y);
-            speed = vectorF.magnitude();
-            vectorF = new VectorF(vectorF.get(0) / speed, vectorF.get(1) / speed);
-            angle = (float) Math.atan2(vectorF.get(0), vectorF.get(1));
-            direction = gamepad1.right_stick_x;
+            //Driving controls
+            double y = -gamepad1.left_stick_y; // Remember, this is reversed!
+            double x = -gamepad1.right_stick_x * 1.1; // Counteract imperfect strafing
+            double rx = gamepad1.left_stick_x;
+
+            // Denominator is the largest motor power (absolute value) or 1
+            // This ensures all the powers maintain the same ratio, but only when
+            // at least one is out of the range [-1, 1]
+            double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+            double frontLeftPower = (y + x + rx) / denominator;
+            double backLeftPower = (y - x + rx) / denominator;
+            double frontRightPower = (y - x - rx) / denominator;
+            double backRightPower = (y + x - rx) / denominator;
+
+            robot.frontleft.setPower(frontLeftPower * (gamepad1.left_trigger < .8 ? 1 : slowModeMultiplier));
+            robot.backleft.setPower(backLeftPower * (gamepad1.left_trigger < .8 ? 1 : slowModeMultiplier));
+            robot.frontright.setPower(frontRightPower * (gamepad1.left_trigger < .8 ? 1 : slowModeMultiplier));
+            robot.backright.setPower(backRightPower * (gamepad1.left_trigger < .8 ? 1 : slowModeMultiplier));
 
 
-            //Apply mathematical operations to find speeds of each motor
-            frontleft = (float) (speed * Math.sin(angle + Math.PI / 4) + direction) * speedMultiplier;
-            frontright = (float) (speed * Math.cos(angle + Math.PI / 4)- direction) * speedMultiplier;
-            backleft = (float) (speed * Math.cos(angle + Math.PI / 4) + direction) * speedMultiplier;
-            backright = (float) (speed * Math.sin(angle + Math.PI / 4) - direction) * speedMultiplier;
-
-
-            //Make sure that speed never exceeds 1. If so, divide by largest
-            greatestNum = Math.abs(frontleft);
-            if (Math.abs(frontright) > greatestNum) {
-                greatestNum = Math.abs(frontright);
-            }
-            if (Math.abs(backleft) > greatestNum) {
-                greatestNum = Math.abs(backleft);
-            }
-            if (Math.abs(backright) > greatestNum) {
-                greatestNum = Math.abs(backright);
-            }
-
-            if (greatestNum > 1) {
-                frontleft /= greatestNum;
-                frontright /= greatestNum;
-                backleft /= greatestNum;
-                backright /= greatestNum;
-            }
-            //endregion
-
-            robot.frontleft.setPower(Float.isNaN(frontleft) ? 0 : frontleft * (gamepad1.left_trigger < .8 ? 1 : slowModeMultiplier));
-            robot.frontright.setPower(Float.isNaN(frontright) ? 0 : frontright * (gamepad1.left_trigger < .8 ? 1 : slowModeMultiplier));
-            robot.backleft.setPower(Float.isNaN(backleft) ? 0 : backleft * (gamepad1.left_trigger < .8 ? 1 : slowModeMultiplier));
-            robot.backright.setPower(Float.isNaN(backright) ? 0 : backright * (gamepad1.left_trigger < .8 ? 1 : slowModeMultiplier));
 
 
 
             //controlling intake, duck spinning, elevator lift
-//            if(gamepad1.y == true && gamepad1.right_bumper == true){ //y and right bumper  to make the intake spin forward and slower
-//                robot.intake.setPower(0.5);
-//            }
-//            else{
-//                robot.intake.setPower(0);
-//            }
-//            if(gamepad1.y == true){ //y to make intake spin forward
-//                robot.intake.setPower(1);
-//            }
-//            else{
-//                robot.intake.setPower(0);
-//            }
 
-
-//            if(gamepad1.a == true && gamepad1.right_bumper == true){ //a and right bumper to make the intake spin backward and slower
-//                robot.intake.setPower(-0.5);
-//            }
-//            else {
-//                robot.intake.setPower(0);
-//            }
-//            if(gamepad1.a == true){ //a to make intake spin backward
-//                robot.intake.setPower(-1);
-//            }
-//            else{
-//                robot.intake.setPower(0);
-//            }
-
-            if(gamepad1.a == true){
+           if(gamepad2.a == true && gamepad2.right_bumper == true) { //a and right bumper to make the intake spin backward and slower
+               robot.intake.setPower(0.6);
+           }
+           else if(gamepad2.a == true){ //a to make intake spin backward
                 robot.intake.setPower(1);
+           }
+           else{
+                robot.intake.setPower(0);
+           }
+
+           //Servo Toggle
+            //0 is open trapdoor
+            //1 is closed trapdoor
+            if (gamepad2.y){
+                if(yPressed == false){
+                    yPressed = true;
+                    isTrapdoorClosed = !isTrapdoorClosed;
+                    if(isTrapdoorClosed == true){
+                        robot.trapdoor.setPosition(0);
+                    }else{
+                        robot.trapdoor.setPosition(1);
+                    }
+                }
             }
             else {
-                robot.intake.setPower(0);
+                yPressed = false;
             }
 
 
@@ -143,16 +95,11 @@ public class    MecanumDrive extends LinearOpMode {
 
             // Elevator Lift
 
-            if (gamepad2.right_bumper == true){ //right bumper toggles between the 3 elevator lift heights
-
-                if (elevatorHeight<3){
-                    elevatorHeight++;
-                }
-                else {
+            /*if (gamepad2.right_bumper == true){ //right bumper toggles between the 3 elevator lift heights
+                elevatorHeight++;
+                if (elevatorHeight>3){
                     elevatorHeight = 1;
                 }
-                telemetry.addData("Elevator Height:", elevatorHeight);
-                telemetry.update();
             }
             if (gamepad2.left_bumper == true){
 
@@ -162,9 +109,9 @@ public class    MecanumDrive extends LinearOpMode {
                 else {
                     elevatorHeight = 3;
                 }
-                telemetry.addData("Elevator Height:", elevatorHeight);
-                telemetry.update();
+
             }
+
 
             if (gamepad2.y && !storageUnitUp){
 
@@ -209,18 +156,25 @@ public class    MecanumDrive extends LinearOpMode {
             if(robot.storageunit.getCurrentPosition() > 3000 || robot.storageunit.getCurrentPosition() < 0){ //limit for the elevator lift
                 robot.storageunit.setPower(0);
             }
-//
-//
-//            if(gamepad2.a == true && endposition == false){
-//                servoposition = 1;
-//                endposition = true;
-//            }
-//            else if(gamepad2.a == true && endposition == true){
-//                servoposition = 0;
-//                endposition = false;
-//            }
-//            robot.trapdoor.setPosition(servoposition);
+            */
 
+
+            //telemetry.addData("Elevator Height:", elevatorHeight);
+
+
+
+            /*if(gamepad2.y == true){
+                if(servoposition == 1){
+                    servoposition = 0;
+                }
+                else{
+                    servoposition = 1;
+                }
+
+
+            }
+            robot.trapdoor.setPosition(servoposition);
+            */
 
 
 

@@ -19,7 +19,7 @@ public class ProjectOdometryTest extends Project{
     //public DcMotor carousel = null;
     public DcMotor storageunit = null;
 
-    //public Servo trapdoor = null;
+    public Servo trapdoor = null;
 
     @Override
     public void init(HardwareMap ahwMap) {
@@ -38,7 +38,7 @@ public class ProjectOdometryTest extends Project{
         //carousel = hwMap.dcMotor.get("carousel");
         storageunit = hwMap.dcMotor.get("storageunit");
 
-       //trapdoor = hwMap.servo.get("trapdoor");
+        trapdoor = hwMap.servo.get("trapdoor");
 
         //Setup Motor directions and Encoder settings
         frontright.setDirection(DcMotor.Direction.FORWARD);
@@ -82,7 +82,7 @@ public class ProjectOdometryTest extends Project{
        // carousel.setPower(0);
         storageunit.setPower(0);
 
-       // trapdoor.setPosition(0);
+       trapdoor.setPosition(1);
 
 
     }
