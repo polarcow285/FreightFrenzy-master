@@ -3,8 +3,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.Projects.ProjectOdometryTest;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name = "ParkingAuto")
-public class ParkingAuto extends LinearOpMode {
+@Autonomous(name = "ParkingAutoFar")
+public class ParkingAutoFar extends LinearOpMode {
     public ProjectOdometryTest robot = new ProjectOdometryTest();
 
 
@@ -12,42 +12,25 @@ public class ParkingAuto extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
 
-        Path p = Path.Red;
-
-        //Distance q = Distance.Close;
-
+        PathFar p = PathFar.Red;
 
         while(!isStarted()){
             if(gamepad1.b){
-                p = Path.Red;
+                p = PathFar.Red;
             }
             if(gamepad1.x){
-                p = Path.Blue;
+                p = PathFar.Blue;
             }
-//            if(gamepad1.a){
-//                q = Distance.Close;
-//            }
-//            if(gamepad1.y){
-//                q = Distance.Far;
-//            }
-            telemetry.addData("Path:", p);
-            //telemetry.addData("Distance: ", q);
+            telemetry.addData("PathFar:", p);
             telemetry.update();
         }
 
         //waitForStart();
 
-        RunAuto(p == Path.Red);
-        //RunAuto(q == Distance.Close);
+        RunAuto(p == PathFar.Red);
 
     }
     public void RunAuto(boolean red){
-//        robot.frontright.setPower(1f);
-//        robot.frontleft.setPower(1f);
-//        robot.backright.setPower(1f);
-//        robot.backleft.setPower(1f);
-//        sleep(2000);
-
 
 
 
@@ -55,8 +38,8 @@ public class ParkingAuto extends LinearOpMode {
         robot.frontleft.setPower(red ?  -1f : -1f);
         robot.backleft.setPower(red ?  -1f : -1f);
         robot.frontright.setPower(red ?  -1f : -1f);
-        robot.backright.setPower(red ? -1f : -1f);
-        sleep(700);
+        robot.backright.setPower(red ? -1f :  -1f);
+        sleep(2100);
 
         robot.frontright.setPower(0);
         robot.frontleft.setPower(0);
@@ -67,7 +50,7 @@ public class ParkingAuto extends LinearOpMode {
         robot.frontleft.setPower(red ?  -1f : 1f);
         robot.backleft.setPower(red ?  1f : -1f);
         robot.frontright.setPower(red ?  1f : -1f);
-        robot.backright.setPower(red ? -1f :  1f);
+        robot.backright.setPower(red ? -1f : 1f);
         sleep(800);
 
         robot.frontright.setPower(0);
@@ -78,11 +61,7 @@ public class ParkingAuto extends LinearOpMode {
 
 }
 
-enum Path{
+enum PathFar{
     Red,
     Blue
-}
-enum Distance{
-    Close,
-    Far
 }

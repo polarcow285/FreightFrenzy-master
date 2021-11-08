@@ -34,8 +34,8 @@ public class MecanumDrive extends LinearOpMode {
         while (opModeIsActive()) {
             //Driving controls
             double y = -gamepad1.left_stick_y; // Remember, this is reversed!
-            double x = -gamepad1.right_stick_x * 1.1; // Counteract imperfect strafing
-            double rx = gamepad1.left_stick_x;
+            double x = -gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
+            double rx = gamepad1.right_stick_x;
 
             // Denominator is the largest motor power (absolute value) or 1
             // This ensures all the powers maintain the same ratio, but only when
@@ -58,10 +58,10 @@ public class MecanumDrive extends LinearOpMode {
             //controlling intake, duck spinning, elevator lift
 
            if(gamepad2.a == true && gamepad2.right_bumper == true) { //a and right bumper to make the intake spin backward and slower
-               robot.intake.setPower(0.6);
+               robot.intake.setPower(-0.6);
            }
            else if(gamepad2.a == true){ //a to make intake spin backward
-                robot.intake.setPower(1);
+                robot.intake.setPower(-1);
            }
            else{
                 robot.intake.setPower(0);
