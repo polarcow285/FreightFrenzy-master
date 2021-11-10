@@ -1,43 +1,43 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
+
 import org.firstinspires.ftc.teamcode.Projects.ProjectOdometryTest;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
-@TeleOp(name="MecanumDrive", group="Mecanum")
-public class MecanumDrive extends LinearOpMode {
+@TeleOp(name="MecanumDriveJiashu", group="Mecanum")
+public class MecanumDriveJiashu extends LinearOpMode {
     private ProjectOdometryTest robot = new ProjectOdometryTest();
-
-
     /* Setting variables */
 
     //Speed multiplier when slow mode is active
     private float slowModeMultiplier = .4f;
 
     float intake = 0;
-//   float carousel = 0;
+    //   float carousel = 0;
     float storageunit = 0;
-//;
+    //;
     boolean yPressed = false;
     boolean isTrapdoorClosed = false;
 
     int elevatorHeight = 1;
     boolean storageUnitUp = false;
 
-
     @Override
     public void runOpMode() throws InterruptedException {
+
+
         robot.init(hardwareMap);
         waitForStart();
+
 
         while (opModeIsActive()) {
             //Driving controls
 
             //driving forward
             double y = -gamepad1.left_stick_y; //back and forth
-            double x = -gamepad1.left_stick_x * 1.1; //strafing
-            double rx = gamepad1.right_stick_x; //turning
+            double x = -gamepad1.right_stick_x * 1.1; //strafing
+            double rx = gamepad1.left_stick_x; //turning
 
             // Denominator is the largest motor power (absolute value) or 1
             // This ensures all the powers maintain the same ratio, but only when
@@ -48,10 +48,38 @@ public class MecanumDrive extends LinearOpMode {
             double frontRightPower = (y - x - rx) / denominator;
             double backRightPower = (y + x - rx) / denominator;
 
+            if(gamepad1.right_trigger > 0){
+                robot.frontleft.setPower(1);
+                robot.backleft.setPower(1);
+                robot.frontright.setPower(1);
+                robot.backright.setPower(1);
+            }
+            if(gamepad1.left_trigger > 0){
+                robot.frontleft.setPower(-1);
+                robot.backleft.setPower(-1);
+                robot.frontright.setPower(-1);
+                robot.backright.setPower(-1);
+            }
+
+
             robot.frontleft.setPower(frontLeftPower * (gamepad1.left_trigger < .8 ? 1 : slowModeMultiplier));
             robot.backleft.setPower(backLeftPower * (gamepad1.left_trigger < .8 ? 1 : slowModeMultiplier));
             robot.frontright.setPower(frontRightPower * (gamepad1.left_trigger < .8 ? 1 : slowModeMultiplier));
             robot.backright.setPower(backRightPower * (gamepad1.left_trigger < .8 ? 1 : slowModeMultiplier));
+
+            telemetry.addData("y", y);
+            telemetry.addData("right trigger", gamepad1.right_trigger);
+            telemetry.addData("left trigger", gamepad1.left_trigger);
+            telemetry.addData("frontLeftPower", frontLeftPower);
+            telemetry.addData("frontRightPower", frontRightPower);
+            telemetry.addData("backRightPower", backRightPower);
+            telemetry.addData("backLeftPower", backLeftPower);
+            telemetry.update();
+
+
+
+
+
 
 
 
@@ -59,17 +87,17 @@ public class MecanumDrive extends LinearOpMode {
 
             //controlling intake, duck spinning, elevator lift
 
-           if(gamepad2.a == true && gamepad2.right_bumper == true) { //a and right bumper to make the intake spin backward and slower
-               robot.intake.setPower(-0.6);
-           }
-           else if(gamepad2.a == true){ //a to make intake spin backward
+            if(gamepad2.x) { //a and right bumper to make the intake spin backward and slower
+                robot.intake.setPower(-0.6);
+            }
+            else if(gamepad2.a == true){ //a to make intake spin backward
                 robot.intake.setPower(-1);
-           }
-           else{
+            }
+            else{
                 robot.intake.setPower(0);
-           }
+            }
 
-           //Servo Toggle
+            //Servo Toggle
             //0 is open trapdoor
             //1 is closed trapdoor
             if (gamepad2.y){
