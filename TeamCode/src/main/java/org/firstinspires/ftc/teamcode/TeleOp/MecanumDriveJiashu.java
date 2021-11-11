@@ -49,16 +49,16 @@ public class MecanumDriveJiashu extends LinearOpMode {
             double backRightPower = (y + x - rx) / denominator;
 
             if(gamepad1.right_trigger > 0){
-                robot.frontleft.setPower(1);
-                robot.backleft.setPower(1);
-                robot.frontright.setPower(1);
-                robot.backright.setPower(1);
+                frontLeftPower = 1;
+                backLeftPower = 1;
+                frontRightPower = 1;
+                backRightPower = 1;
             }
             if(gamepad1.left_trigger > 0){
-                robot.frontleft.setPower(-1);
-                robot.backleft.setPower(-1);
-                robot.frontright.setPower(-1);
-                robot.backright.setPower(-1);
+                frontLeftPower = -1;
+                backLeftPower = -1;
+                frontRightPower = -1;
+                backRightPower = -1;
             }
 
 
