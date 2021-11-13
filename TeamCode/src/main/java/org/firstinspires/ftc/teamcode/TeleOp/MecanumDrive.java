@@ -53,26 +53,19 @@ public class MecanumDrive extends LinearOpMode {
             robot.frontright.setPower(frontRightPower * (gamepad1.left_trigger < .8 ? 1 : slowModeMultiplier));
             robot.backright.setPower(backRightPower * (gamepad1.left_trigger < .8 ? 1 : slowModeMultiplier));
 
-
-
-
-
             //controlling intake, duck spinning, elevator lift
 
-           if(gamepad2.a == true && gamepad2.right_bumper == true) { //a and right bumper to make the intake spin backward and slower
-               robot.intake.setPower(-0.6);
-           }
-           else if(gamepad2.a == true){ //a to make intake spin backward
-                robot.intake.setPower(-1);
-           }
-           else{
+            if(gamepad2.a == true){ //a to make intake spin backward
+                robot.intake.setPower(1);
+            }
+            else{
                 robot.intake.setPower(0);
-           }
+            }
 
-           //Servo Toggle
+            //Servo Toggle
             //0 is open trapdoor
             //1 is closed trapdoor
-            if (gamepad2.y){
+            if (gamepad2.y && robot.storageunit.getCurrentPosition() < -1280){
                 if(yPressed == false){
                     yPressed = true;
                     isTrapdoorClosed = !isTrapdoorClosed;
@@ -86,6 +79,24 @@ public class MecanumDrive extends LinearOpMode {
             else {
                 yPressed = false;
             }
+            if(gamepad2.back){
+                robot.storageunit.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                robot.storageunit.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            }
+            //-1280 = able to close
+
+            //extend lift until reaches its limit (encoder count -5215)
+            if(gamepad2.right_bumper && robot.storageunit.getCurrentPosition() > -5215){
+                robot.storageunit.setPower(-0.5);
+            }
+            //retract lift when the current position is less than 0 (being extended)
+            else if(gamepad2.left_bumper && robot.storageunit.getCurrentPosition() < 0){
+                robot.storageunit.setPower(0.5);
+            }
+            else{
+                robot.storageunit.setPower(0);
+            }
+
 
 
 //            if(gamepad2.x == true){ //x to spin the carousel

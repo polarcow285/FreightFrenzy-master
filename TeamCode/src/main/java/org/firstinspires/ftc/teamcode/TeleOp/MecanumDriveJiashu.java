@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Projects.ProjectOdometryTest;
 
@@ -14,9 +15,8 @@ public class MecanumDriveJiashu extends LinearOpMode {
     private float slowModeMultiplier = .4f;
 
     float intake = 0;
-    //   float carousel = 0;
+    //float carousel = 0;
     float storageunit = 0;
-    //;
     boolean yPressed = false;
     boolean isTrapdoorClosed = false;
 
@@ -34,10 +34,19 @@ public class MecanumDriveJiashu extends LinearOpMode {
         while (opModeIsActive()) {
             //Driving controls
 
-            //driving forward
             double y = -gamepad1.left_stick_y; //back and forth
             double x = -gamepad1.right_stick_x * 1.1; //strafing
             double rx = gamepad1.left_stick_x; //turning
+
+            //back and forth movement using triggers
+            if(gamepad1.right_trigger > 0){
+                y = gamepad1.right_trigger;
+                x = 0;
+            }
+            else if(gamepad1.left_trigger > 0){
+                y = -gamepad1.left_trigger;
+                x = 0;
+            }
 
             // Denominator is the largest motor power (absolute value) or 1
             // This ensures all the powers maintain the same ratio, but only when
@@ -48,28 +57,13 @@ public class MecanumDriveJiashu extends LinearOpMode {
             double frontRightPower = (y - x - rx) / denominator;
             double backRightPower = (y + x - rx) / denominator;
 
-            if(gamepad1.right_trigger > 0){
-                frontLeftPower = 1;
-                backLeftPower = 1;
-                frontRightPower = 1;
-                backRightPower = 1;
-            }
-            if(gamepad1.left_trigger > 0){
-                frontLeftPower = -1;
-                backLeftPower = -1;
-                frontRightPower = -1;
-                backRightPower = -1;
-            }
 
+            robot.frontleft.setPower(frontLeftPower);
+            robot.backleft.setPower(backLeftPower);
+            robot.frontright.setPower(frontRightPower);
+            robot.backright.setPower(backRightPower);
 
-            robot.frontleft.setPower(frontLeftPower * (gamepad1.left_trigger < .8 ? 1 : slowModeMultiplier));
-            robot.backleft.setPower(backLeftPower * (gamepad1.left_trigger < .8 ? 1 : slowModeMultiplier));
-            robot.frontright.setPower(frontRightPower * (gamepad1.left_trigger < .8 ? 1 : slowModeMultiplier));
-            robot.backright.setPower(backRightPower * (gamepad1.left_trigger < .8 ? 1 : slowModeMultiplier));
-
-            telemetry.addData("y", y);
-            telemetry.addData("right trigger", gamepad1.right_trigger);
-            telemetry.addData("left trigger", gamepad1.left_trigger);
+            telemetry.addData("storage unit encoder value", robot.storageunit.getCurrentPosition());
             telemetry.addData("frontLeftPower", frontLeftPower);
             telemetry.addData("frontRightPower", frontRightPower);
             telemetry.addData("backRightPower", backRightPower);
@@ -77,21 +71,10 @@ public class MecanumDriveJiashu extends LinearOpMode {
             telemetry.update();
 
 
-
-
-
-
-
-
-
-
             //controlling intake, duck spinning, elevator lift
 
-            if(gamepad2.x) { //a and right bumper to make the intake spin backward and slower
-                robot.intake.setPower(-0.6);
-            }
-            else if(gamepad2.a == true){ //a to make intake spin backward
-                robot.intake.setPower(-1);
+            if(gamepad2.a == true){ //a to make intake spin backward
+                robot.intake.setPower(1);
             }
             else{
                 robot.intake.setPower(0);
@@ -100,7 +83,7 @@ public class MecanumDriveJiashu extends LinearOpMode {
             //Servo Toggle
             //0 is open trapdoor
             //1 is closed trapdoor
-            if (gamepad2.y){
+            if (gamepad2.y && robot.storageunit.getCurrentPosition() < -1280){
                 if(yPressed == false){
                     yPressed = true;
                     isTrapdoorClosed = !isTrapdoorClosed;
@@ -114,7 +97,23 @@ public class MecanumDriveJiashu extends LinearOpMode {
             else {
                 yPressed = false;
             }
+            if(gamepad2.back){
+                robot.storageunit.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                robot.storageunit.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            }
+            //-1280 = able to close
 
+            //extend lift until reaches its limit (encoder count -5215)
+            if(gamepad2.right_bumper && robot.storageunit.getCurrentPosition() > -5215){
+                robot.storageunit.setPower(-0.5);
+            }
+            //retract lift when the current position is less than 0 (being extended)
+            else if(gamepad2.left_bumper && robot.storageunit.getCurrentPosition() < 0){
+                robot.storageunit.setPower(0.5);
+            }
+            else{
+                robot.storageunit.setPower(0);
+            }
 
 //            if(gamepad2.x == true){ //x to spin the carousel
 //                robot.carousel.setPower(1);
