@@ -58,6 +58,9 @@ public class MecanumDrive extends LinearOpMode {
             if(gamepad2.a == true){ //a to make intake spin backward
                 robot.intake.setPower(1);
             }
+            else if (gamepad2.x == true){
+                robot.intake.setPower(-1);
+            }
             else{
                 robot.intake.setPower(0);
             }
