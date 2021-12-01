@@ -5,8 +5,8 @@ import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.teamcode.Projects.ProjectOdometryTest;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@TeleOp(name="MecanumDrive", group="Mecanum")
-public class MecanumDrive extends LinearOpMode {
+@TeleOp(name="MecanumDriveNoLimit", group="Mecanum")
+public class MecanumDriveNoLimit extends LinearOpMode {
     private ProjectOdometryTest robot = new ProjectOdometryTest();
 
 
@@ -16,9 +16,9 @@ public class MecanumDrive extends LinearOpMode {
     private float slowModeMultiplier = .4f;
 
     float intake = 0;
-//   float carousel = 0;
+    //   float carousel = 0;
     float storageunit = 0;
-//;
+    //;
     boolean yPressed = false;
     boolean isTrapdoorClosed = false;
 
@@ -89,11 +89,11 @@ public class MecanumDrive extends LinearOpMode {
             //-1280 = able to close
 
             //extend lift until reaches its limit (encoder count -5215)
-            if(gamepad2.right_bumper && robot.storageunit.getCurrentPosition() > -5215){
+            if(gamepad2.right_bumper == true){
                 robot.storageunit.setPower(-1);
             }
             //retract lift when the current position is less than 0 (being extended)
-            else if(gamepad2.left_bumper && robot.storageunit.getCurrentPosition() < 0){
+            else if(gamepad2.left_bumper == true){
                 robot.storageunit.setPower(1);
             }
             else{
