@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.Auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import org.firstinspires.ftc.teamcode.Projects.ProjectPushbotTest;
+
+import org.firstinspires.ftc.teamcode.Projects.Project;
+import org.firstinspires.ftc.teamcode.Projects.ProjectOdometryTest;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
@@ -15,7 +17,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 
 @Autonomous(name = "TestVuforiaAuto")
 public class TestVuforiaAuto extends LinearOpMode{
-    public ProjectPushbotTest robot = new ProjectPushbotTest();
+    public ProjectOdometryTest robot = new ProjectOdometryTest();
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -49,10 +51,9 @@ public class TestVuforiaAuto extends LinearOpMode{
 
         OpenGLMatrix shippingElementLocation = null;
 
-        waitForStart();
+            waitForStart();
 
-        while(opModeIsActive()){
-            while(shippingElementLocation == null){
+            while (shippingElementLocation == null) {
                 shippingElementLocation = shippingElementListener.getUpdatedRobotLocation();
             }
             //shippingElementLocation = shippingElementListener.getUpdatedRobotLocation();
@@ -61,34 +62,38 @@ public class TestVuforiaAuto extends LinearOpMode{
             telemetry.update();
 
             float x = shippingElementLocation.getTranslation().get(0);
-            if(shippingElementLocation != null){
-                if(x < -100) { //test to find out coordinate of tape
+            if (shippingElementLocation != null) {
+                if (x < -100) { //test to find out coordinate of tape
                     //right of robot
                     //upper level
-                    robot.rightMotor.setPower(0.5);
-                    robot.leftMotor.setPower(0);
+                    robot.frontleft.setPower(0.5);
+                    robot.frontright.setPower(-0.5);
+                    robot.backleft.setPower(-0.5);
+                    robot.backright.setPower(0.5);
                     sleep(50);
 
-                }
-                else if (-100 < x && x < 140){
+                } else if (-100 < x && x < 140) {
                     //middle, in front of robot
                     //middle level
-                    robot.rightMotor.setPower(0.5);
-                    robot.leftMotor.setPower(0.5);
+                    robot.frontleft.setPower(0.5);
+                    robot.frontright.setPower(0.5);
+                    robot.backleft.setPower(0.5);
+                    robot.backright.setPower(0.5);
                     sleep(50);
-                }
-                else{
+                } else {
                     //to the left of the robot
                     //put on the lowest level
-                    robot.rightMotor.setPower(0);
-                    robot.leftMotor.setPower(0.5);
+                    robot.frontleft.setPower(-0.5);
+                    robot.frontright.setPower(0.5);
+                    robot.backleft.setPower(0.5);
+                    robot.backright.setPower(-0.5);
                     sleep(50);
                 }
             }
             shippingElementLocation = null;
 
 
-        }
+
 
 
 

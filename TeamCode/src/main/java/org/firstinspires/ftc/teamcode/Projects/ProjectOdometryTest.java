@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+
 public class ProjectOdometryTest extends Project{
 
     //Project file for testing on odometry chassis
@@ -20,6 +22,7 @@ public class ProjectOdometryTest extends Project{
     public DcMotor storageunit = null;
 
     public Servo trapdoor = null;
+    public WebcamName camera = null;
 
     @Override
     public void init(HardwareMap ahwMap) {
@@ -28,17 +31,17 @@ public class ProjectOdometryTest extends Project{
 
 
         //Define and Initialize Motors
-        frontright = hwMap.dcMotor.get("frontright");
-        frontleft = hwMap.dcMotor.get("frontleft");
-        backright = hwMap.dcMotor.get("backright");
-        backleft = hwMap.dcMotor.get("backleft");
+        frontright = hwMap.dcMotor.get("frontright"); //port c3
+        frontleft = hwMap.dcMotor.get("frontleft"); //port e0
+        backright = hwMap.dcMotor.get("backright"); //port c0
+        backleft = hwMap.dcMotor.get("backleft"); //port e3
 
 
-        intake = hwMap.dcMotor.get("intake");
+        intake = hwMap.dcMotor.get("intake"); //port c1
         //carousel = hwMap.dcMotor.get("carousel");
-        storageunit = hwMap.dcMotor.get("storageunit");
+        storageunit = hwMap.dcMotor.get("storageunit"); //port e2
 
-        trapdoor = hwMap.servo.get("trapdoor");
+        trapdoor = hwMap.servo.get("trapdoor"); //port e0
 
         //Setup Motor directions and Encoder settings
         frontright.setDirection(DcMotor.Direction.FORWARD);
