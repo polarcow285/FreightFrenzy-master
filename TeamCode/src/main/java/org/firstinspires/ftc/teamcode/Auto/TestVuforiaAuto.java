@@ -51,46 +51,85 @@ public class TestVuforiaAuto extends LinearOpMode{
 
         OpenGLMatrix shippingElementLocation = null;
 
-            waitForStart();
-
-            while (shippingElementLocation == null) {
+        waitForStart();
+        //left: 139
+        //middle: -20
+        //right: -133
+        int count = 0;
+        while (shippingElementLocation == null) {
                 shippingElementLocation = shippingElementListener.getUpdatedRobotLocation();
-            }
-            //shippingElementLocation = shippingElementListener.getUpdatedRobotLocation();
-            //telemetry.addData("location of shipping element", formatMatrix(shippingElementLocation));
-            telemetry.addData("Shipping Element Found", formatMatrix(shippingElementLocation));
-            telemetry.update();
-
-            float x = shippingElementLocation.getTranslation().get(0);
-            if (shippingElementLocation != null) {
-                if (x < -100) { //test to find out coordinate of tape
-                    //right of robot
-                    //upper level
-                    robot.frontleft.setPower(0.5);
-                    robot.frontright.setPower(-0.5);
-                    robot.backleft.setPower(-0.5);
-                    robot.backright.setPower(0.5);
-                    sleep(50);
-
-                } else if (-100 < x && x < 140) {
-                    //middle, in front of robot
-                    //middle level
-                    robot.frontleft.setPower(0.5);
-                    robot.frontright.setPower(0.5);
-                    robot.backleft.setPower(0.5);
-                    robot.backright.setPower(0.5);
-                    sleep(50);
-                } else {
-                    //to the left of the robot
-                    //put on the lowest level
-                    robot.frontleft.setPower(-0.5);
-                    robot.frontright.setPower(0.5);
-                    robot.backleft.setPower(0.5);
-                    robot.backright.setPower(-0.5);
-                    sleep(50);
+                count++;
+                if(count>210000){
+                    break;
                 }
+        }
+
+        float x;
+        if(shippingElementLocation != null){
+            x = shippingElementLocation.getTranslation().get(0);
+        }else{
+            x = 0;
+        }
+        //left
+        if(x>120){
+            telemetry.addData("location of shipping element", "left");
+
+        }
+        //right
+        else if(x<-120){
+            telemetry.addData("location of shipping element", "right");
+
+        }
+        //middle
+        else{
+            telemetry.addData("location of shipping element", "middle");
+
+        }
+        telemetry.addData("location of shipping element", shippingElementLocation.getTranslation());
+       telemetry.update();
+
+        sleep(10000);
+
+
+
+
+        //shippingElementLocation = shippingElementListener.getUpdatedRobotLocation();
+        //telemetry.addData("location of shipping element", formatMatrix(shippingElementLocation));
+        //telemetry.addData("Shipping Element Found", formatMatrix(shippingElementLocation));
+        //telemetry.update();
+
+        /*float x = shippingElementLocation.getTranslation().get(0);
+        if (shippingElementLocation != null) {
+            if (x < -100) { //test to find out coordinate of tape
+                //right of robot
+                //upper level
+                robot.frontleft.setPower(0.5);
+                robot.frontright.setPower(-0.5);
+                robot.backleft.setPower(-0.5);
+                robot.backright.setPower(0.5);
+                sleep(50);
+
+            } else if (-100 < x && x < 140) {
+                //middle, in front of robot
+                //middle level
+                robot.frontleft.setPower(0.5);
+                robot.frontright.setPower(0.5);
+                robot.backleft.setPower(0.5);
+                robot.backright.setPower(0.5);
+                sleep(50);
+            } else {
+                //to the left of the robot
+                //put on the lowest level
+                robot.frontleft.setPower(-0.5);
+                robot.frontright.setPower(0.5);
+                robot.backleft.setPower(0.5);
+                robot.backright.setPower(-0.5);
+                sleep(50);
             }
-            shippingElementLocation = null;
+        }
+        */
+
+
 
 
 
