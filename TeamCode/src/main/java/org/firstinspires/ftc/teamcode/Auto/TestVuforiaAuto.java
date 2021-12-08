@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Projects.Project;
 import org.firstinspires.ftc.teamcode.Projects.ProjectOdometryTest;
@@ -23,6 +24,9 @@ public class TestVuforiaAuto extends LinearOpMode{
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
 
+        Path p = Path.Red;
+        Distance q = Distance.Far;
+
         robot.camera = hardwareMap.get(WebcamName.class, "webcam");
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -34,7 +38,7 @@ public class TestVuforiaAuto extends LinearOpMode{
 
 
         VuforiaLocalizer vuforia = ClassFactory.getInstance().createVuforia(parameters);
-        VuforiaTrackables trackables = vuforia.loadTrackablesFromAsset("Skystone");
+        VuforiaTrackables trackables = vuforia.loadTrackablesFromAsset("FreightFrenzy");
 
         FtcDashboard.getInstance().startCameraStream(vuforia, 0);
 
@@ -51,7 +55,26 @@ public class TestVuforiaAuto extends LinearOpMode{
 
         OpenGLMatrix shippingElementLocation = null;
 
-        waitForStart();
+        while(!isStarted()){
+            if(gamepad1.b){
+                p = Path.Red;
+            }
+            if(gamepad1.x){
+                p = Path.Blue;
+            }
+            telemetry.addData("Path: ", p);
+            telemetry.update();
+            if(gamepad1.y){
+                q = Distance.Far;
+            }
+            if(gamepad1.a){
+                q = Distance.Close;
+            }
+            telemetry.addData("Distance: ", q);
+            telemetry.update();
+        }
+
+
         //left: 139
         //middle: -20
         //right: -133
@@ -70,21 +93,37 @@ public class TestVuforiaAuto extends LinearOpMode{
         }else{
             x = 0;
         }
-        //left
+
+        if((q == Distance.Close && p == Path.Red) || (q == Distance.Far && p == Path.Blue)){
+            //turn right,
+        }
+        else{
+            //turn left
+        }
+        //left (level1)
         if(x>120){
             telemetry.addData("location of shipping element", "left");
+            //drive forward + extend lift
+            robot.storageunit.setPower(1);
+            robot.storageunit.setTargetPosition(90);
+            robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.storageunit.setPower(0);
+
 
         }
-        //right
+        //right (level3)
         else if(x<-120){
             telemetry.addData("location of shipping element", "right");
+            //drive forward + extend lift
 
         }
-        //middle
+        //middle (level2)
         else{
             telemetry.addData("location of shipping element", "middle");
+            //drive forward + extend lift
 
         }
+
         telemetry.addData("location of shipping element", shippingElementLocation.getTranslation());
        telemetry.update();
 
@@ -144,5 +183,14 @@ public class TestVuforiaAuto extends LinearOpMode{
         else{
             return "not found";
         }
+    }
+
+    enum Path{
+        Red,
+        Blue
+    }
+    enum Distance{
+        Far,
+        Close
     }
 }
