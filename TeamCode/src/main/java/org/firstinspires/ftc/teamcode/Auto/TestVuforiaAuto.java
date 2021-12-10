@@ -25,7 +25,7 @@ public class TestVuforiaAuto extends LinearOpMode{
         robot.init(hardwareMap);
 
         Path p = Path.Red;
-        Distance q = Distance.Far;
+       // Distance q = Distance.Far;
 
         robot.camera = hardwareMap.get(WebcamName.class, "webcam");
 
@@ -64,14 +64,14 @@ public class TestVuforiaAuto extends LinearOpMode{
             }
             telemetry.addData("Path: ", p);
             telemetry.update();
-            if(gamepad1.y){
-                q = Distance.Far;
-            }
-            if(gamepad1.a){
-                q = Distance.Close;
-            }
-            telemetry.addData("Distance: ", q);
-            telemetry.update();
+//            if(gamepad1.y){
+//                q = Distance.Far;
+//            }
+//            if(gamepad1.a){
+//                q = Distance.Close;
+//            }
+//            telemetry.addData("Distance: ", q);
+//            telemetry.update();
         }
 
 
@@ -80,11 +80,11 @@ public class TestVuforiaAuto extends LinearOpMode{
         //right: -133
         int count = 0;
         while (shippingElementLocation == null) {
-                shippingElementLocation = shippingElementListener.getUpdatedRobotLocation();
-                count++;
-                if(count>210000){
-                    break;
-                }
+            shippingElementLocation = shippingElementListener.getUpdatedRobotLocation();
+            count++;
+            if(count>210000){
+                break;
+            }
         }
 
         float x;
@@ -94,16 +94,50 @@ public class TestVuforiaAuto extends LinearOpMode{
             x = 0;
         }
 
-        if((q == Distance.Close && p == Path.Red) || (q == Distance.Far && p == Path.Blue)){
-            //turn right,
+        if(p == Path.Red){
+            //strafe out, turn left
+            robot.frontleft.setPower(-1);
+            robot.frontright.setPower(1);
+            robot.backleft.setPower(-1);
+            robot.backright.setPower(1);
+            sleep(1500);
+
+            robot.frontleft.setPower(0);
+            robot.frontright.setPower(0);
+            robot.backleft.setPower(0);
+            robot.backright.setPower(0);
         }
-        else{
-            //turn left
+        else if(p == Path.Blue){
+            //strafe out,turn right
+            robot.frontleft.setPower(1);
+            robot.frontright.setPower(-1);
+            robot.backleft.setPower(1);
+            robot.backright.setPower(-1);
+            sleep(1500);
+
+            robot.frontleft.setPower(0);
+            robot.frontright.setPower(0);
+            robot.backleft.setPower(0);
+            robot.backright.setPower(0);
+
         }
         //left (level1)
         if(x>120){
             telemetry.addData("location of shipping element", "left");
+
             //drive forward + extend lift
+            robot.frontleft.setPower(1);
+            robot.frontright.setPower(1);
+            robot.backleft.setPower(1);
+            robot.backright.setPower(1);
+            sleep(500);
+
+            robot.frontleft.setPower(0);
+            robot.frontright.setPower(0);
+            robot.backleft.setPower(0);
+            robot.backright.setPower(0);
+            sleep(100);
+
             robot.storageunit.setPower(1);
             robot.storageunit.setTargetPosition(90);
             robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -115,17 +149,51 @@ public class TestVuforiaAuto extends LinearOpMode{
         else if(x<-120){
             telemetry.addData("location of shipping element", "right");
             //drive forward + extend lift
+            robot.frontleft.setPower(1);
+            robot.frontright.setPower(1);
+            robot.backleft.setPower(1);
+            robot.backright.setPower(1);
+            sleep(500);
+
+            robot.frontleft.setPower(0);
+            robot.frontright.setPower(0);
+            robot.backleft.setPower(0);
+            robot.backright.setPower(0);
+            sleep(100);
+
+            robot.storageunit.setPower(1);
+            robot.storageunit.setTargetPosition(180);
+            robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.storageunit.setPower(0);
+
 
         }
         //middle (level2)
         else{
             telemetry.addData("location of shipping element", "middle");
             //drive forward + extend lift
+            robot.frontleft.setPower(1);
+            robot.frontright.setPower(1);
+            robot.backleft.setPower(1);
+            robot.backright.setPower(1);
+            sleep(500);
+
+            robot.frontleft.setPower(0);
+            robot.frontright.setPower(0);
+            robot.backleft.setPower(0);
+            robot.backright.setPower(0);
+            sleep(100);
+
+            robot.storageunit.setPower(1);
+            robot.storageunit.setTargetPosition(135);
+            robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.storageunit.setPower(0);
+
 
         }
 
         telemetry.addData("location of shipping element", shippingElementLocation.getTranslation());
-       telemetry.update();
+        telemetry.update();
 
         sleep(10000);
 
@@ -188,9 +256,5 @@ public class TestVuforiaAuto extends LinearOpMode{
     enum Path{
         Red,
         Blue
-    }
-    enum Distance{
-        Far,
-        Close
     }
 }
