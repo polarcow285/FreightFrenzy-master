@@ -96,29 +96,72 @@ public class TestVuforiaAuto extends LinearOpMode{
 
         if(p == Path.Red){
             //strafe out, turn left
+            robot.frontleft.setPower(1);
+            robot.frontright.setPower(-1);
+            robot.backleft.setPower(-1);
+            robot.backright.setPower(1);
+            sleep(425);
+
+            robot.frontleft.setPower(0);
+            robot.frontright.setPower(0);
+            robot.backleft.setPower(0);
+            robot.backright.setPower(0);
+            sleep(100);
+
             robot.frontleft.setPower(-1);
             robot.frontright.setPower(1);
             robot.backleft.setPower(-1);
             robot.backright.setPower(1);
-            sleep(1500);
+            sleep(1000);
 
             robot.frontleft.setPower(0);
             robot.frontright.setPower(0);
             robot.backleft.setPower(0);
             robot.backright.setPower(0);
+            sleep(100);
+
+            robot.storageunit.setPower(1);
+            robot.storageunit.setTargetPosition(180);
+            robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.storageunit.setPower(0);
+
+            robot.trapdoor.setPosition(0);
+            robot.trapdoor.setPosition(1);
         }
         else if(p == Path.Blue){
             //strafe out,turn right
+            robot.frontleft.setPower(-1);
+            robot.frontright.setPower(1);
+            robot.backleft.setPower(1);
+            robot.backright.setPower(-1);
+            sleep(425);
+
+            robot.frontleft.setPower(0);
+            robot.frontright.setPower(0);
+            robot.backleft.setPower(0);
+            robot.backright.setPower(0);
+            sleep(100);
+
             robot.frontleft.setPower(1);
             robot.frontright.setPower(-1);
             robot.backleft.setPower(1);
             robot.backright.setPower(-1);
-            sleep(1500);
+            sleep(1000);
 
             robot.frontleft.setPower(0);
             robot.frontright.setPower(0);
             robot.backleft.setPower(0);
             robot.backright.setPower(0);
+            sleep(100);
+
+            robot.storageunit.setPower(1);
+            robot.storageunit.setTargetPosition(180);
+            robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.storageunit.setPower(0);
+
+            robot.trapdoor.setPosition(0);
+            robot.trapdoor.setPosition(1);
+
 
         }
         //left (level1)
