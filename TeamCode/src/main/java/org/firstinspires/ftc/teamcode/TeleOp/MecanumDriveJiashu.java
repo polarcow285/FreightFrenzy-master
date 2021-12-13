@@ -34,17 +34,17 @@ public class MecanumDriveJiashu extends LinearOpMode {
         while (opModeIsActive()) {
             //Driving controls
 
-            double y = gamepad1.left_stick_y; //back and forth
-            double x = gamepad1.right_stick_x * 1.1; //strafing
+            double y = 0; //back and forth
+            double x = -gamepad1.right_stick_x * 1.1; //strafing
             double rx = gamepad1.left_stick_x; //turning
 
             //back and forth movement using triggers
             if(gamepad1.right_trigger > 0){
-                y = -gamepad1.right_trigger;
+                y = gamepad1.right_trigger;
                 x = 0;
             }
             else if(gamepad1.left_trigger > 0){
-                y = gamepad1.left_trigger;
+                y = -gamepad1.left_trigger;
                 x = 0;
             }
 
@@ -86,7 +86,7 @@ public class MecanumDriveJiashu extends LinearOpMode {
             //Servo Toggle
             //0 is open trapdoor
             //1 is closed trapdoor
-            if (gamepad1.y && robot.storageunit.getCurrentPosition() < -1280){
+            if (gamepad1.y){
                 if(yPressed == false){
                     yPressed = true;
                     isTrapdoorClosed = !isTrapdoorClosed;
