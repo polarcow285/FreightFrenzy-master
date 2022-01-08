@@ -58,20 +58,188 @@ public class IntermediateAuto extends LinearOpMode {
         }
 
         waitForStart();
-        /*if(detector.getShippingElementLocation() == ShippingElementDetector.ShippingElementLocation.LEFT){
+        //get the position of the shipping element
+        ShippingElementDetector.ShippingElementLocation elementLocation = detector.getShippingElementLocation();
+        telemetry.addData("element location:", elementLocation);
+        telemetry.update();
 
-        }*/
+        if(p == Path.Red){
+            //strafing right
+            robot.frontleft.setPower(-1);
+            robot.frontright.setPower(1);
+            robot.backleft.setPower(1);
+            robot.backright.setPower(-1);
+            sleep(300);
 
-        switch (detector.getShippingElementLocation()) {
-            case LEFT: case UNKNOWN:
-                // ...
-                break;
-            case MIDDLE:
-                // ...
-                break;
-            case RIGHT:
-                // ...
+            robot.frontleft.setPower(0);
+            robot.frontright.setPower(0);
+            robot.backleft.setPower(0);
+            robot.backright.setPower(0);
+            sleep(200);
+
+            //driving forward
+
+            robot.frontleft.setPower(1);
+            robot.frontright.setPower(1);
+            robot.backleft.setPower(1);
+            robot.backright.setPower(1);
+            sleep(700);
+
+            robot.frontleft.setPower(0);
+            robot.frontright.setPower(0);
+            robot.backleft.setPower(0);
+            robot.backright.setPower(0);
+            sleep(200);
+
+            //turning right
+            robot.frontleft.setPower(1);
+            robot.frontright.setPower(-1);
+            robot.backleft.setPower(1);
+            robot.backright.setPower(-1);
+            sleep(1075);
+
+            robot.frontleft.setPower(0);
+            robot.frontright.setPower(0);
+            robot.backleft.setPower(0);
+            robot.backright.setPower(0);
+            sleep(200);
+
+            switch (elementLocation) {
+                case LEFT: case UNKNOWN:
+                    //bottom level - level 1
+
+
+                    break;
+                case MIDDLE:
+                    //middle level - level 2
+
+
+                    break;
+                case RIGHT:
+                    //top level - level 3
+                    //extend lift all the way
+                    while(robot.storageunit.getCurrentPosition() > -5215){
+                        robot.frontleft.setPower(0);
+                        robot.frontright.setPower(0);
+                        robot.backleft.setPower(0);
+                        robot.backright.setPower(0);
+                        robot.storageunit.setPower(-1);
+                    }
+                    robot.storageunit.setPower(0);
+
+                    //opening trapdoor
+                    robot.trapdoor.setPosition(0);
+                    sleep(3000);
+                    //close trapdoor
+                    robot.trapdoor.setPosition(1);
+
+                    //retract lift
+                    while(robot.storageunit.getCurrentPosition() < 0){
+                        robot.frontleft.setPower(0);
+                        robot.frontright.setPower(0);
+                        robot.backleft.setPower(0);
+                        robot.backright.setPower(0);
+                        robot.storageunit.setPower(1);
+                    }
+                    robot.storageunit.setPower(0);
+                    break;
+            }
+
+            //turning to face warehouse (trapdoor is facing warehouse)
+            robot.frontleft.setPower(1);
+            robot.frontright.setPower(-1);
+            robot.backleft.setPower(1);
+            robot.backright.setPower(-1);
+            sleep(1000);
+
+            robot.frontleft.setPower(0);
+            robot.frontright.setPower(0);
+            robot.backleft.setPower(0);
+            robot.backright.setPower(0);
+            sleep(500);
+
+            //strafing against wall
+
+            robot.frontleft.setPower(-1);
+            robot.frontright.setPower(1);
+            robot.backleft.setPower(1);
+            robot.backright.setPower(-1);
+            sleep(2000);
+
+            robot.frontleft.setPower(0);
+            robot.frontright.setPower(0);
+            robot.backleft.setPower(0);
+            robot.backright.setPower(0);
+            sleep(500);
+
+            //going into warehouse
+            robot.frontleft.setPower(1);
+            robot.frontright.setPower(1);
+            robot.backleft.setPower(1);
+            robot.backright.setPower(1);
+            sleep(1750);
+
+            robot.frontleft.setPower(0);
+            robot.frontright.setPower(0);
+            robot.backleft.setPower(0);
+            robot.backright.setPower(0);
+
+
         }
+        else if (p==Path.Blue){
+            //robot strafes away from the wall
+
+            //robot driving forward
+
+            //turning so that trapdoor faces the shipping hub
+
+            switch (elementLocation) {
+                case LEFT: case UNKNOWN:
+                    //bottom level - level 1
+
+                    //extend the lift all the way
+
+                    //...
+
+                    break;
+                case MIDDLE:
+                    telemetry.addData("middle", "yay");
+                    //middle level - level 2
+
+                    //code to drop off at middle level
+                    //...
+
+                    break;
+                case RIGHT:
+                    //top level - level 3
+
+                    //code to drop off at lowest level
+                    //...
+
+                    break;
+            }
+
+            //turning so that trapdoor is facing warehouse (blue side)
+
+            //strafing into the wall
+
+            //driving into warehouse
+
+
+            //stop
+            robot.frontleft.setPower(0);
+            robot.frontright.setPower(0);
+            robot.backleft.setPower(0);
+            robot.backright.setPower(0);
+        }
+
+
+
+
+
+        telemetry.update();
+
+
         webcam.stopStreaming();
 
 

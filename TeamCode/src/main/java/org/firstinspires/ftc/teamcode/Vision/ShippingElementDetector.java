@@ -27,16 +27,16 @@ public class ShippingElementDetector extends OpenCvPipeline {
         //rectangles are made from defining two opposite vertices of a triangle,
         //which are connected by the diagonals
         static final Rect leftROI = new Rect(
-                new Point( 0, 0),
-                new Point(100, 180)
+                new Point( 200, 0),
+                new Point(700, 900)
         );
         static final Rect middleROI = new Rect(
-            new Point( 100, 0),
-            new Point(180, 180)
+            new Point( 700, 0),
+            new Point(1200, 900)
         );
         static final Rect rightROI = new Rect(
-            new Point( 180, 0),
-            new Point(280, 180)
+            new Point( 1200, 0),
+            new Point(1600, 900)
         );
 
 
@@ -64,13 +64,12 @@ public class ShippingElementDetector extends OpenCvPipeline {
             Mat middle = mat.submat(middleROI);
             Mat right = mat.submat(rightROI);
 
+
             //calculate what percentage of the ROI became white
             //(add all the pixels together, divide by its area, divide by 255)
             double leftPercentage = Core.sumElems(left).val[0] / leftROI.area() / 255;
             double middlePercentage = Core.sumElems(middle).val[0] / middleROI.area() / 255;
             double rightPercentage = Core.sumElems(right).val[0] / rightROI.area() / 255;
-
-
 
             //deallocates the Matrix data from the memory
 
@@ -99,10 +98,9 @@ public class ShippingElementDetector extends OpenCvPipeline {
             return mat;
 
 
-
         }
         public ShippingElementLocation getShippingElementLocation(){
             return elementLocation;
         }
-    
+
 }

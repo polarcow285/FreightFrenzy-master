@@ -1,26 +1,28 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
+import org.firstinspires.ftc.teamcode.Projects.ProjectOdometryTest;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.Projects.ProjectOdometryTest;
-
-@TeleOp(name="MecanumDriveJiashu", group="Mecanum")
-public class MecanumDriveJiashu extends LinearOpMode {
+@TeleOp(name="JiashuTwoPlayer", group="Mecanum")
+public class MecanumDriveJiashuTwoPlayer extends LinearOpMode {
     private ProjectOdometryTest robot = new ProjectOdometryTest();
+
+
     /* Setting variables */
+
+    //Speed multiplier when slow mode is active
+    private float slowModeMultiplier = .4f;
 
     boolean yPressed = false;
     boolean isTrapdoorClosed = false;
 
+
     @Override
     public void runOpMode() throws InterruptedException {
-
-
         robot.init(hardwareMap);
         waitForStart();
-
 
         while (opModeIsActive()) {
             //Driving controls
@@ -48,26 +50,17 @@ public class MecanumDriveJiashu extends LinearOpMode {
             double frontRightPower = (y - x - rx) / denominator;
             double backRightPower = (y + x - rx) / denominator;
 
-
             robot.frontleft.setPower(frontLeftPower);
             robot.backleft.setPower(backLeftPower);
             robot.frontright.setPower(frontRightPower);
             robot.backright.setPower(backRightPower);
-
-            telemetry.addData("storage unit encoder value", robot.storageunit.getCurrentPosition());
-            telemetry.addData("frontLeftPower", frontLeftPower);
-            telemetry.addData("frontRightPower", frontRightPower);
-            telemetry.addData("backRightPower", backRightPower);
-            telemetry.addData("backLeftPower", backLeftPower);
-            telemetry.update();
-
 
             //controlling intake, elevator lift
 
             if(gamepad1.a == true){ //a to intake cargo on the ramp
                 robot.intake.setPower(1);
             }
-            else if(gamepad1.x == true){ //x to spit out cargo from the ramp
+            else if (gamepad1.x == true){//x to spit out cargo from the ramp
                 robot.intake.setPower(-1);
             }
             else{
@@ -77,7 +70,7 @@ public class MecanumDriveJiashu extends LinearOpMode {
             //Servo Toggle
             //0 is open trapdoor
             //1 is closed trapdoor
-            if (gamepad1.y){
+            if (gamepad2.y){
                 if(yPressed == false){
                     yPressed = true;
                     isTrapdoorClosed = !isTrapdoorClosed;
@@ -98,11 +91,11 @@ public class MecanumDriveJiashu extends LinearOpMode {
             //-1280 = able to close
 
             //extend lift until reaches its limit (encoder count -5215)
-            if(gamepad1.right_bumper && robot.storageunit.getCurrentPosition() > -5215){
+            if(gamepad2.right_bumper && robot.storageunit.getCurrentPosition() > -5215){
                 robot.storageunit.setPower(-1);
             }
             //retract lift when the current position is less than 0 (being extended)
-            else if(gamepad1.left_bumper && robot.storageunit.getCurrentPosition() < 0){
+            else if(gamepad2.left_bumper && robot.storageunit.getCurrentPosition() < 0){
                 robot.storageunit.setPower(1);
             }
             else{
