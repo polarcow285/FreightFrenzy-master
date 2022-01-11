@@ -12,8 +12,8 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
 import org.firstinspires.ftc.teamcode.Projects.ProjectOdometryTest;
 
-@Autonomous(name = "IntermediateAuto")
-public class IntermediateAuto extends LinearOpMode {
+@Autonomous(name = "Meet3")
+public class Meet3 extends LinearOpMode{
     public ProjectOdometryTest robot = new ProjectOdometryTest();
     OpenCvWebcam webcam;
     ShippingElementDetector detector = new ShippingElementDetector(telemetry);
@@ -109,7 +109,7 @@ public class IntermediateAuto extends LinearOpMode {
             robot.frontright.setPower(1);
             robot.backleft.setPower(1);
             robot.backright.setPower(1);
-            sleep(250);
+            sleep(500);
 
             robot.frontleft.setPower(0);
             robot.frontright.setPower(0);
@@ -121,7 +121,7 @@ public class IntermediateAuto extends LinearOpMode {
                 case LEFT: case UNKNOWN:
                     //bottom level - level 1
                     //extend lift to the bottom level
-                    while(robot.storageunit.getCurrentPosition() > -3000){
+                    while(robot.storageunit.getCurrentPosition() > -500){ //TEST
                         robot.frontleft.setPower(0);
                         robot.frontright.setPower(0);
                         robot.backleft.setPower(0);
@@ -148,7 +148,7 @@ public class IntermediateAuto extends LinearOpMode {
                     break;
                 case MIDDLE:
                     //middle level - level 2
-                    while(robot.storageunit.getCurrentPosition() > -3315){
+                    while(robot.storageunit.getCurrentPosition() > -800){ //TEST
                         robot.frontleft.setPower(0);
                         robot.frontright.setPower(0);
                         robot.backleft.setPower(0);
@@ -175,31 +175,6 @@ public class IntermediateAuto extends LinearOpMode {
                     break;
                 case RIGHT:
                     //top level - level 3
-                    //extend lift all the way
-                    while(robot.storageunit.getCurrentPosition() > -5175){ //limit is 5215
-                        robot.frontleft.setPower(0);
-                        robot.frontright.setPower(0);
-                        robot.backleft.setPower(0);
-                        robot.backright.setPower(0);
-                        robot.storageunit.setPower(-1);
-                    }
-                    robot.storageunit.setPower(0);
-
-                    //opening trapdoor
-                    robot.trapdoor.setPosition(0);
-                    sleep(3000);
-                    //close trapdoor
-                    robot.trapdoor.setPosition(1);
-
-                    //retract lift
-                    while(robot.storageunit.getCurrentPosition() < 0){
-                        robot.frontleft.setPower(0);
-                        robot.frontright.setPower(0);
-                        robot.backleft.setPower(0);
-                        robot.backright.setPower(0);
-                        robot.storageunit.setPower(1);
-                    }
-                    robot.storageunit.setPower(0);
                     break;
             }
 
@@ -241,8 +216,19 @@ public class IntermediateAuto extends LinearOpMode {
             robot.frontright.setPower(0);
             robot.backleft.setPower(0);
             robot.backright.setPower(0);
+            sleep(200);
 
+            //strafing left in the warehouse
+            robot.frontleft.setPower(1);
+            robot.frontright.setPower(-1);
+            robot.backleft.setPower(-1);
+            robot.backright.setPower(1);
+            sleep(300);
 
+            robot.frontleft.setPower(0);
+            robot.frontright.setPower(0);
+            robot.backleft.setPower(0);
+            robot.backright.setPower(0);
         }
         else if (p==Path.Blue){
             //robot strafes away from the wall, left
@@ -300,8 +286,9 @@ public class IntermediateAuto extends LinearOpMode {
             switch (elementLocation) {
                 case LEFT: case UNKNOWN:
                     //bottom level - level 1
+                    /*
                     //extend the lift at the lowest level
-                    while(robot.storageunit.getCurrentPosition() > -3000){//TEST
+                    while(robot.storageunit.getCurrentPosition() > -500){//TEST
                         robot.frontleft.setPower(0);
                         robot.frontright.setPower(0);
                         robot.backleft.setPower(0);
@@ -310,12 +297,26 @@ public class IntermediateAuto extends LinearOpMode {
                     }
                     robot.storageunit.setPower(0);
 
+                     */
+                    //driving forward to reach the storage unit
+                    robot.frontleft.setPower(1);
+                    robot.frontright.setPower(1);
+                    robot.backleft.setPower(1);
+                    robot.backright.setPower(1);
+                    sleep(250);
+
+                    robot.frontleft.setPower(0);
+                    robot.frontright.setPower(0);
+                    robot.backleft.setPower(0);
+                    robot.backright.setPower(0);
+
                     //opening trapdoor
                     robot.trapdoor.setPosition(0);
                     sleep(3000);
                     //close trapdoor
                     robot.trapdoor.setPosition(1);
 
+                    /*
                     //retract lift
                     while(robot.storageunit.getCurrentPosition() < 0){
                         robot.frontleft.setPower(0);
@@ -326,12 +327,14 @@ public class IntermediateAuto extends LinearOpMode {
                     }
                     robot.storageunit.setPower(0);
 
+                     */
+
                     break;
                 case MIDDLE:
                     telemetry.addData("middle", "yay");
                     //middle level - level 2
                     //code to drop off at middle level
-                    while(robot.storageunit.getCurrentPosition() > -3315){ //TEST
+                    while(robot.storageunit.getCurrentPosition() > -800){ //TEST
                         robot.frontleft.setPower(0);
                         robot.frontright.setPower(0);
                         robot.backleft.setPower(0);
@@ -359,32 +362,6 @@ public class IntermediateAuto extends LinearOpMode {
                     break;
                 case RIGHT:
                     //top level - level 3
-                    //code to drop off at highest level
-                    while(robot.storageunit.getCurrentPosition() > -5175){
-                        robot.frontleft.setPower(0);
-                        robot.frontright.setPower(0);
-                        robot.backleft.setPower(0);
-                        robot.backright.setPower(0);
-                        robot.storageunit.setPower(1);
-                    }
-                    robot.storageunit.setPower(0);
-
-                    //opening trapdoor
-                    robot.trapdoor.setPosition(0);
-                    sleep(3000);
-                    //close trapdoor
-                    robot.trapdoor.setPosition(1);
-
-                    //retract lift
-                    while(robot.storageunit.getCurrentPosition() < 0){
-                        robot.frontleft.setPower(0);
-                        robot.frontright.setPower(0);
-                        robot.backleft.setPower(0);
-                        robot.backright.setPower(0);
-                        robot.storageunit.setPower(1);
-                    }
-                    robot.storageunit.setPower(0);
-
                     break;
             }
 
@@ -421,11 +398,25 @@ public class IntermediateAuto extends LinearOpMode {
             robot.backright.setPower(1);
             sleep(1750);
 
+            robot.frontleft.setPower(0);
+            robot.frontright.setPower(0);
+            robot.backleft.setPower(0);
+            robot.backright.setPower(0);
+            sleep(200);
+
+            //strafing right in the warehouse
+            robot.frontleft.setPower(-1);
+            robot.frontright.setPower(1);
+            robot.backleft.setPower(1);
+            robot.backright.setPower(-1);
+            sleep(300); //test
+
             //stop
             robot.frontleft.setPower(0);
             robot.frontright.setPower(0);
             robot.backleft.setPower(0);
             robot.backright.setPower(0);
+
         }
 
 
@@ -436,6 +427,7 @@ public class IntermediateAuto extends LinearOpMode {
 
 
         webcam.stopStreaming();
+
 
 
 
