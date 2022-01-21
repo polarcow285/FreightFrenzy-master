@@ -8,12 +8,13 @@ import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class PracticeDetector extends OpenCvPipeline{
-    Mat mat = new Mat();
+public class PracticeDetector extends OpenCvPipeline {
     Telemetry telemetry;
 
+    Mat mat = new Mat();
+
     static final Rect rightROI = new Rect(
-            new Point(180, 0),
+            new Point( 180, 0),
             new Point(280, 180)
     );
     static final Rect middleROI = new Rect(
@@ -24,6 +25,8 @@ public class PracticeDetector extends OpenCvPipeline{
             new Point( 0, 0),
             new Point(100, 180)
     );
+
+    public PracticeDetector(Telemetry t) { telemetry = t; }
 
     @Override
     public Mat processFrame(Mat input) {
@@ -37,29 +40,27 @@ public class PracticeDetector extends OpenCvPipeline{
         //returns a new mat with this threshold
         Core.inRange(mat,lowHSV, highHSV, mat);
 
+        //extract regions of interest from camera frame
+        //submat = sub-mat, a portion of the original
         Mat left = mat.submat(leftROI);
         Mat middle = mat.submat(middleROI);
         Mat right = mat.submat(rightROI);
 
-        //calculates what percentage of the matrix (mat) became white
         double leftPercentage = Core.sumElems(left).val[0] / leftROI.area() / 255;
         double middlePercentage = Core.sumElems(middle).val[0] / middleROI.area() / 255;
         double rightPercentage = Core.sumElems(right).val[0] / rightROI.area() / 255;
 
-        //deallocating the matrix (mat) data from memory
+        //deallocates the Matrix data from the memory
         left.release();
         middle.release();
         right.release();
 
-        telemetry.addData("left percentage" , Math.round(leftPercentage));
-        telemetry.addData("middle percentage" , Math.round(middlePercentage));
-        telemetry.addData("right percentage" ,  Math.round(rightPercentage));
+        telemetry.addData("left percentage", Math.round(leftPercentage * 100) + "%");
+        telemetry.addData("middle percentage", Math.round(middlePercentage * 100) + "%");
+        telemetry.addData("right percentage", Math.round(rightPercentage * 100) + "%");
 
         telemetry.update();
 
-
         return mat;
-
-
     }
 }

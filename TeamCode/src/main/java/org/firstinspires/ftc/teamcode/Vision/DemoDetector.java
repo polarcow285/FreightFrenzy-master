@@ -16,7 +16,16 @@ public class DemoDetector extends OpenCvPipeline{
     @Override
     public Mat processFrame(Mat input) {
         Imgproc.cvtColor(input, mat, Imgproc.COLOR_RGB2HSV);
+        //define HSV range to identify the color yellow
+        Scalar lowHSV = new Scalar (15, 100, 100);
+        Scalar highHSV = new Scalar(30, 255, 255);
+
+        //applies a threshold (everything that is yellow will be white, everything else will be black)
+        //returns a new mat with this threshold
+        Core.inRange(mat,lowHSV, highHSV, mat);
 
         return mat;
     }
+
+
 }
