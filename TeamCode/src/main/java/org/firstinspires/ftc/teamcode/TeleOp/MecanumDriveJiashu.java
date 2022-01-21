@@ -14,6 +14,9 @@ public class MecanumDriveJiashu extends LinearOpMode {
     boolean yPressed = false;
     boolean isTrapdoorClosed = false;
 
+    boolean aPressed = false;
+    boolean isIntakeSpinning = false;
+
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -63,11 +66,37 @@ public class MecanumDriveJiashu extends LinearOpMode {
 
 
             //controlling intake, elevator lift
-
+/*
             if(gamepad1.a == true){ //a to intake cargo on the ramp
                 robot.intake.setPower(1);
             }
             else if(gamepad1.x == true){ //x to spit out cargo from the ramp
+                robot.intake.setPower(-1);
+            }
+            else{
+                robot.intake.setPower(0);
+            }
+
+ */
+
+            //toggling intake
+            if(gamepad1.a){
+                if(aPressed == false){
+                    aPressed = true;
+                    isIntakeSpinning = true;
+                    if(isIntakeSpinning == false){
+                        robot.intake.setPower(1);
+                    }
+                    else{
+                        robot.intake.setPower(0);
+                    }
+                }
+            }
+            else{
+                aPressed = false;
+            }
+
+            if(gamepad1.x == true){ //x to spit out cargo from the ramp
                 robot.intake.setPower(-1);
             }
             else{

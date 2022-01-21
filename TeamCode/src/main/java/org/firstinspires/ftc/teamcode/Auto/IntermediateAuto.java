@@ -176,7 +176,7 @@ public class IntermediateAuto extends LinearOpMode {
                 case RIGHT:
                     //top level - level 3
                     //extend lift all the way
-                    while(robot.storageunit.getCurrentPosition() > -5175){ //limit is 5215
+                    while(robot.storageunit.getCurrentPosition() > -4768){ //limit is 5215
                         robot.frontleft.setPower(0);
                         robot.frontright.setPower(0);
                         robot.backleft.setPower(0);
@@ -360,7 +360,7 @@ public class IntermediateAuto extends LinearOpMode {
                 case RIGHT:
                     //top level - level 3
                     //code to drop off at highest level
-                    while(robot.storageunit.getCurrentPosition() > -5175){
+                    while(robot.storageunit.getCurrentPosition() > -4768){//originally 5215
                         robot.frontleft.setPower(0);
                         robot.frontright.setPower(0);
                         robot.backleft.setPower(0);
