@@ -58,9 +58,9 @@ public class MecanumDriveJiashuTwoPlayer extends LinearOpMode {
             robot.frontright.setPower(frontRightPower);
             robot.backright.setPower(backRightPower);
 
-            /*
-            //controlling intake, elevator lift
 
+            //controlling intake, elevator lift
+            /*
             if(gamepad1.a == true){ //a to intake cargo on the ramp
                 robot.intake.setPower(1);
             }
@@ -71,12 +71,18 @@ public class MecanumDriveJiashuTwoPlayer extends LinearOpMode {
                 robot.intake.setPower(0);
             }
             */
+
             //toggling intake
+            /*if(gamepad1.a){
+                robot.intake.setPower(1);
+            }
+
+             */
             if(gamepad1.a){
                 if(aPressed == false){
                     aPressed = true;
                     isIntakeSpinning = !isIntakeSpinning;
-                    if(isIntakeSpinning == false){
+                    if(isIntakeSpinning == true){
                         robot.intake.setPower(1);
                     }
                     else{
@@ -84,16 +90,30 @@ public class MecanumDriveJiashuTwoPlayer extends LinearOpMode {
                     }
                 }
             }
+            else if(gamepad1.x == true && isIntakeSpinning == false){
+                robot.intake.setPower(-1);
+                aPressed = false;
+            }
+            else if(gamepad1.x == false && isIntakeSpinning == false){
+                robot.intake.setPower(0);
+                aPressed = false;
+            }
             else{
                 aPressed = false;
             }
 
-            if(gamepad1.x == true){ //x to spit out cargo from the ramp
+            telemetry.addData("isIntakeSpinning",isIntakeSpinning);
+            telemetry.addData("aPressed",aPressed);
+            telemetry.update();
+
+            /*if(gamepad1.x == true){ //x to spit out cargo from the ramp
                 robot.intake.setPower(-1);
             }
             else{
                 robot.intake.setPower(0);
             }
+            */
+
 
             //Servo Toggle
             //0 is open trapdoor
@@ -112,6 +132,7 @@ public class MecanumDriveJiashuTwoPlayer extends LinearOpMode {
             else {
                 yPressed = false;
             }
+
             if(gamepad1.back){
                 robot.storageunit.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 robot.storageunit.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
