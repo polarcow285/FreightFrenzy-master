@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Vision.ShippingElementDetector;
@@ -69,7 +70,8 @@ public class Meet3 extends LinearOpMode{
             robot.frontright.setPower(1);
             robot.backleft.setPower(1);
             robot.backright.setPower(-1);
-            sleep(300); //test
+            sleep(300);
+            //test
 
             robot.frontleft.setPower(0);
             robot.frontright.setPower(0);
@@ -79,11 +81,7 @@ public class Meet3 extends LinearOpMode{
 
             //driving forward
 
-            robot.frontleft.setPower(1);
-            robot.frontright.setPower(1);
-            robot.backleft.setPower(1);
-            robot.backright.setPower(1);
-            sleep(700);
+            moveForward(7000);
 
             robot.frontleft.setPower(0);
             robot.frontright.setPower(0);
@@ -105,6 +103,7 @@ public class Meet3 extends LinearOpMode{
             sleep(200);
 
             //driving forward to reach the storage unit
+            moveForward(500);
             robot.frontleft.setPower(1);
             robot.frontright.setPower(1);
             robot.backleft.setPower(1);
@@ -121,12 +120,13 @@ public class Meet3 extends LinearOpMode{
                 case LEFT: case UNKNOWN:
                     //bottom level - level 1
                     //extend lift to the bottom level
-                    while(robot.storageunit.getCurrentPosition() > -500){ //TEST
-                        robot.frontleft.setPower(0);
-                        robot.frontright.setPower(0);
-                        robot.backleft.setPower(0);
-                        robot.backright.setPower(0);
-                        robot.storageunit.setPower(-1);
+                    robot.storageunit.setTargetPosition(-500);
+                    robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.storageunit.setPower(1);
+                    while(robot.storageunit.isBusy()) {
+                        // Let the drive team see that we're waiting on the motor
+                        telemetry.addData("Status", robot.storageunit.getCurrentPosition());
+                        telemetry.update();
                     }
                     robot.storageunit.setPower(0);
 
@@ -431,4 +431,26 @@ public class Meet3 extends LinearOpMode{
 
 
     }
+    void moveForward(int milliseconds){
+        robot.frontleft.setPower(1);
+        robot.frontright.setPower(1);
+        robot.backleft.setPower(1);
+        robot.backright.setPower(1);
+        sleep(milliseconds);
+    }
+    void strafeRight(int milliseconds){
+        robot.frontleft.setPower(-1);
+        robot.frontright.setPower(1);
+        robot.backleft.setPower(1);
+        robot.backright.setPower(-1);
+        sleep(milliseconds);
+    }
+    void strafeLeft(int milliseconds){
+
+    }
+    void turnRight(int milliseconds){
+
+    }
+
+
 }

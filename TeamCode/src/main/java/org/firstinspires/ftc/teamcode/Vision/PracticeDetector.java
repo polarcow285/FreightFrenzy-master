@@ -12,6 +12,7 @@ public class PracticeDetector extends OpenCvPipeline {
     Telemetry telemetry;
 
     Mat mat = new Mat();
+    Mat destMat = new Mat();
 
     static final Rect rightROI = new Rect(
             new Point( 180, 0),
@@ -30,10 +31,11 @@ public class PracticeDetector extends OpenCvPipeline {
 
     @Override
     public Mat processFrame(Mat input) {
-        Imgproc.cvtColor(input, mat, Imgproc.COLOR_RGB2HSV);
+        mat.convertTo(mat, -1, 50, 100);
+        //Imgproc.cvtColor(input, mat, Imgproc.COLOR_RGB2HSV);
 
         //define HSV range to identify the color yellow
-        Scalar lowHSV = new Scalar (15, 100, 100);
+        /*Scalar lowHSV = new Scalar (10, 90, 90);
         Scalar highHSV = new Scalar(30, 255, 255);
 
         //applies a threshold (everything that is yellow will be white, everything else will be black)
@@ -60,7 +62,7 @@ public class PracticeDetector extends OpenCvPipeline {
         telemetry.addData("right percentage", Math.round(rightPercentage * 100) + "%");
 
         telemetry.update();
-
+            */
         return mat;
     }
 }

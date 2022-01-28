@@ -49,7 +49,7 @@ public class ShippingElementDetector extends OpenCvPipeline {
             Imgproc.cvtColor(input, mat, Imgproc.COLOR_RGB2HSV);
 
             //define HSV range to identify the color yellow
-            Scalar lowHSV = new Scalar (15, 100, 100);
+            Scalar lowHSV = new Scalar (10, 90, 90);
             Scalar highHSV = new Scalar(30, 255, 255);
 
             //applies a threshold (everything that is yellow will be white, everything else will be black)
@@ -63,21 +63,22 @@ public class ShippingElementDetector extends OpenCvPipeline {
             Mat left = mat.submat(leftROI);
             Mat middle = mat.submat(middleROI);
             Mat right = mat.submat(rightROI);
-
+            return mat;
 
             //calculate what percentage of the ROI became white
             //(add all the pixels together, divide by its area, divide by 255)
-            double leftPercentage = Core.sumElems(left).val[0] / leftROI.area() / 255;
-            double middlePercentage = Core.sumElems(middle).val[0] / middleROI.area() / 255;
-            double rightPercentage = Core.sumElems(right).val[0] / rightROI.area() / 255;
+            //double leftPercentage = Core.sumElems(left).val[0] / leftROI.area() / 255;
+            //double middlePercentage = Core.sumElems(middle).val[0] / middleROI.area() / 255;
+            //double rightPercentage = Core.sumElems(right).val[0] / rightROI.area() / 255;
 
             //deallocates the Matrix data from the memory
 
-            left.release();
-            middle.release();
-            right.release();
 
-            if(leftPercentage > middlePercentage && leftPercentage > rightPercentage){
+            //left.release();
+            //middle.release();
+            //right.release();
+
+            /*if(leftPercentage > middlePercentage && leftPercentage > rightPercentage){
                 elementLocation = ShippingElementLocation.LEFT;
             }
             else if(middlePercentage > leftPercentage && middlePercentage > rightPercentage){
@@ -94,8 +95,8 @@ public class ShippingElementDetector extends OpenCvPipeline {
             telemetry.addData("right percentage", Math.round(rightPercentage * 100) + "%");
 
             telemetry.update();
+               */
 
-            return mat;
 
 
         }

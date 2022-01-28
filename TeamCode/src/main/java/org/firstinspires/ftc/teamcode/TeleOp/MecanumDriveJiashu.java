@@ -83,8 +83,8 @@ public class MecanumDriveJiashu extends LinearOpMode {
             if(gamepad1.a){
                 if(aPressed == false){
                     aPressed = true;
-                    isIntakeSpinning = true;
-                    if(isIntakeSpinning == false){
+                    isIntakeSpinning = !isIntakeSpinning;
+                    if(isIntakeSpinning == true){
                         robot.intake.setPower(1);
                     }
                     else{
@@ -92,15 +92,16 @@ public class MecanumDriveJiashu extends LinearOpMode {
                     }
                 }
             }
-            else{
+            else if(gamepad1.x == true && isIntakeSpinning == false){
+                robot.intake.setPower(-1);
                 aPressed = false;
             }
-
-            if(gamepad1.x == true){ //x to spit out cargo from the ramp
-                robot.intake.setPower(-1);
+            else if(gamepad1.x == false && isIntakeSpinning == false){
+                robot.intake.setPower(0);
+                aPressed = false;
             }
             else{
-                robot.intake.setPower(0);
+                aPressed = false;
             }
 
             //Servo Toggle
