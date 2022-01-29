@@ -59,6 +59,7 @@ public class Meet3 extends LinearOpMode{
         }
 
         waitForStart();
+
         //get the position of the shipping element
         ShippingElementDetector.ShippingElementLocation elementLocation = detector.getShippingElementLocation();
         telemetry.addData("element location:", elementLocation);
@@ -80,8 +81,12 @@ public class Meet3 extends LinearOpMode{
             sleep(200);
 
             //driving forward
-
-            moveForward(7000);
+            robot.frontleft.setPower(1);
+            robot.frontright.setPower(1);
+            robot.backleft.setPower(1);
+            robot.backright.setPower(1);
+            //moveForward(700);
+            sleep(700);
 
             robot.frontleft.setPower(0);
             robot.frontright.setPower(0);
@@ -94,21 +99,7 @@ public class Meet3 extends LinearOpMode{
             robot.frontright.setPower(-1);
             robot.backleft.setPower(1);
             robot.backright.setPower(-1);
-            sleep(1150);
-
-            robot.frontleft.setPower(0);
-            robot.frontright.setPower(0);
-            robot.backleft.setPower(0);
-            robot.backright.setPower(0);
-            sleep(200);
-
-            //driving forward to reach the storage unit
-            moveForward(500);
-            robot.frontleft.setPower(1);
-            robot.frontright.setPower(1);
-            robot.backleft.setPower(1);
-            robot.backright.setPower(1);
-            sleep(500);
+            sleep(1200);
 
             robot.frontleft.setPower(0);
             robot.frontright.setPower(0);
@@ -119,8 +110,22 @@ public class Meet3 extends LinearOpMode{
             switch (elementLocation) {
                 case LEFT: case UNKNOWN:
                     //bottom level - level 1
+
+                    //driving forward to reach the shipping hub
+                    robot.frontleft.setPower(1);
+                    robot.frontright.setPower(1);
+                    robot.backleft.setPower(1);
+                    robot.backright.setPower(1);
+                    sleep(500);
+
+                    robot.frontleft.setPower(0);
+                    robot.frontright.setPower(0);
+                    robot.backleft.setPower(0);
+                    robot.backright.setPower(0);
+                    sleep(200);
+
                     //extend lift to the bottom level
-                    robot.storageunit.setTargetPosition(-500);
+                    robot.storageunit.setTargetPosition(-700);
                     robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.storageunit.setPower(1);
                     while(robot.storageunit.isBusy()) {
@@ -137,23 +142,37 @@ public class Meet3 extends LinearOpMode{
                     robot.trapdoor.setPosition(1);
 
                     //retract lift
-                    while(robot.storageunit.getCurrentPosition() < 0){
-                        robot.frontleft.setPower(0);
-                        robot.frontright.setPower(0);
-                        robot.backleft.setPower(0);
-                        robot.backright.setPower(0);
-                        robot.storageunit.setPower(1);
+                    robot.storageunit.setTargetPosition(0);
+                    robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.storageunit.setPower(1);
+                    while(robot.storageunit.isBusy()) {
+                        // Let the drive team see that we're waiting on the motor
+                        telemetry.addData("Status", robot.storageunit.getCurrentPosition());
+                        telemetry.update();
                     }
                     robot.storageunit.setPower(0);
                     break;
                 case MIDDLE:
                     //middle level - level 2
-                    while(robot.storageunit.getCurrentPosition() > -800){ //TEST
-                        robot.frontleft.setPower(0);
-                        robot.frontright.setPower(0);
-                        robot.backleft.setPower(0);
-                        robot.backright.setPower(0);
-                        robot.storageunit.setPower(-1);
+                    robot.frontleft.setPower(1);
+                    robot.frontright.setPower(1);
+                    robot.backleft.setPower(1);
+                    robot.backright.setPower(1);
+                    sleep(250);
+                    robot.frontleft.setPower(0);
+                    robot.frontright.setPower(0);
+                    robot.backleft.setPower(0);
+                    robot.backright.setPower(0);
+
+
+                    //extend lift to the middle level
+                    robot.storageunit.setTargetPosition(-2700);
+                    robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.storageunit.setPower(1);
+                    while(robot.storageunit.isBusy()) {
+                        // Let the drive team see that we're waiting on the motor
+                        telemetry.addData("Status", robot.storageunit.getCurrentPosition());
+                        telemetry.update();
                     }
                     robot.storageunit.setPower(0);
 
@@ -164,18 +183,61 @@ public class Meet3 extends LinearOpMode{
                     robot.trapdoor.setPosition(1);
 
                     //retract lift
-                    while(robot.storageunit.getCurrentPosition() < 0){
-                        robot.frontleft.setPower(0);
-                        robot.frontright.setPower(0);
-                        robot.backleft.setPower(0);
-                        robot.backright.setPower(0);
-                        robot.storageunit.setPower(1);
+                    robot.storageunit.setTargetPosition(0);
+                    robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.storageunit.setPower(1);
+                    while(robot.storageunit.isBusy()) {
+                        // Let the drive team see that we're waiting on the motor
+                        telemetry.addData("Status", robot.storageunit.getCurrentPosition());
+                        telemetry.update();
                     }
                     robot.storageunit.setPower(0);
                     break;
                 case RIGHT:
                     //top level - level 3
+
+                    //driving forward to reach the shipping hub
+                    robot.frontleft.setPower(1);
+                    robot.frontright.setPower(1);
+                    robot.backleft.setPower(1);
+                    robot.backright.setPower(1);
+                    sleep(70);
+
+                    robot.frontleft.setPower(0);
+                    robot.frontright.setPower(0);
+                    robot.backleft.setPower(0);
+                    robot.backright.setPower(0);
+                    sleep(200);
+                    //extend lift to the top level
+                    robot.storageunit.setTargetPosition(-4758);
+                    robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.storageunit.setPower(1);
+                    while(robot.storageunit.isBusy()) {
+                        // Let the drive team see that we're waiting on the motor
+                        telemetry.addData("Status", robot.storageunit.getCurrentPosition());
+                        telemetry.update();
+                    }
+                    robot.storageunit.setPower(0);
+
+                    //opening trapdoor
+                    robot.trapdoor.setPosition(0);
+                    sleep(3000);
+                    //close trapdoor
+                    robot.trapdoor.setPosition(1);
+
+                    //retract lift
+                    robot.storageunit.setTargetPosition(0);
+                    robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.storageunit.setPower(1);
+                    while(robot.storageunit.isBusy()) {
+                        // Let the drive team see that we're waiting on the motor
+                        telemetry.addData("Status", robot.storageunit.getCurrentPosition());
+                        telemetry.update();
+                    }
+                    robot.storageunit.setPower(0);
                     break;
+
+
             }
 
             //turning to face warehouse (trapdoor is facing warehouse)
@@ -229,6 +291,7 @@ public class Meet3 extends LinearOpMode{
             robot.frontright.setPower(0);
             robot.backleft.setPower(0);
             robot.backright.setPower(0);
+
         }
         else if (p==Path.Blue){
             //robot strafes away from the wall, left
@@ -262,20 +325,7 @@ public class Meet3 extends LinearOpMode{
             robot.frontright.setPower(1);
             robot.backleft.setPower(-1);
             robot.backright.setPower(1);
-            sleep(1100);
-
-            robot.frontleft.setPower(0);
-            robot.frontright.setPower(0);
-            robot.backleft.setPower(0);
-            robot.backright.setPower(0);
-            sleep(200);
-
-            //driving forward to reach the storage unit
-            robot.frontleft.setPower(1);
-            robot.frontright.setPower(1);
-            robot.backleft.setPower(1);
-            robot.backright.setPower(1);
-            sleep(250);
+            sleep(1200);
 
             robot.frontleft.setPower(0);
             robot.frontright.setPower(0);
@@ -286,60 +336,71 @@ public class Meet3 extends LinearOpMode{
             switch (elementLocation) {
                 case LEFT: case UNKNOWN:
                     //bottom level - level 1
-                    /*
-                    //extend the lift at the lowest level
-                    while(robot.storageunit.getCurrentPosition() > -500){//TEST
-                        robot.frontleft.setPower(0);
-                        robot.frontright.setPower(0);
-                        robot.backleft.setPower(0);
-                        robot.backright.setPower(0);
-                        robot.storageunit.setPower(1);
-                    }
-                    robot.storageunit.setPower(0);
-
-                     */
-                    //driving forward to reach the storage unit
+                    //driving forward to reach the shipping hub
                     robot.frontleft.setPower(1);
                     robot.frontright.setPower(1);
                     robot.backleft.setPower(1);
                     robot.backright.setPower(1);
-                    sleep(250);
+                    sleep(500);
 
                     robot.frontleft.setPower(0);
                     robot.frontright.setPower(0);
                     robot.backleft.setPower(0);
                     robot.backright.setPower(0);
+                    sleep(200);
+
+                    //extend lift to the bottom level
+                    robot.storageunit.setTargetPosition(-700);
+                    robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.storageunit.setPower(1);
+                    while(robot.storageunit.isBusy()) {
+                        // Let the drive team see that we're waiting on the motor
+                        telemetry.addData("Status", robot.storageunit.getCurrentPosition());
+                        telemetry.update();
+                    }
+                    robot.storageunit.setPower(0);
 
                     //opening trapdoor
                     robot.trapdoor.setPosition(0);
                     sleep(3000);
-                    //close trapdoor
+                    //closing trapdoor
                     robot.trapdoor.setPosition(1);
 
-                    /*
                     //retract lift
-                    while(robot.storageunit.getCurrentPosition() < 0){
-                        robot.frontleft.setPower(0);
-                        robot.frontright.setPower(0);
-                        robot.backleft.setPower(0);
-                        robot.backright.setPower(0);
-                        robot.storageunit.setPower(1);
+                    robot.storageunit.setTargetPosition(0);
+                    robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.storageunit.setPower(1);
+                    while(robot.storageunit.isBusy()) {
+                        // Let the drive team see that we're waiting on the motor
+                        telemetry.addData("Status", robot.storageunit.getCurrentPosition());
+                        telemetry.update();
                     }
                     robot.storageunit.setPower(0);
-
-                     */
-
                     break;
                 case MIDDLE:
                     telemetry.addData("middle", "yay");
                     //middle level - level 2
                     //code to drop off at middle level
-                    while(robot.storageunit.getCurrentPosition() > -800){ //TEST
-                        robot.frontleft.setPower(0);
-                        robot.frontright.setPower(0);
-                        robot.backleft.setPower(0);
-                        robot.backright.setPower(0);
-                        robot.storageunit.setPower(1);
+                    //middle level - level 2
+                    robot.frontleft.setPower(1);
+                    robot.frontright.setPower(1);
+                    robot.backleft.setPower(1);
+                    robot.backright.setPower(1);
+                    sleep(250);
+                    robot.frontleft.setPower(0);
+                    robot.frontright.setPower(0);
+                    robot.backleft.setPower(0);
+                    robot.backright.setPower(0);
+
+
+                    //extend lift to the middle level
+                    robot.storageunit.setTargetPosition(-2700);
+                    robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.storageunit.setPower(1);
+                    while(robot.storageunit.isBusy()) {
+                        // Let the drive team see that we're waiting on the motor
+                        telemetry.addData("Status", robot.storageunit.getCurrentPosition());
+                        telemetry.update();
                     }
                     robot.storageunit.setPower(0);
 
@@ -350,18 +411,58 @@ public class Meet3 extends LinearOpMode{
                     robot.trapdoor.setPosition(1);
 
                     //retract lift
-                    while(robot.storageunit.getCurrentPosition() < 0){
-                        robot.frontleft.setPower(0);
-                        robot.frontright.setPower(0);
-                        robot.backleft.setPower(0);
-                        robot.backright.setPower(0);
-                        robot.storageunit.setPower(1);
+                    robot.storageunit.setTargetPosition(0);
+                    robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.storageunit.setPower(1);
+                    while(robot.storageunit.isBusy()) {
+                        // Let the drive team see that we're waiting on the motor
+                        telemetry.addData("Status", robot.storageunit.getCurrentPosition());
+                        telemetry.update();
+                    }
+                    robot.storageunit.setPower(0);
+                    break;
+
+                case RIGHT:
+                    //top level - level 3
+                    //driving forward to reach the shipping hub
+                    robot.frontleft.setPower(1);
+                    robot.frontright.setPower(1);
+                    robot.backleft.setPower(1);
+                    robot.backright.setPower(1);
+                    sleep(70);
+
+                    robot.frontleft.setPower(0);
+                    robot.frontright.setPower(0);
+                    robot.backleft.setPower(0);
+                    robot.backright.setPower(0);
+                    sleep(200);
+                    //extend lift to the top level
+                    robot.storageunit.setTargetPosition(-4758);
+                    robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.storageunit.setPower(1);
+                    while(robot.storageunit.isBusy()) {
+                        // Let the drive team see that we're waiting on the motor
+                        telemetry.addData("Status", robot.storageunit.getCurrentPosition());
+                        telemetry.update();
                     }
                     robot.storageunit.setPower(0);
 
-                    break;
-                case RIGHT:
-                    //top level - level 3
+                    //opening trapdoor
+                    robot.trapdoor.setPosition(0);
+                    sleep(3000);
+                    //close trapdoor
+                    robot.trapdoor.setPosition(1);
+
+                    //retract lift
+                    robot.storageunit.setTargetPosition(0);
+                    robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.storageunit.setPower(1);
+                    while(robot.storageunit.isBusy()) {
+                        // Let the drive team see that we're waiting on the motor
+                        telemetry.addData("Status", robot.storageunit.getCurrentPosition());
+                        telemetry.update();
+                    }
+                    robot.storageunit.setPower(0);
                     break;
             }
 
@@ -429,26 +530,6 @@ public class Meet3 extends LinearOpMode{
 
 
 
-
-    }
-    void moveForward(int milliseconds){
-        robot.frontleft.setPower(1);
-        robot.frontright.setPower(1);
-        robot.backleft.setPower(1);
-        robot.backright.setPower(1);
-        sleep(milliseconds);
-    }
-    void strafeRight(int milliseconds){
-        robot.frontleft.setPower(-1);
-        robot.frontright.setPower(1);
-        robot.backleft.setPower(1);
-        robot.backright.setPower(-1);
-        sleep(milliseconds);
-    }
-    void strafeLeft(int milliseconds){
-
-    }
-    void turnRight(int milliseconds){
 
     }
 

@@ -3,6 +3,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 
@@ -16,6 +17,8 @@ public class ProjectOdometryTest extends Project{
     public DcMotor frontleft = null;
     public DcMotor backright = null;
     public DcMotor backleft = null;
+
+    public DigitalChannel slideSwitch = null;
 
     public DcMotor intake = null;
     //public DcMotor carousel = null;
@@ -42,6 +45,8 @@ public class ProjectOdometryTest extends Project{
         storageunit = hwMap.dcMotor.get("storageunit"); //port e2
 
         trapdoor = hwMap.servo.get("trapdoor"); //port e0
+
+        slideSwitch = hwMap.digitalChannel.get("switch");
 
         //Setup Motor directions and Encoder settings
         frontright.setDirection(DcMotor.Direction.FORWARD);

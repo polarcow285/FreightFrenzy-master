@@ -62,6 +62,7 @@ public class MecanumDriveJiashu extends LinearOpMode {
             telemetry.addData("frontRightPower", frontRightPower);
             telemetry.addData("backRightPower", backRightPower);
             telemetry.addData("backLeftPower", backLeftPower);
+            telemetry.addData("Switch Value:", robot.slideSwitch.getState());
             telemetry.update();
 
 
@@ -129,7 +130,7 @@ public class MecanumDriveJiashu extends LinearOpMode {
             //-1280 = able to close
 
             //extend lift until reaches its limit (encoder count -5215)
-            if(gamepad1.right_bumper && robot.storageunit.getCurrentPosition() > -5215){
+            if(gamepad1.right_bumper && robot.storageunit.getCurrentPosition() > -5125){
                 //extend lift
                 robot.storageunit.setPower(-1);
             }

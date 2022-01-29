@@ -140,7 +140,7 @@ public class MecanumDriveJiashuTwoPlayer extends LinearOpMode {
             //-1280 = able to close
 
             //extend lift until reaches its limit (encoder count -5215)
-            if(gamepad2.right_bumper && robot.storageunit.getCurrentPosition() > -5215){
+            if(gamepad2.right_bumper && robot.storageunit.getCurrentPosition() > -5125){
                 robot.storageunit.setPower(-1);
             }
             //retract lift when the current position is less than 0 (being extended)
