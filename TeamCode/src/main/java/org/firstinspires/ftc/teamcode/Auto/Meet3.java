@@ -13,7 +13,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
 import org.firstinspires.ftc.teamcode.Projects.ProjectOdometryTest;
 
-@Autonomous(name = "Meet3")
+@Autonomous(name = "AutoShippingElement")
 public class Meet3 extends LinearOpMode{
     public ProjectOdometryTest robot = new ProjectOdometryTest();
     OpenCvWebcam webcam;
@@ -66,6 +66,7 @@ public class Meet3 extends LinearOpMode{
         telemetry.update();
 
         if(p == Path.Red){
+            //RED SIDE
             //strafing right
             robot.frontleft.setPower(-1);
             robot.frontright.setPower(1);
@@ -85,8 +86,7 @@ public class Meet3 extends LinearOpMode{
             robot.frontright.setPower(1);
             robot.backleft.setPower(1);
             robot.backright.setPower(1);
-            //moveForward(700);
-            sleep(700);
+            sleep(680);
 
             robot.frontleft.setPower(0);
             robot.frontright.setPower(0);
@@ -99,7 +99,7 @@ public class Meet3 extends LinearOpMode{
             robot.frontright.setPower(-1);
             robot.backleft.setPower(1);
             robot.backright.setPower(-1);
-            sleep(1200);
+            sleep(1100);
 
             robot.frontleft.setPower(0);
             robot.frontright.setPower(0);
@@ -109,14 +109,14 @@ public class Meet3 extends LinearOpMode{
 
             switch (elementLocation) {
                 case LEFT: case UNKNOWN:
-                    //bottom level - level 1
+                    //bottom level - level 1 - RED
 
-                    //driving forward to reach the shipping hub
+                    //driving forward to reach the shipping hub RED
                     robot.frontleft.setPower(1);
                     robot.frontright.setPower(1);
                     robot.backleft.setPower(1);
                     robot.backright.setPower(1);
-                    sleep(500);
+                    sleep(530);
 
                     robot.frontleft.setPower(0);
                     robot.frontright.setPower(0);
@@ -124,8 +124,8 @@ public class Meet3 extends LinearOpMode{
                     robot.backright.setPower(0);
                     sleep(200);
 
-                    //extend lift to the bottom level
-                    robot.storageunit.setTargetPosition(-700);
+                    //extend lift to the bottom level RED
+                    robot.storageunit.setTargetPosition(-750);
                     robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.storageunit.setPower(1);
                     while(robot.storageunit.isBusy()) {
@@ -151,22 +151,35 @@ public class Meet3 extends LinearOpMode{
                         telemetry.update();
                     }
                     robot.storageunit.setPower(0);
+                    //move back a little so that we don't bump the shipping hub
+                    //while turning
+                    robot.frontleft.setPower(-1);
+                    robot.frontright.setPower(-1);
+                    robot.backleft.setPower(-1);
+                    robot.backright.setPower(-1);
+                    sleep(300);
+
+                    robot.frontleft.setPower(0);
+                    robot.frontright.setPower(0);
+                    robot.backleft.setPower(0);
+                    robot.backright.setPower(0);
+                    sleep(200);
                     break;
                 case MIDDLE:
-                    //middle level - level 2
+                    //middle level - level 2 RED
                     robot.frontleft.setPower(1);
                     robot.frontright.setPower(1);
                     robot.backleft.setPower(1);
                     robot.backright.setPower(1);
-                    sleep(250);
+                    sleep(300);
                     robot.frontleft.setPower(0);
                     robot.frontright.setPower(0);
                     robot.backleft.setPower(0);
                     robot.backright.setPower(0);
 
 
-                    //extend lift to the middle level
-                    robot.storageunit.setTargetPosition(-2700);
+                    //extend lift to the middle level RED
+                    robot.storageunit.setTargetPosition(-3100);
                     robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.storageunit.setPower(1);
                     while(robot.storageunit.isBusy()) {
@@ -194,21 +207,22 @@ public class Meet3 extends LinearOpMode{
                     robot.storageunit.setPower(0);
                     break;
                 case RIGHT:
-                    //top level - level 3
+                    //top level - level 3 RED
 
-                    //driving forward to reach the shipping hub
+                    //driving forward to reach the shipping hub RED
                     robot.frontleft.setPower(1);
                     robot.frontright.setPower(1);
                     robot.backleft.setPower(1);
                     robot.backright.setPower(1);
-                    sleep(70);
+                    sleep(170);
 
                     robot.frontleft.setPower(0);
                     robot.frontright.setPower(0);
                     robot.backleft.setPower(0);
                     robot.backright.setPower(0);
                     sleep(200);
-                    //extend lift to the top level
+
+                    //extend lift to the top level RED
                     robot.storageunit.setTargetPosition(-4758);
                     robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.storageunit.setPower(1);
@@ -240,7 +254,7 @@ public class Meet3 extends LinearOpMode{
 
             }
 
-            //turning to face warehouse (trapdoor is facing warehouse)
+            //turning to face warehouse (trapdoor is facing warehouse) RED
             robot.frontleft.setPower(1);
             robot.frontright.setPower(-1);
             robot.backleft.setPower(1);
@@ -294,11 +308,12 @@ public class Meet3 extends LinearOpMode{
 
         }
         else if (p==Path.Blue){
+            //BLUE SIDE
             //robot strafes away from the wall, left
-            robot.frontleft.setPower(1);
-            robot.frontright.setPower(-1);
-            robot.backleft.setPower(-1);
-            robot.backright.setPower(1);
+            robot.frontleft.setPower(-1);
+            robot.frontright.setPower(1);
+            robot.backleft.setPower(1);
+            robot.backright.setPower(-1);
             sleep(300);
 
             robot.frontleft.setPower(0);
@@ -308,11 +323,11 @@ public class Meet3 extends LinearOpMode{
             sleep(200);
 
             //robot driving forward
-            robot.frontleft.setPower(1);
-            robot.frontright.setPower(1);
-            robot.backleft.setPower(1);
-            robot.backright.setPower(1);
-            sleep(700);
+            robot.frontleft.setPower(-1);
+            robot.frontright.setPower(-1);
+            robot.backleft.setPower(-1);
+            robot.backright.setPower(-1);
+            sleep(680);
 
             robot.frontleft.setPower(0);
             robot.frontright.setPower(0);
@@ -321,11 +336,11 @@ public class Meet3 extends LinearOpMode{
             sleep(200);
 
             //turning so that trapdoor faces the shipping hub
-            robot.frontleft.setPower(-1);
-            robot.frontright.setPower(1);
-            robot.backleft.setPower(-1);
-            robot.backright.setPower(1);
-            sleep(1200);
+            robot.frontleft.setPower(1);
+            robot.frontright.setPower(-1);
+            robot.backleft.setPower(1);
+            robot.backright.setPower(-1);
+            sleep(1100);
 
             robot.frontleft.setPower(0);
             robot.frontright.setPower(0);
@@ -335,13 +350,14 @@ public class Meet3 extends LinearOpMode{
 
             switch (elementLocation) {
                 case LEFT: case UNKNOWN:
-                    //bottom level - level 1
-                    //driving forward to reach the shipping hub
+                    telemetry.addData("beginning", "yay");
+                    //bottom level - level 1 BLUE
+                    //driving forward to reach the shipping hub BLUE
                     robot.frontleft.setPower(1);
                     robot.frontright.setPower(1);
                     robot.backleft.setPower(1);
                     robot.backright.setPower(1);
-                    sleep(500);
+                    sleep(530);
 
                     robot.frontleft.setPower(0);
                     robot.frontright.setPower(0);
@@ -349,8 +365,8 @@ public class Meet3 extends LinearOpMode{
                     robot.backright.setPower(0);
                     sleep(200);
 
-                    //extend lift to the bottom level
-                    robot.storageunit.setTargetPosition(-700);
+                    //extend lift to the bottom level BLUE
+                    robot.storageunit.setTargetPosition(-750);
                     robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.storageunit.setPower(1);
                     while(robot.storageunit.isBusy()) {
@@ -376,25 +392,40 @@ public class Meet3 extends LinearOpMode{
                         telemetry.update();
                     }
                     robot.storageunit.setPower(0);
+
+                    //move back a little so that we don't bump the shipping hub
+                    //while turning
+                    robot.frontleft.setPower(-1);
+                    robot.frontright.setPower(-1);
+                    robot.backleft.setPower(-1);
+                    robot.backright.setPower(-1);
+                    sleep(300);
+
+                    robot.frontleft.setPower(0);
+                    robot.frontright.setPower(0);
+                    robot.backleft.setPower(0);
+                    robot.backright.setPower(0);
+                    sleep(200);
+
+
                     break;
                 case MIDDLE:
                     telemetry.addData("middle", "yay");
-                    //middle level - level 2
-                    //code to drop off at middle level
-                    //middle level - level 2
+                    //middle level - level 2 BLUE
+                    //code to drop off at middle level BLUE
+
                     robot.frontleft.setPower(1);
                     robot.frontright.setPower(1);
                     robot.backleft.setPower(1);
                     robot.backright.setPower(1);
-                    sleep(250);
+                    sleep(300);
                     robot.frontleft.setPower(0);
                     robot.frontright.setPower(0);
                     robot.backleft.setPower(0);
                     robot.backright.setPower(0);
 
-
                     //extend lift to the middle level
-                    robot.storageunit.setTargetPosition(-2700);
+                    robot.storageunit.setTargetPosition(-3100);
                     robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.storageunit.setPower(1);
                     while(robot.storageunit.isBusy()) {
@@ -423,20 +454,20 @@ public class Meet3 extends LinearOpMode{
                     break;
 
                 case RIGHT:
-                    //top level - level 3
-                    //driving forward to reach the shipping hub
+                    //top level - level 3 - BLUE
+                    //driving forward to reach the shipping hub BLUE
                     robot.frontleft.setPower(1);
                     robot.frontright.setPower(1);
                     robot.backleft.setPower(1);
                     robot.backright.setPower(1);
-                    sleep(70);
+                    sleep(175);
 
                     robot.frontleft.setPower(0);
                     robot.frontright.setPower(0);
                     robot.backleft.setPower(0);
                     robot.backright.setPower(0);
                     sleep(200);
-                    //extend lift to the top level
+                    //extend lift to the top level BLUE
                     robot.storageunit.setTargetPosition(-4758);
                     robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.storageunit.setPower(1);
@@ -466,7 +497,7 @@ public class Meet3 extends LinearOpMode{
                     break;
             }
 
-            //turning so that trapdoor is facing warehouse (blue side) (test)
+            //turning to face the warehouse (trapdoor is facing warehouse) BLUE
             robot.frontleft.setPower(-1);
             robot.frontright.setPower(1);
             robot.backleft.setPower(-1);
