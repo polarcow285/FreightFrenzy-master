@@ -52,10 +52,10 @@ public class ParkingAuto extends LinearOpMode {
 
 
 
-        robot.frontleft.setPower(red ?  1f : 1f);
-        robot.backleft.setPower(red ?  1f : 1f);
-        robot.frontright.setPower(red ?  1f : 1f);
-        robot.backright.setPower(red ? 1f : 1f);
+        robot.frontleft.setPower(red ?  -1f : -1f);
+        robot.backleft.setPower(red ?  -1f : -1f);
+        robot.frontright.setPower(red ?  -1f : -1f);
+        robot.backright.setPower(red ? -1f : -1f);
         sleep(700);
 
         robot.frontright.setPower(0);

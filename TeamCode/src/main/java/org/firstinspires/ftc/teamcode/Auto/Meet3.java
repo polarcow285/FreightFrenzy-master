@@ -99,7 +99,7 @@ public class Meet3 extends LinearOpMode{
             robot.frontright.setPower(-1);
             robot.backleft.setPower(1);
             robot.backright.setPower(-1);
-            sleep(1100);
+            sleep(1150);
 
             robot.frontleft.setPower(0);
             robot.frontright.setPower(0);
@@ -116,7 +116,7 @@ public class Meet3 extends LinearOpMode{
                     robot.frontright.setPower(1);
                     robot.backleft.setPower(1);
                     robot.backright.setPower(1);
-                    sleep(530);
+                    sleep(545);
 
                     robot.frontleft.setPower(0);
                     robot.frontright.setPower(0);
@@ -314,7 +314,7 @@ public class Meet3 extends LinearOpMode{
             robot.frontright.setPower(1);
             robot.backleft.setPower(1);
             robot.backright.setPower(-1);
-            sleep(300);
+            sleep(350);
 
             robot.frontleft.setPower(0);
             robot.frontright.setPower(0);
@@ -340,7 +340,7 @@ public class Meet3 extends LinearOpMode{
             robot.frontright.setPower(-1);
             robot.backleft.setPower(1);
             robot.backright.setPower(-1);
-            sleep(1100);
+            sleep(1175);
 
             robot.frontleft.setPower(0);
             robot.frontright.setPower(0);
@@ -357,7 +357,7 @@ public class Meet3 extends LinearOpMode{
                     robot.frontright.setPower(1);
                     robot.backleft.setPower(1);
                     robot.backright.setPower(1);
-                    sleep(530);
+                    sleep(540);
 
                     robot.frontleft.setPower(0);
                     robot.frontright.setPower(0);
@@ -366,7 +366,7 @@ public class Meet3 extends LinearOpMode{
                     sleep(200);
 
                     //extend lift to the bottom level BLUE
-                    robot.storageunit.setTargetPosition(-750);
+                    robot.storageunit.setTargetPosition(-1000);
                     robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.storageunit.setPower(1);
                     while(robot.storageunit.isBusy()) {
@@ -418,7 +418,7 @@ public class Meet3 extends LinearOpMode{
                     robot.frontright.setPower(1);
                     robot.backleft.setPower(1);
                     robot.backright.setPower(1);
-                    sleep(300);
+                    sleep(400);
                     robot.frontleft.setPower(0);
                     robot.frontright.setPower(0);
                     robot.backleft.setPower(0);
@@ -528,7 +528,7 @@ public class Meet3 extends LinearOpMode{
             robot.frontright.setPower(1);
             robot.backleft.setPower(1);
             robot.backright.setPower(1);
-            sleep(1750);
+            sleep(1591);
 
             robot.frontleft.setPower(0);
             robot.frontright.setPower(0);
@@ -541,7 +541,7 @@ public class Meet3 extends LinearOpMode{
             robot.frontright.setPower(1);
             robot.backleft.setPower(1);
             robot.backright.setPower(-1);
-            sleep(300); //test
+            sleep(500); //test
 
             //stop
             robot.frontleft.setPower(0);
