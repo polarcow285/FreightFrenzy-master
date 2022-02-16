@@ -20,20 +20,23 @@ public class MeepMeepTesting {
                 // Option: Set theme. Default = ColorSchemeRedDark()
                 .setColorScheme(new ColorSchemeBlueDark())
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(new Pose2d(12, -60, 90))
-                                .splineTo(new Vector2d(-11.5, -43.2), 0)
+                        drive.trajectorySequenceBuilder(new Pose2d(11.6, 58.2, 180))
+                                .waitSeconds(1.5)
+                                .splineTo(new Vector2d(-12, 40), 180)
                                 .addDisplacementMarker(() -> {
                                     /* Everything in the marker callback should be commented out */
 
                                     // bot.shooter.shoot()
                                     // bot.wobbleArm.lower()
                                 })
-                                .splineTo(new Vector2d(52, -57.5), 0)
-                                .turn(Math.toRadians(90))
-                                .forward(45)
+                                .waitSeconds(3)
+                                .splineTo(new Vector2d(11.6, 58.2), 0)
+                                //.turn(Math.toRadians(90))
+                                .forward(30)
+                                .strafeRight(10)
                                 .build()
                 );
-        RoadRunnerBotEntity myFirstBot = new DefaultBotBuilder(meepMeep)
+        /*RoadRunnerBotEntity myFirstBot = new DefaultBotBuilder(meepMeep)
                 // We set this bot to be blue
                 .setColorScheme(new ColorSchemeRedDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
@@ -44,14 +47,14 @@ public class MeepMeepTesting {
                                 .splineTo(new Vector2d(52, 52), 0)
                                 .build()
                 );
-
+        */
         // Set field image
         meepMeep.setBackground(MeepMeep.Background.FIELD_FREIGHTFRENZY_ADI_DARK)
                 .setDarkMode(true)
                 // Background opacity from 0-1
                 .setBackgroundAlpha(0.95f)
                 .addEntity(myBot)
-                .addEntity(myFirstBot)
+                //.addEntity(myFirstBot)
                 .start();
     }
 }
