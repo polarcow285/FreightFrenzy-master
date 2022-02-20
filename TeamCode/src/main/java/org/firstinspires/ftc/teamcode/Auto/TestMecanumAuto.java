@@ -18,12 +18,32 @@ public class TestMecanumAuto extends LinearOpMode{
 
         waitForStart();
 
-        forwards(1,3000);
-        right(1,3000);
+
+//        forwards(0.5f, 1000);
+//        right(0.5f, 1000);
+//        diagonalRight(0.5f, 1000);
+
+//motor test
+//        robot.frontleft.setPower(1);
+//        sleep(1000);
+//        robot.frontleft.setPower(0);
+//
+//        robot.frontright.setPower(1);
+//        sleep(1000);
+//        robot.frontright.setPower(0);
+//
+//        robot.backleft.setPower(1);
+//        sleep(1000);
+//        robot.backleft.setPower(0);
+//
+//        robot.backright.setPower(1);
+//        sleep(1000);
+//        robot.backright.setPower(0);
+
 
     }
 
-    void forwards(int power, int time){
+    void forwards(float power, int time){
         robot.frontright.setPower(power);
         robot.frontleft.setPower(power);
         robot.backright.setPower(power);
@@ -35,7 +55,7 @@ public class TestMecanumAuto extends LinearOpMode{
         robot.backleft.setPower(0);
     }
 
-    void backwards(int power, int time){
+    void backwards(float power, int time){
         robot.frontright.setPower(-power);
         robot.frontleft.setPower(-power);
         robot.backright.setPower(-power);
@@ -49,7 +69,7 @@ public class TestMecanumAuto extends LinearOpMode{
 
 
 
-    void right(int power, int time){
+    void right(float power, int time){
         robot.frontright.setPower(-power);
         robot.frontleft.setPower(power);
         robot.backright.setPower(power);
@@ -61,7 +81,7 @@ public class TestMecanumAuto extends LinearOpMode{
         robot.backleft.setPower(0);
     }
 
-    void left(int power, int time){
+    void left(float power, int time){
         robot.frontright.setPower(power);
         robot.frontleft.setPower(-power);
         robot.backright.setPower(-power);
@@ -71,9 +91,17 @@ public class TestMecanumAuto extends LinearOpMode{
         robot.frontleft.setPower(0);
         robot.backright.setPower(0);
         robot.backleft.setPower(0);
+    }
+
+    void diagonalRight(float power, int time){
+        robot.frontleft.setPower(power);
+        robot.backright.setPower(power);
+        sleep(time);
+        robot.frontleft.setPower(0);
+        robot.backright.setPower(0);
+
     }
 
 }
-
 
 
