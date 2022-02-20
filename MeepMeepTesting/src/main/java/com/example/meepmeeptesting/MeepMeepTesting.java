@@ -36,25 +36,27 @@ public class MeepMeepTesting {
                                 .strafeRight(10)
                                 .build()
                 );
-        /*RoadRunnerBotEntity myFirstBot = new DefaultBotBuilder(meepMeep)
+        RoadRunnerBotEntity myFirstBot = new DefaultBotBuilder(meepMeep)
                 // We set this bot to be blue
                 .setColorScheme(new ColorSchemeRedDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(new Pose2d(0, 0, 0))
-                                .forward(30)
-                                .turn(Math.toRadians(90))
-                                .splineTo(new Vector2d(52, 52), 0)
+                        drive.trajectorySequenceBuilder(new Pose2d(11.6, -58.7, Math.toRadians(90)))
+                                .strafeLeft(23.4)
+                                .forward(19.7)
+                                .waitSeconds(3)
+                                .back(24.4)
+                                .strafeRight(67)
                                 .build()
                 );
-        */
+
         // Set field image
         meepMeep.setBackground(MeepMeep.Background.FIELD_FREIGHTFRENZY_ADI_DARK)
                 .setDarkMode(true)
                 // Background opacity from 0-1
                 .setBackgroundAlpha(0.95f)
                 .addEntity(myBot)
-                //.addEntity(myFirstBot)
+                .addEntity(myFirstBot)
                 .start();
     }
 }
