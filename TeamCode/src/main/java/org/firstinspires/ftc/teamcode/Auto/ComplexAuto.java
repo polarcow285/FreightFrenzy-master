@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode.Auto;
 
+import com.acmerobotics.roadrunner.trajectory.Trajectory;
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -7,20 +11,25 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Projects.ProjectOdometryTest;
 import org.firstinspires.ftc.teamcode.Vision.ShippingElementDetector;
+
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+
 @Autonomous(name = "Autonomous")
 public class ComplexAuto extends LinearOpMode {
-    public ProjectOdometryTest robot = new ProjectOdometryTest();
+    //public ProjectOdometryTest robot = new ProjectOdometryTest();
     OpenCvWebcam webcam;
     ShippingElementDetector detector = new ShippingElementDetector(telemetry);
 
     @Override
     public void runOpMode() throws InterruptedException {
-        robot.init(hardwareMap);
+        //drivetrain.init(hardwareMap);
+        SampleMecanumDrive drivetrain = new SampleMecanumDrive(hardwareMap);
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "webcam"), cameraMonitorViewId);
@@ -56,6 +65,41 @@ public class ComplexAuto extends LinearOpMode {
         }
 
         waitForStart();
+
+
+
+//        Trajectory goForward = drivetrain.trajectoryBuilder(new Pose2d(0, 0, 0))
+//                .forward(10)
+//                .build();
+//        drivetrain.followTrajectory(goForward);
+
+       Trajectory ComplexAuto = drivetrain.trajectoryBuilder(new Pose2d(11.6, -58.7, Math.toRadians(90)))
+                .strafeLeft(10)
+                //.forward(19.7)
+                //.waitSeconds(3)
+                //.back(24.4)
+                //.strafeRight(67)
+                .build();
+
+       Trajectory ComplexAuto2 = drivetrain.trajectoryBuilder(new Pose2d(11.6, -58.7, Math.toRadians(90)))
+               .forward(15)
+               .build();
+
+       Trajectory ComplexAuto3 = drivetrain.trajectoryBuilder(new Pose2d(11.6, -58.7, Math.toRadians(90)))
+               .back(24.4)
+               .build();
+
+       Trajectory ComplexAuto4 = drivetrain.trajectoryBuilder(new Pose2d(11.6, -58.7, Math.toRadians(90)))
+               .strafeRight(50)
+               .build();
+
+        drivetrain.followTrajectory(ComplexAuto);
+        drivetrain.followTrajectory(ComplexAuto2);
+
+        //drivetrain.followTrajectory(ComplexAuto3);
+        //drivetrain.followTrajectory(ComplexAuto4);
+
+
 
         //get the position of the shipping element
         /*ShippingElementDetector.ShippingElementLocation elementLocation = detector.getShippingElementLocation();
