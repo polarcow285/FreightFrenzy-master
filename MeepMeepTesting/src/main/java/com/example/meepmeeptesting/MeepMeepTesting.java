@@ -20,9 +20,10 @@ public class MeepMeepTesting {
                 // Option: Set theme. Default = ColorSchemeRedDark()
                 .setColorScheme(new ColorSchemeBlueDark())
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(new Pose2d(11.6, 58.2, Math.toRadians(0)))
+                        drive.trajectorySequenceBuilder(new Pose2d(11.6, 58.7, Math.toRadians(180)))
                                 .waitSeconds(1.5)
-                                .splineTo(new Vector2d(-12, 40), Math.toRadians(270))
+                                //.strafeLeft(5)
+                                .splineTo(new Vector2d(-12, 40), Math.toRadians(90))
                                 .addDisplacementMarker(() -> {
                                     /* Everything in the marker callback should be commented out */
 
@@ -30,7 +31,7 @@ public class MeepMeepTesting {
                                     // bot.wobbleArm.lower()
                                 })
                                 .waitSeconds(1.5)
-                                .splineToSplineHeading(new Pose2d(46.9,62.2, Math.toRadians(270)),Math.toRadians(0))
+                                .splineTo(new Vector2d(11.1,62), Math.toRadians(270))
                                 //.waitSeconds(3)
                                 //.splineTo(new Vector2d(11.6, 58.2), 0)
                                 //.turn(Math.toRadians(90))

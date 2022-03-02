@@ -69,40 +69,45 @@ public class ComplexAuto extends LinearOpMode {
 //              .forward(10)
 //              .build();
 //      drivetrain.followTrajectory(goForward);
-        TrajectorySequence peepeepoopoo = drivetrain.trajectorySequenceBuilder(new Pose2d(11.6, -58.7, Math.toRadians(90)))
-                .addDisplacementMarker(() -> {
-                    //drivetrain.storageunit.
-                })
-                .build();
 
-        Trajectory ComplexAuto = drivetrain.trajectoryBuilder(new Pose2d(11.6, -58.7, Math.toRadians(90)))
-                .strafeLeft(10)
+
+        Trajectory goBackwards = drivetrain.trajectoryBuilder(new Pose2d(11.6, 58.7, Math.toRadians(90)))
+                .back(10)
                 //.forward(19.7)
                 //.waitSeconds(3)
                 //.back(24.4)
                 //.strafeRight(67)
                 .build();
-
-        Trajectory ComplexAuto2 = drivetrain.trajectoryBuilder(new Pose2d(11.6, -58.7, Math.toRadians(90)))
-                .forward(15)
+        TrajectorySequence peepeepoopoo = drivetrain.trajectorySequenceBuilder(goBackwards.end())
+                .splineTo(new Vector2d(-12, 40), Math.toRadians(270))
+                .addDisplacementMarker(() -> {
+                    //drivetrain.storageunit.
+                })
                 .build();
 
-        Trajectory ComplexAuto3 = drivetrain.trajectoryBuilder(new Pose2d(11.6, -58.7, Math.toRadians(90)))
-                .back(24.4)
-                .build();
 
-        Trajectory ComplexAuto4 = drivetrain.trajectoryBuilder(new Pose2d(11.6, -58.7, Math.toRadians(90)))
+        Trajectory strafeLeft = drivetrain.trajectoryBuilder(new Pose2d(11.6, 58.7, Math.toRadians(180)))
+                .strafeLeft(15)
+                .build();
+        Trajectory poop = drivetrain.trajectoryBuilder(strafeLeft.end(), true)
+                .splineTo(new Vector2d(-12, 40), Math.toRadians(90))
+                .build();
+        /*Trajectory ComplexAuto4 = drivetrain.trajectoryBuilder(new Pose2d(11.6, -58.7, Math.toRadians(90)))
                 .strafeRight(50)
                 .build();
-
+        */
         waitForStart();
 
-        Pose2d startPose = new Pose2d(11.6, 58.2, Math.toRadians(0));
+        //starting pose for blue side near warehouse
+        Pose2d startPose = new Pose2d(11.6, 58.7, Math.toRadians(180));
         drivetrain.setPoseEstimate(startPose);
 
-        //if(isStopRequested()) return;
+        drivetrain.followTrajectory(strafeLeft);
+        drivetrain.followTrajectory(poop);
 
-        drivetrain.followTrajectory(ComplexAuto);
+        //if(isStopRequested()) return;
+        //drivetrain.followTrajectorySequence(peepeepoopoo);
+        //drivetrain.followTrajectory(ComplexAuto);
         //drivetrain.followTrajectory(ComplexAuto2);
 
         //drivetrain.followTrajectory(ComplexAuto3);
