@@ -63,17 +63,19 @@ public class ComplexAuto extends LinearOpMode {
             telemetry.addData("Path: ", p);
             telemetry.update();
         }
+        //Vector2d represents a coordinate (x,y)
 
-        waitForStart();
+        //      Trajectory goForward = drivetrain.trajectoryBuilder(new Pose2d(0, 0, 0))
+//              .forward(10)
+//              .build();
+//      drivetrain.followTrajectory(goForward);
+        TrajectorySequence peepeepoopoo = drivetrain.trajectorySequenceBuilder(new Pose2d(11.6, -58.7, Math.toRadians(90)))
+                .addDisplacementMarker(() -> {
+                    //drivetrain.storageunit.
+                })
+                .build();
 
-
-
-//        Trajectory goForward = drivetrain.trajectoryBuilder(new Pose2d(0, 0, 0))
-//                .forward(10)
-//                .build();
-//        drivetrain.followTrajectory(goForward);
-
-       Trajectory ComplexAuto = drivetrain.trajectoryBuilder(new Pose2d(11.6, -58.7, Math.toRadians(90)))
+        Trajectory ComplexAuto = drivetrain.trajectoryBuilder(new Pose2d(11.6, -58.7, Math.toRadians(90)))
                 .strafeLeft(10)
                 //.forward(19.7)
                 //.waitSeconds(3)
@@ -81,20 +83,27 @@ public class ComplexAuto extends LinearOpMode {
                 //.strafeRight(67)
                 .build();
 
-       Trajectory ComplexAuto2 = drivetrain.trajectoryBuilder(new Pose2d(11.6, -58.7, Math.toRadians(90)))
-               .forward(15)
-               .build();
+        Trajectory ComplexAuto2 = drivetrain.trajectoryBuilder(new Pose2d(11.6, -58.7, Math.toRadians(90)))
+                .forward(15)
+                .build();
 
-       Trajectory ComplexAuto3 = drivetrain.trajectoryBuilder(new Pose2d(11.6, -58.7, Math.toRadians(90)))
-               .back(24.4)
-               .build();
+        Trajectory ComplexAuto3 = drivetrain.trajectoryBuilder(new Pose2d(11.6, -58.7, Math.toRadians(90)))
+                .back(24.4)
+                .build();
 
-       Trajectory ComplexAuto4 = drivetrain.trajectoryBuilder(new Pose2d(11.6, -58.7, Math.toRadians(90)))
-               .strafeRight(50)
-               .build();
+        Trajectory ComplexAuto4 = drivetrain.trajectoryBuilder(new Pose2d(11.6, -58.7, Math.toRadians(90)))
+                .strafeRight(50)
+                .build();
+
+        waitForStart();
+
+        Pose2d startPose = new Pose2d(11.6, 58.2, Math.toRadians(0));
+        drivetrain.setPoseEstimate(startPose);
+
+        //if(isStopRequested()) return;
 
         drivetrain.followTrajectory(ComplexAuto);
-        drivetrain.followTrajectory(ComplexAuto2);
+        //drivetrain.followTrajectory(ComplexAuto2);
 
         //drivetrain.followTrajectory(ComplexAuto3);
         //drivetrain.followTrajectory(ComplexAuto4);
