@@ -65,53 +65,49 @@ public class ComplexAuto extends LinearOpMode {
         }
         //Vector2d represents a coordinate (x,y)
 
-        //      Trajectory goForward = drivetrain.trajectoryBuilder(new Pose2d(0, 0, 0))
-//              .forward(10)
-//              .build();
-//      drivetrain.followTrajectory(goForward);
-
-
-        Trajectory goBackwards = drivetrain.trajectoryBuilder(new Pose2d(11.6, 58.7, Math.toRadians(90)))
-                .back(10)
-                //.forward(19.7)
-                //.waitSeconds(3)
-                //.back(24.4)
-                //.strafeRight(67)
-                .build();
-        TrajectorySequence peepeepoopoo = drivetrain.trajectorySequenceBuilder(goBackwards.end())
-                .splineTo(new Vector2d(-12, 40), Math.toRadians(270))
-                .addDisplacementMarker(() -> {
-                    //drivetrain.storageunit.
-                })
-                .build();
-
-
-        Trajectory strafeLeft = drivetrain.trajectoryBuilder(new Pose2d(11.6, 58.7, Math.toRadians(180)))
+        /*Trajectory strafeLeft = drivetrain.trajectoryBuilder(new Pose2d(11.6, 58.7, Math.toRadians(180)))
                 .strafeLeft(15)
                 .build();
-        Trajectory poop = drivetrain.trajectoryBuilder(strafeLeft.end(), true)
+
+        Trajectory poop = drivetrain.trajectoryBuilder(strafeLeft.end())
                 .splineTo(new Vector2d(-12, 40), Math.toRadians(90))
                 .build();
-        /*Trajectory ComplexAuto4 = drivetrain.trajectoryBuilder(new Pose2d(11.6, -58.7, Math.toRadians(90)))
-                .strafeRight(50)
+
+
+
+
+        TrajectorySequence ComplexAuto4 = drivetrain.trajectorySequenceBuilder(new Pose2d(7.5, -63, Math.toRadians(0)))
+                .strafeLeft(15)
+                .lineToLinearHeading(new Pose2d(-13, -47, Math.toRadians(270)))
+                //.lineTo(new Vector2d(-13, -47))
+                .build();
+
+        */
+        TrajectorySequence ComplexAutoRed = drivetrain.trajectorySequenceBuilder(new Pose2d(7.5, -63, Math.toRadians(0)))
+                .strafeLeft(15)
+                .forward(20)
+                //.turn(Math.toRadians(270))
+                //.lineTo(new Vector2d(-13, -47))
+                .build();
+
+        /*Trajectory hmmm = drivetrain.trajectoryBuilder(ComplexAuto4.end())
+                .lineTo(new Vector2d(-13, -47))
                 .build();
         */
         waitForStart();
 
         //starting pose for blue side near warehouse
-        Pose2d startPose = new Pose2d(11.6, 58.7, Math.toRadians(180));
+        //Pose2d startPose = new Pose2d(11.6, 58.7, Math.toRadians(180));
+
+        //starting pose for red side near warehouse
+        Pose2d startPose = new Pose2d(7.5, -63, Math.toRadians(0));
         drivetrain.setPoseEstimate(startPose);
 
-        drivetrain.followTrajectory(strafeLeft);
-        drivetrain.followTrajectory(poop);
+        drivetrain.followTrajectorySequence(ComplexAutoRed);
+        //drivetrain.followTrajectory(hmmm);
 
-        //if(isStopRequested()) return;
-        //drivetrain.followTrajectorySequence(peepeepoopoo);
-        //drivetrain.followTrajectory(ComplexAuto);
-        //drivetrain.followTrajectory(ComplexAuto2);
-
-        //drivetrain.followTrajectory(ComplexAuto3);
-        //drivetrain.followTrajectory(ComplexAuto4);
+        //drivetrain.followTrajectory(strafeLeft);
+        //drivetrain.followTrajectory(poop);
 
 
 
