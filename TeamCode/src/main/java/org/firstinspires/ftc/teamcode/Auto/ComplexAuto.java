@@ -65,13 +65,14 @@ public class ComplexAuto extends LinearOpMode {
         }
         //Vector2d represents a coordinate (x,y)
 
-        /*Trajectory strafeLeft = drivetrain.trajectoryBuilder(new Pose2d(11.6, 58.7, Math.toRadians(180)))
+        Trajectory strafeLeft = drivetrain.trajectoryBuilder(new Pose2d(11.6, 58.7, Math.toRadians(180)))
                 .strafeLeft(15)
                 .build();
 
         Trajectory poop = drivetrain.trajectoryBuilder(strafeLeft.end())
                 .splineTo(new Vector2d(-12, 40), Math.toRadians(90))
                 .build();
+        /*
 
 
 
@@ -83,13 +84,20 @@ public class ComplexAuto extends LinearOpMode {
                 .build();
 
         */
-        TrajectorySequence ComplexAutoRed = drivetrain.trajectorySequenceBuilder(new Pose2d(7.5, -63, Math.toRadians(0)))
-                .strafeLeft(15)
+        TrajectorySequence ComplexAutoRedShipping = drivetrain.trajectorySequenceBuilder(new Pose2d(7.5, -63, Math.toRadians(0)))
+                .strafeLeft(10)
                 .forward(20)
-                //.turn(Math.toRadians(270))
+                .turn(Math.toRadians(-90))
+                .forward(12)
                 //.lineTo(new Vector2d(-13, -47))
                 .build();
-
+        TrajectorySequence ComplexAutoRedWarehouse = drivetrain.trajectorySequenceBuilder(ComplexAutoRedShipping.end())
+                .back(12)
+                .turn(Math.toRadians(0))
+                .strafeRight(10)
+                .forward(62)
+                .strafeLeft(15)
+                .build();
         /*Trajectory hmmm = drivetrain.trajectoryBuilder(ComplexAuto4.end())
                 .lineTo(new Vector2d(-13, -47))
                 .build();
@@ -103,7 +111,41 @@ public class ComplexAuto extends LinearOpMode {
         Pose2d startPose = new Pose2d(7.5, -63, Math.toRadians(0));
         drivetrain.setPoseEstimate(startPose);
 
-        drivetrain.followTrajectorySequence(ComplexAutoRed);
+
+
+
+        drivetrain.followTrajectorySequence(ComplexAutoRedShipping);
+        //extend lift to the bottom level RED
+        drivetrain.storageunit.setTargetPosition(-750);
+        drivetrain.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        drivetrain.storageunit.setPower(1);
+        while(drivetrain.storageunit.isBusy()) {
+            // Let the drive team see that we're waiting on the motor
+            telemetry.addData("Status", drivetrain.storageunit.getCurrentPosition());
+            telemetry.update();
+        }
+        drivetrain.storageunit.setPower(0);
+
+        //opening trapdoor
+        drivetrain.trapdoor.setPosition(0);
+        sleep(3000);
+        //closing trapdoor
+        drivetrain.trapdoor.setPosition(1);
+
+        //retract lift
+        drivetrain.storageunit.setTargetPosition(0);
+        drivetrain.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        drivetrain.storageunit.setPower(1);
+        while(drivetrain.storageunit.isBusy()) {
+            // Let the drive team see that we're waiting on the motor
+            telemetry.addData("Status", drivetrain.storageunit.getCurrentPosition());
+            telemetry.update();
+        }
+        drivetrain.storageunit.setPower(0);
+
+        drivetrain.followTrajectorySequence(ComplexAutoRedWarehouse);
+
+
         //drivetrain.followTrajectory(hmmm);
 
         //drivetrain.followTrajectory(strafeLeft);
