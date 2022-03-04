@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.Projects.ProjectOdometryTest;
 @TeleOp(name="switchTest", group="Mecanum")
 public class switchTest extends LinearOpMode {
     private ProjectOdometryTest robot = new ProjectOdometryTest();
-    ColorSensor colorSteven;
+
 
     /* Setting variables */
 
@@ -18,7 +18,6 @@ public class switchTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        colorSteven = hardwareMap.get(ColorSensor.class, "ColorSteven");
         robot.init(hardwareMap);
         waitForStart();
 
@@ -27,11 +26,6 @@ public class switchTest extends LinearOpMode {
 
 
             telemetry.addData("Switch Value:", robot.slideSwitch.getState());
-            telemetry.addData("green",colorSteven.green());
-            telemetry.addData("red", colorSteven.red());
-            telemetry.addData("blue", colorSteven.blue());
-            telemetry.addData("white", colorSteven.alpha());
-
             telemetry.update();
 
 

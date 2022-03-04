@@ -65,25 +65,6 @@ public class ComplexAuto extends LinearOpMode {
         }
         //Vector2d represents a coordinate (x,y)
 
-        Trajectory strafeLeft = drivetrain.trajectoryBuilder(new Pose2d(11.6, 58.7, Math.toRadians(180)))
-                .strafeLeft(15)
-                .build();
-
-        Trajectory poop = drivetrain.trajectoryBuilder(strafeLeft.end())
-                .splineTo(new Vector2d(-12, 40), Math.toRadians(90))
-                .build();
-        /*
-
-
-
-
-        TrajectorySequence ComplexAuto4 = drivetrain.trajectorySequenceBuilder(new Pose2d(7.5, -63, Math.toRadians(0)))
-                .strafeLeft(15)
-                .lineToLinearHeading(new Pose2d(-13, -47, Math.toRadians(270)))
-                //.lineTo(new Vector2d(-13, -47))
-                .build();
-
-        */
         TrajectorySequence ComplexAutoRedShipping = drivetrain.trajectorySequenceBuilder(new Pose2d(7.5, -63, Math.toRadians(0)))
                 .strafeLeft(10)
                 .forward(20)
@@ -91,17 +72,24 @@ public class ComplexAuto extends LinearOpMode {
                 .forward(12)
                 //.lineTo(new Vector2d(-13, -47))
                 .build();
-        TrajectorySequence ComplexAutoRedWarehouse = drivetrain.trajectorySequenceBuilder(ComplexAutoRedShipping.end())
-                .back(12)
-                .turn(Math.toRadians(0))
+        TrajectorySequence ComplexAutoBlueShipping = drivetrain.trajectorySequenceBuilder(new Pose2d(-7.5, -63, Math.toRadians(0)))
                 .strafeRight(10)
-                .forward(62)
-                .strafeLeft(15)
+                .forward(20)
+                .turn(Math.toRadians(90))
+                .forward(12)
+                //.lineTo(new Vector2d(-13, -47))
                 .build();
-        /*Trajectory hmmm = drivetrain.trajectoryBuilder(ComplexAuto4.end())
-                .lineTo(new Vector2d(-13, -47))
+
+        /*TrajectorySequence ComplexAutoRedWarehouse = drivetrain.trajectorySequenceBuilder(ComplexAutoRedShipping.end())
+                .back(20)
+                .turn(Math.toRadians(-90))
+                .strafeLeft(30)
+                .forward(30)
+                .strafeRight(15)
                 .build();
-        */
+
+         */
+
         waitForStart();
 
         //starting pose for blue side near warehouse
@@ -143,7 +131,35 @@ public class ComplexAuto extends LinearOpMode {
         }
         drivetrain.storageunit.setPower(0);
 
-        drivetrain.followTrajectorySequence(ComplexAutoRedWarehouse);
+        //drivetrain.followTrajectorySequence(ComplexAutoRedWarehouse);
+
+        drivetrain.setMotorPowers(1, 1, -1, -1);
+        sleep(1000);
+
+        drivetrain.setMotorPowers(0,0,0,0);
+        sleep(500);
+
+        //strafing against wall
+
+        drivetrain.setMotorPowers(-1, 1, 1, -1);
+        sleep(1500);
+
+        drivetrain.setMotorPowers(0,0,0,0);
+        sleep(500);
+
+        //going into warehouse
+        drivetrain.setMotorPowers(1,1,1,1);
+        sleep(1750);
+
+        drivetrain.setMotorPowers(0,0,0,0);
+        sleep(200);
+
+        //strafing left in the warehouse
+        drivetrain.setMotorPowers(1,-1,-1,1);
+        sleep(300);
+
+        drivetrain.setMotorPowers(0,0,0,0);
+
 
 
         //drivetrain.followTrajectory(hmmm);
