@@ -67,6 +67,7 @@ public class ComplexAuto extends LinearOpMode {
 
         TrajectorySequence ComplexAutoRedShipping = drivetrain.trajectorySequenceBuilder(new Pose2d(7.5, -63, Math.toRadians(0)))
                 .strafeLeft(10)
+                .waitSeconds(1)
                 .forward(20)
                 .turn(Math.toRadians(-90))
                 .forward(12)
@@ -77,6 +78,13 @@ public class ComplexAuto extends LinearOpMode {
                 .forward(20)
                 .turn(Math.toRadians(90))
                 .forward(12)
+                //.lineTo(new Vector2d(-13, -47))
+                .build();
+        TrajectorySequence testRed = drivetrain.trajectorySequenceBuilder(new Pose2d(-7.5, -63, Math.toRadians(0)))
+                //.strafeRight(10)
+                .forward(20)
+                //.turn(Math.toRadians(90))
+                //.forward(12)
                 //.lineTo(new Vector2d(-13, -47))
                 .build();
 
@@ -91,74 +99,80 @@ public class ComplexAuto extends LinearOpMode {
          */
 
         waitForStart();
+        if(p==Path.Red){
+            Pose2d startPose = new Pose2d(7.5, -63, Math.toRadians(0));
+            drivetrain.setPoseEstimate(startPose);
+
+            drivetrain.followTrajectorySequence(ComplexAutoRedShipping);
+
+            //extend lift to the bottom level RED
+            drivetrain.storageunit.setTargetPosition(-750);
+            drivetrain.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            drivetrain.storageunit.setPower(1);
+            while(drivetrain.storageunit.isBusy()) {
+                // Let the drive team see that we're waiting on the motor
+                telemetry.addData("Status", drivetrain.storageunit.getCurrentPosition());
+                telemetry.update();
+            }
+            drivetrain.storageunit.setPower(0);
+
+            //opening trapdoor
+            drivetrain.trapdoor.setPosition(0);
+            sleep(3000);
+            //closing trapdoor
+            drivetrain.trapdoor.setPosition(1);
+
+            //retract lift
+            drivetrain.storageunit.setTargetPosition(0);
+            drivetrain.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            drivetrain.storageunit.setPower(1);
+            while(drivetrain.storageunit.isBusy()) {
+                // Let the drive team see that we're waiting on the motor
+                telemetry.addData("Status", drivetrain.storageunit.getCurrentPosition());
+                telemetry.update();
+            }
+            drivetrain.storageunit.setPower(0);
+
+            //drivetrain.followTrajectorySequence(ComplexAutoRedWarehouse);
+
+            drivetrain.setMotorPowers(1, 1, -1, -1);
+            sleep(1000);
+
+            drivetrain.setMotorPowers(0,0,0,0);
+            sleep(500);
+
+            //strafing against wall
+            //front left, back left, back right, front right
+            drivetrain.setMotorPowers(-1, 1, -1, 1);
+            sleep(1500);
+
+            drivetrain.setMotorPowers(0,0,0,0);
+            sleep(500);
+
+            //going into warehouse
+            drivetrain.setMotorPowers(1,1,1,1);
+            sleep(1750);
+
+            drivetrain.setMotorPowers(0,0,0,0);
+            sleep(200);
+
+            //strafing left in the warehouse
+            drivetrain.setMotorPowers(1,-1,-1,1);
+            sleep(300);
+
+            drivetrain.setMotorPowers(0,0,0,0);
+
+        }
 
         //starting pose for blue side near warehouse
         //Pose2d startPose = new Pose2d(11.6, 58.7, Math.toRadians(180));
 
         //starting pose for red side near warehouse
-        Pose2d startPose = new Pose2d(7.5, -63, Math.toRadians(0));
-        drivetrain.setPoseEstimate(startPose);
 
 
 
 
-        drivetrain.followTrajectorySequence(ComplexAutoRedShipping);
-        //extend lift to the bottom level RED
-        drivetrain.storageunit.setTargetPosition(-750);
-        drivetrain.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        drivetrain.storageunit.setPower(1);
-        while(drivetrain.storageunit.isBusy()) {
-            // Let the drive team see that we're waiting on the motor
-            telemetry.addData("Status", drivetrain.storageunit.getCurrentPosition());
-            telemetry.update();
-        }
-        drivetrain.storageunit.setPower(0);
-
-        //opening trapdoor
-        drivetrain.trapdoor.setPosition(0);
-        sleep(3000);
-        //closing trapdoor
-        drivetrain.trapdoor.setPosition(1);
-
-        //retract lift
-        drivetrain.storageunit.setTargetPosition(0);
-        drivetrain.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        drivetrain.storageunit.setPower(1);
-        while(drivetrain.storageunit.isBusy()) {
-            // Let the drive team see that we're waiting on the motor
-            telemetry.addData("Status", drivetrain.storageunit.getCurrentPosition());
-            telemetry.update();
-        }
-        drivetrain.storageunit.setPower(0);
-
-        //drivetrain.followTrajectorySequence(ComplexAutoRedWarehouse);
-
-        drivetrain.setMotorPowers(1, 1, -1, -1);
-        sleep(1000);
-
-        drivetrain.setMotorPowers(0,0,0,0);
-        sleep(500);
-
-        //strafing against wall
-
-        drivetrain.setMotorPowers(-1, 1, 1, -1);
-        sleep(1500);
-
-        drivetrain.setMotorPowers(0,0,0,0);
-        sleep(500);
-
-        //going into warehouse
-        drivetrain.setMotorPowers(1,1,1,1);
-        sleep(1750);
-
-        drivetrain.setMotorPowers(0,0,0,0);
-        sleep(200);
-
-        //strafing left in the warehouse
-        drivetrain.setMotorPowers(1,-1,-1,1);
-        sleep(300);
-
-        drivetrain.setMotorPowers(0,0,0,0);
+        //drivetrain.followTrajectorySequence(testRed);
 
 
 
