@@ -20,7 +20,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
-@Autonomous(name = "Autonomous")
+@Autonomous(name = "Complex Auto")
 public class ComplexAuto extends LinearOpMode {
     //public ProjectOdometryTest robot = new ProjectOdometryTest();
     OpenCvWebcam webcam;
@@ -50,7 +50,7 @@ public class ComplexAuto extends LinearOpMode {
                  */
             }
         });
-
+        int numberOfSeconds = 0;
         Path p = Path.Red;
 
         while (!isStarted()) {
@@ -60,18 +60,32 @@ public class ComplexAuto extends LinearOpMode {
             if (gamepad1.x) {
                 p = Path.Blue;
             }
+            if (gamepad1.dpad_up) {
+                numberOfSeconds = numberOfSeconds + 1;
+            }
+            else if (gamepad1.dpad_down){
+                numberOfSeconds = numberOfSeconds - 1;
+            }
             telemetry.addData("Path: ", p);
+            telemetry.addData("wait number of seconds", numberOfSeconds);
             telemetry.update();
         }
         //Vector2d represents a coordinate (x,y)
 
-        TrajectorySequence ComplexAutoRedShipping = drivetrain.trajectorySequenceBuilder(new Pose2d(7.5, -63, Math.toRadians(0)))
+        TrajectorySequence ComplexAutoRedBottomShipping = drivetrain.trajectorySequenceBuilder(new Pose2d(7.5, -63, Math.toRadians(0)))
                 .strafeLeft(10)
                 .waitSeconds(1)
-                .forward(20)
+                .forward(23)
                 .turn(Math.toRadians(-90))
                 .forward(12)
                 //.lineTo(new Vector2d(-13, -47))
+                .build();
+        TrajectorySequence ComplexAutoRedShippingMiddle = drivetrain.trajectorySequenceBuilder(new Pose2d(7.5, -63, Math.toRadians(0)))
+                .strafeLeft(10)
+                .waitSeconds(1)
+                .forward(23)
+                .turn(Math.toRadians(-90))
+                .forward(2)
                 .build();
         TrajectorySequence ComplexAutoBlueShipping = drivetrain.trajectorySequenceBuilder(new Pose2d(-7.5, -63, Math.toRadians(0)))
                 .strafeRight(10)
@@ -99,14 +113,71 @@ public class ComplexAuto extends LinearOpMode {
          */
 
         waitForStart();
-        if(p==Path.Red){
+        //test waiting
+        drivetrain.setMotorPowers(0, 0, 0, 0);
+        sleep(numberOfSeconds*1000);
+
+        drivetrain.followTrajectorySequence(ComplexAutoRedShippingMiddle);
+        drivetrain.storageunit.setTargetPosition(-3100);
+        drivetrain.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        drivetrain.storageunit.setPower(1);
+        while(drivetrain.storageunit.isBusy()) {
+            // Let the drive team see that we're waiting on the motor
+            telemetry.addData("Status", drivetrain.storageunit.getCurrentPosition());
+            telemetry.update();
+        }
+        drivetrain.storageunit.setPower(0);
+
+        //opening trapdoor
+        drivetrain.trapdoor.setPosition(0);
+        sleep(3000);
+        //closing trapdoor
+        drivetrain.trapdoor.setPosition(1);
+
+        //retract lift
+        drivetrain.storageunit.setTargetPosition(0);
+        drivetrain.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        drivetrain.storageunit.setPower(1);
+        while(drivetrain.storageunit.isBusy()) {
+            // Let the drive team see that we're waiting on the motor
+            telemetry.addData("Status", drivetrain.storageunit.getCurrentPosition());
+            telemetry.update();
+        }
+        drivetrain.storageunit.setPower(0);
+
+        /*if(p==Path.Red){
             Pose2d startPose = new Pose2d(7.5, -63, Math.toRadians(0));
             drivetrain.setPoseEstimate(startPose);
 
-            drivetrain.followTrajectorySequence(ComplexAutoRedShipping);
+            drivetrain.followTrajectorySequence(ComplexAutoRedShippingMiddle);
+            drivetrain.storageunit.setTargetPosition(-3100);
+            drivetrain.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            drivetrain.storageunit.setPower(1);
+            while(drivetrain.storageunit.isBusy()) {
+                // Let the drive team see that we're waiting on the motor
+                telemetry.addData("Status", drivetrain.storageunit.getCurrentPosition());
+                telemetry.update();
+            }
+            drivetrain.storageunit.setPower(0);
 
+            //opening trapdoor
+            drivetrain.trapdoor.setPosition(0);
+            sleep(3000);
+            //closing trapdoor
+            drivetrain.trapdoor.setPosition(1);
+
+            //retract lift
+            drivetrain.storageunit.setTargetPosition(0);
+            drivetrain.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            drivetrain.storageunit.setPower(1);
+            while(drivetrain.storageunit.isBusy()) {
+                // Let the drive team see that we're waiting on the motor
+                telemetry.addData("Status", drivetrain.storageunit.getCurrentPosition());
+                telemetry.update();
+            }
+            drivetrain.storageunit.setPower(0);
             //extend lift to the bottom level RED
-            drivetrain.storageunit.setTargetPosition(-750);
+            /*drivetrain.storageunit.setTargetPosition(-750);
             drivetrain.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             drivetrain.storageunit.setPower(1);
             while(drivetrain.storageunit.isBusy()) {
@@ -163,7 +234,7 @@ public class ComplexAuto extends LinearOpMode {
             drivetrain.setMotorPowers(0,0,0,0);
 
         }
-
+        */
         //starting pose for blue side near warehouse
         //Pose2d startPose = new Pose2d(11.6, 58.7, Math.toRadians(180));
 
