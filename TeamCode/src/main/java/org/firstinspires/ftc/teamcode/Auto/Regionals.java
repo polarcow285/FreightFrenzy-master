@@ -251,24 +251,33 @@ public class Regionals extends LinearOpMode {
 
         } else if (p == Path.Blue) {
             //BLUE SIDE
-            //robot strafes away from the wall, left
-            moveRight(350, 1);
-            stopRobot(200);
-            //robot driving forward
-            moveBackwards(680, 1);
-            stopRobot(200);
+            //robot strafes away from the wall, right
+            robot.setMotorPowers(-1, 1, 1, -1);
+            sleep(350);
+
+            robot.setMotorPowers(0, 0,0, 0);
+            sleep(200);
+
+            //robot driving backward
+            robot.setMotorPowers(-1, -1, -1, -1);
+            sleep(680);
+
+            robot.setMotorPowers(0, 0,0, 0);
+            sleep(200);
+
             //turning so that trapdoor faces the shipping hub
-            turnRight(1175, 1);
-            stopRobot(200);
+            robot.setMotorPowers(1, 1, -1, -1);
+            sleep(1175);
+
+            robot.setMotorPowers(0, 0, 0, 0);
+            sleep(200);
 
             switch (elementLocation) {
                 case LEFT:
                 case UNKNOWN:
-                    telemetry.addData("beginning", "yay");
                     //bottom level - level 1 BLUE
                     //driving forward to reach the shipping hub BLUE
-                    moveForwards(540, 1);
-                    stopRobot(200);
+                    robot.followTrajectorySequence(bottomLevel);
 
                     //extend lift to the bottom level BLUE
                     robot.storageunit.setTargetPosition(-1000);
@@ -300,21 +309,17 @@ public class Regionals extends LinearOpMode {
 
                     //move back a little so that we don't bump the shipping hub
                     //while turning
+                    robot.setMotorPowers(-1, -1, -1, -1);
+                    sleep(300);
 
-                    moveBackwards(300, 1);
-                    stopRobot(200);
+                    robot.setMotorPowers(0,0, 0, 0);
+                    sleep(200);
 
                     break;
                 case MIDDLE:
-                    telemetry.addData("middle", "yay");
                     //middle level - level 2 BLUE
                     //code to drop off at middle level BLUE
-
-                    moveForwards(400, 1);
-                    robot.frontleft.setPower(0);
-                    robot.frontright.setPower(0);
-                    robot.backleft.setPower(0);
-                    robot.backright.setPower(0);
+                    robot.followTrajectorySequence(middleLevel);
 
                     //extend lift to the middle level
                     robot.storageunit.setTargetPosition(-3100);
@@ -348,8 +353,7 @@ public class Regionals extends LinearOpMode {
                 case RIGHT:
                     //top level - level 3 - BLUE
                     //driving forward to reach the shipping hub BLUE
-                    moveForwards(175, 1);
-                    stopRobot(200);
+                    robot.followTrajectorySequence(topLevel);
 
                     //extend lift to the top level BLUE
                     robot.storageunit.setTargetPosition(-4758);
@@ -382,19 +386,29 @@ public class Regionals extends LinearOpMode {
             }
 
             //turning to face the warehouse (trapdoor is facing warehouse) BLUE
-            turnLeft(1000, 1);
-            stopRobot(500);
+            robot.setMotorPowers(-1, -1, 1, 1);
+            sleep(1000);
+
+            robot.setMotorPowers(0, 0,0, 0);
+            sleep(200);
 
             //strafing into the wall (test)
-            moveLeft(1500, 1);
-            stopRobot(500);
+            robot.setMotorPowers(1, -1, 1, -1);
+            sleep(1500);
+
+            robot.setMotorPowers(0, 0,0, 0);
+            sleep(200);
 
             //driving into warehouse (test)
-            moveForwards(1591, 1);
-            stopRobot(200);
+            robot.setMotorPowers(1, 1, 1, 1);
+            sleep(1750);
+
+            robot.setMotorPowers(0, 0,0, 0);
+            sleep(200);
 
             //strafing right in the warehouse
-            moveRight(500, 1);
+            robot.setMotorPowers(-1, 1, -1, 1);
+            sleep(500);
             //test
 
             //stop
