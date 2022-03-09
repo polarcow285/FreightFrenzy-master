@@ -31,25 +31,6 @@ public class ComplexAuto extends LinearOpMode {
         //drivetrain.init(hardwareMap);
         SampleMecanumDrive drivetrain = new SampleMecanumDrive(hardwareMap);
 
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "webcam"), cameraMonitorViewId);
-
-        webcam.setPipeline(detector);
-
-        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
-            @Override
-            public void onOpened() {
-                // Usually this is where you'll want to start streaming from the camera (see section 4)
-                webcam.startStreaming(1920, 1080, OpenCvCameraRotation.UPRIGHT);
-            }
-
-            @Override
-            public void onError(int errorCode) {
-                /*
-                 * This will be called if the camera could not be opened
-                 */
-            }
-        });
         int numberOfSeconds = 0;
         Path p = Path.Red;
 
@@ -60,10 +41,10 @@ public class ComplexAuto extends LinearOpMode {
             if (gamepad1.x) {
                 p = Path.Blue;
             }
-            if (gamepad1.dpad_up) {
+            if (gamepad1.left_bumper) {
                 numberOfSeconds = numberOfSeconds + 1;
             }
-            else if (gamepad1.dpad_down){
+            else if (gamepad1.right_bumper){
                 numberOfSeconds = numberOfSeconds - 1;
             }
             telemetry.addData("Path: ", p);
@@ -94,7 +75,7 @@ public class ComplexAuto extends LinearOpMode {
                 .forward(12)
                 //.lineTo(new Vector2d(-13, -47))
                 .build();
-        TrajectorySequence testRed = drivetrain.trajectorySequenceBuilder(new Pose2d(-7.5, -63, Math.toRadians(0)))
+        TrajectorySequence testRed = drivetrain.trajectorySequenceBuilder(new Pose2d(7.5, -63, Math.toRadians(0)))
                 //.strafeRight(10)
                 .forward(20)
                 //.turn(Math.toRadians(90))
@@ -114,10 +95,14 @@ public class ComplexAuto extends LinearOpMode {
 
         waitForStart();
         //test waiting
+
         drivetrain.setMotorPowers(0, 0, 0, 0);
         sleep(numberOfSeconds*1000);
+        Pose2d startPose = new Pose2d(7.5, -63, Math.toRadians(0));
+        drivetrain.setPoseEstimate(startPose);
 
-        drivetrain.followTrajectorySequence(ComplexAutoRedShippingMiddle);
+        drivetrain.followTrajectorySequence(testRed);
+        /*
         drivetrain.storageunit.setTargetPosition(-3100);
         drivetrain.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         drivetrain.storageunit.setPower(1);
@@ -144,7 +129,7 @@ public class ComplexAuto extends LinearOpMode {
             telemetry.update();
         }
         drivetrain.storageunit.setPower(0);
-
+        */
         /*if(p==Path.Red){
             Pose2d startPose = new Pose2d(7.5, -63, Math.toRadians(0));
             drivetrain.setPoseEstimate(startPose);

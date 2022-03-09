@@ -16,35 +16,15 @@ import org.openftc.easyopencv.OpenCvWebcam;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
+
 @Autonomous(name = "Autonomous")
 public class Regionals extends LinearOpMode {
-    public SampleMecanumDrive robot = new SampleMecanumDrive(hardwareMap);
     OpenCvWebcam webcam;
     ShippingElementDetector detector = new ShippingElementDetector(telemetry);
 
-    TrajectorySequence ComplexAutoRed = robot.trajectorySequenceBuilder(new Pose2d(7.5, -63, Math.toRadians(0)))
-            .waitSeconds(1)
-            .forward(23)
-            .turn(Math.toRadians(-90))
-            .build();
-
-    TrajectorySequence bottomLevel = robot.trajectorySequenceBuilder(new Pose2d(7.5, -63, Math.toRadians(0)))
-            .waitSeconds(1)
-            .forward(12)
-            .build();
-
-    TrajectorySequence middleLevel = robot.trajectorySequenceBuilder(new Pose2d(7.5, -63, Math.toRadians(0)))
-            .waitSeconds(1)
-            .forward(8) //test
-            .build();
-
-    TrajectorySequence topLevel = robot.trajectorySequenceBuilder(new Pose2d(7.5, -63, Math.toRadians(0)))
-            .waitSeconds(1)
-            .forward(2) //test
-            .build();
     @Override
     public void runOpMode() throws InterruptedException {
-
+        SampleMecanumDrive robot = new SampleMecanumDrive(hardwareMap);
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "webcam"), cameraMonitorViewId);
 
@@ -55,6 +35,8 @@ public class Regionals extends LinearOpMode {
             public void onOpened() {
                 // Usually this is where you'll want to start streaming from the camera (see section 4)
                 webcam.startStreaming(1920, 1080, OpenCvCameraRotation.UPRIGHT);
+                telemetry.addData("camera initialized!", "");
+                telemetry.update();
             }
 
             @Override
@@ -64,7 +46,7 @@ public class Regionals extends LinearOpMode {
                  */
             }
         });
-        int numberOfSeconds = 0;
+        float numberOfSeconds = 0;
         Path p = Path.Red;
 
         while (!isStarted()) {
@@ -74,77 +56,150 @@ public class Regionals extends LinearOpMode {
             if (gamepad1.x) {
                 p = Path.Blue;
             }
-            if (gamepad1.dpad_up) {
-                numberOfSeconds = numberOfSeconds + 1;
+            if (gamepad1.left_bumper) {
+                numberOfSeconds = numberOfSeconds + 0.02f;
+                numberOfSeconds = Math.round(numberOfSeconds);
             }
-            else if (gamepad1.dpad_down){
-                numberOfSeconds = numberOfSeconds - 1;
+            else if (gamepad1.right_bumper && numberOfSeconds > 0){
+                numberOfSeconds = numberOfSeconds - 0.02f;
+                numberOfSeconds = Math.round(numberOfSeconds);
+            }
+            else if (gamepad1.back){
+                numberOfSeconds = 0;
             }
             telemetry.addData("Path: ", p);
             telemetry.addData("wait number of seconds", numberOfSeconds);
             telemetry.update();
         }
 
+        TrajectorySequence ComplexAutoRed = robot.trajectorySequenceBuilder(new Pose2d(7.5, -63, Math.toRadians(0)))
+                .waitSeconds(0.5)
+                .forward(23)
+                .turn(Math.toRadians(-90))
+                .build();
+        TrajectorySequence ComplexAutoBlue = robot.trajectorySequenceBuilder(new Pose2d(-7.5, -63, Math.toRadians(0)))
+                .waitSeconds(0.5)
+                .back(23)
+                .turn(Math.toRadians(-90))
+                .build();
+
+        Trajectory retractLift = robot.trajectoryBuilder(p == Path.Red ? ComplexAutoRed.end() : ComplexAutoBlue.end())
+                .back(2)
+                .addDisplacementMarker(()->{
+                    robot.storageunit.setTargetPosition(0);
+                    robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.storageunit.setPower(1);
+                })
+                //.waitSeconds(0.5)
+                //.turn(Math.toRadians(-90))
+                .build();
+
+
+
+        TrajectorySequence bottomLevel = robot.trajectorySequenceBuilder(p == Path.Red ? ComplexAutoRed.end() : ComplexAutoBlue.end())
+                .waitSeconds(0.5)
+                .forward(11.5)
+                .addDisplacementMarker(() -> {
+                    // Run your action in here!
+                    robot.storageunit.setTargetPosition(-750);
+                    robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.storageunit.setPower(1);
+                })
+                .build();
+
+        TrajectorySequence middleLevel = robot.trajectorySequenceBuilder(p == Path.Red ? ComplexAutoRed.end() : ComplexAutoBlue.end())
+                .waitSeconds(0.5)
+                .forward(8) //test
+                .addDisplacementMarker(() -> {
+                    // Run your action in here!
+                    robot.storageunit.setTargetPosition(-2350);
+                    robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.storageunit.setPower(1);
+                })
+                .build();
+
+        TrajectorySequence topLevel = robot.trajectorySequenceBuilder(p == Path.Red ? ComplexAutoRed.end() : ComplexAutoBlue.end())
+                .waitSeconds(0.5)
+                .forward(2) //test
+                .addDisplacementMarker(() -> {
+                    // Run your action in here!
+                    robot.storageunit.setTargetPosition(-4758);
+                    robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.storageunit.setPower(1);
+                })
+                .build();
+
         waitForStart();
         //test waiting
         robot.setMotorPowers(0, 0, 0, 0);
-        sleep(numberOfSeconds*1000);
+        sleep((int) numberOfSeconds*1000);
 
         //get the position of the shipping element
         ShippingElementDetector.ShippingElementLocation elementLocation = detector.getShippingElementLocation();
         telemetry.addData("element location:", elementLocation);
         telemetry.update();
 
+
+
+
+
+        Pose2d startPose;
         if (p == Path.Red) {
             //RED SIDE
-
+            startPose = new Pose2d(7.5, -63, Math.toRadians(0));
+            robot.setPoseEstimate(startPose);
             //strafing right
             robot.setMotorPowers(-1, 1, -1, 1);
-            sleep(300);
+            sleep(350);
             //test
 
             robot.setMotorPowers(0,0,0,0);
+            telemetry.addData("pose", robot.getPoseEstimate());
+            telemetry.update();
             sleep(200);
 
-            robot.followTrajectorySequence(ComplexAutoRed);
+            if (!isStopRequested()){
+                robot.followTrajectorySequence(ComplexAutoRed);
+            }
 
             switch (elementLocation) {
-                case LEFT:
-                case UNKNOWN:
+                case LEFT: case UNKNOWN:
                     //bottom level - level 1 - RED
 
                     //driving forward to reach the shipping hub RED
-                    robot.followTrajectorySequence(bottomLevel);
-
-                    //extend lift to the bottom level RED
-                    robot.storageunit.setTargetPosition(-750);
-                    robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.storageunit.setPower(1);
-                    while (robot.storageunit.isBusy()) {
-                        // Let the drive team see that we're waiting on the motor
-                        telemetry.addData("Status", robot.storageunit.getCurrentPosition());
-                        telemetry.update();
+                    if (!isStopRequested()){
+                        robot.followTrajectorySequence(bottomLevel);
                     }
-                    robot.storageunit.setPower(0);
+                    //extend lift to the bottom level RED
+                    /*if(!robot.isBusy()){
+                        robot.storageunit.setTargetPosition(-900);
+                        robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                        robot.storageunit.setPower(1);
+                        while (robot.storageunit.isBusy()) {
+                            // Let the drive team see that we're waiting on the motor
+                            telemetry.addData("Status", robot.storageunit.getCurrentPosition());
+                            telemetry.update();
+                        }
+                        robot.storageunit.setPower(0);
+                    }
+                    */
+
+
+
+
 
                     //opening trapdoor
                     robot.trapdoor.setPosition(0);
                     sleep(3000);
                     //closing trapdoor
                     robot.trapdoor.setPosition(1);
-
-                    //retract lift
-                    robot.storageunit.setTargetPosition(0);
-                    robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.storageunit.setPower(1);
-                    while (robot.storageunit.isBusy()) {
-                        // Let the drive team see that we're waiting on the motor
-                        telemetry.addData("Status", robot.storageunit.getCurrentPosition());
-                        telemetry.update();
+                    if(!isStopRequested()){
+                        robot.followTrajectory(retractLift);
                     }
-                    robot.storageunit.setPower(0);
-                    //move back a little so that we don't bump the shipping hub
-                    //while turning
+
+
+
+
                     robot.setMotorPowers(-1, -1, -1, -1);
                     sleep(300);
 
@@ -153,19 +208,14 @@ public class Regionals extends LinearOpMode {
                     break;
                 case MIDDLE:
                     //middle level - level 2 RED
-                    robot.followTrajectorySequence(middleLevel);
 
-
-                    //extend lift to the middle level RED
-                    robot.storageunit.setTargetPosition(-3100);
-                    robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.storageunit.setPower(1);
-                    while (robot.storageunit.isBusy()) {
-                        // Let the drive team see that we're waiting on the motor
-                        telemetry.addData("Status", robot.storageunit.getCurrentPosition());
-                        telemetry.update();
+                    //go to middle shipping hub + extend lift to the middle level RED
+                    if (!isStopRequested()){
+                        robot.followTrajectorySequence(middleLevel);
                     }
-                    robot.storageunit.setPower(0);
+
+
+
 
                     //opening trapdoor
                     robot.trapdoor.setPosition(0);
@@ -174,31 +224,18 @@ public class Regionals extends LinearOpMode {
                     robot.trapdoor.setPosition(1);
 
                     //retract lift
-                    robot.storageunit.setTargetPosition(0);
-                    robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.storageunit.setPower(1);
-                    while (robot.storageunit.isBusy()) {
-                        // Let the drive team see that we're waiting on the motor
-                        telemetry.addData("Status", robot.storageunit.getCurrentPosition());
-                        telemetry.update();
+                    if (!isStopRequested()){
+                        robot.followTrajectory(retractLift);
                     }
-                    robot.storageunit.setPower(0);
                     break;
                 case RIGHT:
                     //top level - level 3 RED
 
-                    //driving forward to reach the shipping hub RED
-                    robot.followTrajectorySequence(topLevel);
-
-                    //extend lift to the top level RED
-                    robot.storageunit.setTargetPosition(-4758);
-                    robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.storageunit.setPower(1);
-                    while (robot.storageunit.isBusy()) {
-                        // Let the drive team see that we're waiting on the motor
-                        telemetry.addData("Status", robot.storageunit.getCurrentPosition());
-                        telemetry.update();
+                    //driving forward to reach the shipping hub + extend lift RED
+                    if (!isStopRequested()){
+                        robot.followTrajectorySequence(topLevel);
                     }
+
                     robot.storageunit.setPower(0);
 
                     //opening trapdoor
@@ -208,15 +245,9 @@ public class Regionals extends LinearOpMode {
                     robot.trapdoor.setPosition(1);
 
                     //retract lift
-                    robot.storageunit.setTargetPosition(0);
-                    robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.storageunit.setPower(1);
-                    while (robot.storageunit.isBusy()) {
-                        // Let the drive team see that we're waiting on the motor
-                        telemetry.addData("Status", robot.storageunit.getCurrentPosition());
-                        telemetry.update();
+                    if (!isStopRequested()){
+                        robot.followTrajectory(retractLift);
                     }
-                    robot.storageunit.setPower(0);
                     break;
 
 
@@ -238,57 +269,55 @@ public class Regionals extends LinearOpMode {
 
             //going into warehouse
             robot.setMotorPowers(1,1,1,1);
-            sleep(1750);
+            sleep(1660);
 
             robot.setMotorPowers(0,0,0,0);
             sleep(200);
 
             //strafing left in the warehouse
-            robot.setMotorPowers(1,-1,-1,1);
-            sleep(300);
+            robot.setMotorPowers(1,-1,1,-1);
+            sleep(600);
+
+            //moving forward
+            robot.setMotorPowers(0.7,0.7,0.7,0.7);
+            sleep(400);
+
+            robot.setMotorPowers(0,0,0,0);
+            sleep(200);
+
+            //turning
+            robot.setMotorPowers(-1, -1, 1, 1);
+            sleep(1200);
 
             robot.setMotorPowers(0,0,0,0);
 
+
         } else if (p == Path.Blue) {
+            startPose = new Pose2d(-7.5, -63, Math.toRadians(0));
+            robot.setPoseEstimate(startPose);
+
             //BLUE SIDE
-            //robot strafes away from the wall, right
-            robot.setMotorPowers(-1, 1, 1, -1);
+            //robot strafes away from the wall, left
+            robot.setMotorPowers(-1, 1, -1, 1);
             sleep(350);
 
             robot.setMotorPowers(0, 0,0, 0);
             sleep(200);
 
-            //robot driving backward
-            robot.setMotorPowers(-1, -1, -1, -1);
-            sleep(680);
-
-            robot.setMotorPowers(0, 0,0, 0);
-            sleep(200);
-
-            //turning so that trapdoor faces the shipping hub
-            robot.setMotorPowers(1, 1, -1, -1);
-            sleep(1175);
-
-            robot.setMotorPowers(0, 0, 0, 0);
-            sleep(200);
+            if (!isStopRequested()){
+                robot.followTrajectorySequence(ComplexAutoBlue);
+            }
 
             switch (elementLocation) {
                 case LEFT:
                 case UNKNOWN:
                     //bottom level - level 1 BLUE
                     //driving forward to reach the shipping hub BLUE
-                    robot.followTrajectorySequence(bottomLevel);
+                    if (!isStopRequested()){
+                        robot.followTrajectorySequence(bottomLevel);
+                    }
 
                     //extend lift to the bottom level BLUE
-                    robot.storageunit.setTargetPosition(-1000);
-                    robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.storageunit.setPower(1);
-                    while (robot.storageunit.isBusy()) {
-                        // Let the drive team see that we're waiting on the motor
-                        telemetry.addData("Status", robot.storageunit.getCurrentPosition());
-                        telemetry.update();
-                    }
-                    robot.storageunit.setPower(0);
 
                     //opening trapdoor
                     robot.trapdoor.setPosition(0);
@@ -296,16 +325,10 @@ public class Regionals extends LinearOpMode {
                     //closing trapdoor
                     robot.trapdoor.setPosition(1);
 
-                    //retract lift
-                    robot.storageunit.setTargetPosition(0);
-                    robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.storageunit.setPower(1);
-                    while (robot.storageunit.isBusy()) {
-                        // Let the drive team see that we're waiting on the motor
-                        telemetry.addData("Status", robot.storageunit.getCurrentPosition());
-                        telemetry.update();
+                    //move back and retract lift
+                    if (!isStopRequested()){
+                        robot.followTrajectory(retractLift);
                     }
-                    robot.storageunit.setPower(0);
 
                     //move back a little so that we don't bump the shipping hub
                     //while turning
@@ -319,18 +342,10 @@ public class Regionals extends LinearOpMode {
                 case MIDDLE:
                     //middle level - level 2 BLUE
                     //code to drop off at middle level BLUE
-                    robot.followTrajectorySequence(middleLevel);
-
-                    //extend lift to the middle level
-                    robot.storageunit.setTargetPosition(-3100);
-                    robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.storageunit.setPower(1);
-                    while (robot.storageunit.isBusy()) {
-                        // Let the drive team see that we're waiting on the motor
-                        telemetry.addData("Status", robot.storageunit.getCurrentPosition());
-                        telemetry.update();
+                    if (!isStopRequested()){
+                        robot.followTrajectorySequence(middleLevel);
                     }
-                    robot.storageunit.setPower(0);
+
 
                     //opening trapdoor
                     robot.trapdoor.setPosition(0);
@@ -338,33 +353,21 @@ public class Regionals extends LinearOpMode {
                     //close trapdoor
                     robot.trapdoor.setPosition(1);
 
-                    //retract lift
-                    robot.storageunit.setTargetPosition(0);
-                    robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.storageunit.setPower(1);
-                    while (robot.storageunit.isBusy()) {
-                        // Let the drive team see that we're waiting on the motor
-                        telemetry.addData("Status", robot.storageunit.getCurrentPosition());
-                        telemetry.update();
+                    //move back and retract lift
+                    if (!isStopRequested()){
+                        robot.followTrajectory(retractLift);
                     }
-                    robot.storageunit.setPower(0);
+
+
                     break;
 
                 case RIGHT:
                     //top level - level 3 - BLUE
                     //driving forward to reach the shipping hub BLUE
-                    robot.followTrajectorySequence(topLevel);
-
-                    //extend lift to the top level BLUE
-                    robot.storageunit.setTargetPosition(-4758);
-                    robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.storageunit.setPower(1);
-                    while (robot.storageunit.isBusy()) {
-                        // Let the drive team see that we're waiting on the motor
-                        telemetry.addData("Status", robot.storageunit.getCurrentPosition());
-                        telemetry.update();
+                    if (!isStopRequested()){
+                        robot.followTrajectorySequence(topLevel);
                     }
-                    robot.storageunit.setPower(0);
+
 
                     //opening trapdoor
                     robot.trapdoor.setPosition(0);
@@ -372,16 +375,11 @@ public class Regionals extends LinearOpMode {
                     //close trapdoor
                     robot.trapdoor.setPosition(1);
 
-                    //retract lift
-                    robot.storageunit.setTargetPosition(0);
-                    robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.storageunit.setPower(1);
-                    while (robot.storageunit.isBusy()) {
-                        // Let the drive team see that we're waiting on the motor
-                        telemetry.addData("Status", robot.storageunit.getCurrentPosition());
-                        telemetry.update();
+                    //move back and retract lift
+                    if (!isStopRequested()){
+                        robot.followTrajectory(retractLift);
                     }
-                    robot.storageunit.setPower(0);
+
                     break;
             }
 
@@ -401,21 +399,34 @@ public class Regionals extends LinearOpMode {
 
             //driving into warehouse (test)
             robot.setMotorPowers(1, 1, 1, 1);
-            sleep(1750);
+            sleep(1660);
 
             robot.setMotorPowers(0, 0,0, 0);
             sleep(200);
 
             //strafing right in the warehouse
             robot.setMotorPowers(-1, 1, -1, 1);
-            sleep(500);
+            sleep(600);
+
+            robot.setMotorPowers(0, 0,0, 0);
+            sleep(200);
             //test
 
-            //stop
+            //moving forward
+            robot.setMotorPowers(0.7,0.7,0.7,0.7);
+            sleep(400);
+
+            robot.setMotorPowers(0,0,0,0);
+            sleep(200);
+
+            //turning
+            robot.setMotorPowers(1, 1, -1, -1);
+            sleep(1200);
+
             robot.setMotorPowers(0,0,0,0);
 
         }
-
+        robot.setMotorPowers(0,0,0,0);
 
         telemetry.update();
 
@@ -483,4 +494,6 @@ public class Regionals extends LinearOpMode {
     */
 
 }
+
+
 

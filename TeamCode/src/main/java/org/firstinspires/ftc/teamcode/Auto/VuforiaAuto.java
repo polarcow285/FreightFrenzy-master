@@ -26,7 +26,7 @@ public class VuforiaAuto extends LinearOpMode{
 
         Path p = Path.Red;
 
-        robot.camera = hardwareMap.get(WebcamName.class, "Webcam 1");
+        robot.camera = hardwareMap.get(WebcamName.class, "webcam");
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);

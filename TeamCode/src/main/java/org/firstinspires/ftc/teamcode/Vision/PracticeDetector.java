@@ -12,7 +12,6 @@ public class PracticeDetector extends OpenCvPipeline {
     Telemetry telemetry;
 
     Mat mat = new Mat();
-    Mat destMat = new Mat();
 
     static final Rect rightROI = new Rect(
             new Point( 180, 0),

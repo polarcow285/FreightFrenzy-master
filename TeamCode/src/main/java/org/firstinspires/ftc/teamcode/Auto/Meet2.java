@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Auto;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -15,7 +16,7 @@ import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import com.acmerobotics.dashboard.FtcDashboard;
 
-
+@Disabled
 @Autonomous(name = "Meet2")
 public class Meet2 extends LinearOpMode{
     public ProjectOdometryTest robot = new ProjectOdometryTest();
