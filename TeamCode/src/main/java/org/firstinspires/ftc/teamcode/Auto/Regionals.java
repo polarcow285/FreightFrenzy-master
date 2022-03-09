@@ -56,19 +56,7 @@ public class Regionals extends LinearOpMode {
             if (gamepad1.x) {
                 p = Path.Blue;
             }
-            if (gamepad1.left_bumper) {
-                numberOfSeconds = numberOfSeconds + 0.02f;
-                numberOfSeconds = Math.round(numberOfSeconds);
-            }
-            else if (gamepad1.right_bumper && numberOfSeconds > 0){
-                numberOfSeconds = numberOfSeconds - 0.02f;
-                numberOfSeconds = Math.round(numberOfSeconds);
-            }
-            else if (gamepad1.back){
-                numberOfSeconds = 0;
-            }
             telemetry.addData("Path: ", p);
-            telemetry.addData("wait number of seconds", numberOfSeconds);
             telemetry.update();
         }
 
@@ -84,7 +72,7 @@ public class Regionals extends LinearOpMode {
                 .build();
 
         Trajectory retractLift = robot.trajectoryBuilder(p == Path.Red ? ComplexAutoRed.end() : ComplexAutoBlue.end())
-                .back(2)
+                .back(1)
                 .addDisplacementMarker(()->{
                     robot.storageunit.setTargetPosition(0);
                     robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -93,9 +81,7 @@ public class Regionals extends LinearOpMode {
                 //.waitSeconds(0.5)
                 //.turn(Math.toRadians(-90))
                 .build();
-
-
-
+        
         TrajectorySequence bottomLevel = robot.trajectorySequenceBuilder(p == Path.Red ? ComplexAutoRed.end() : ComplexAutoBlue.end())
                 .waitSeconds(0.5)
                 .forward(11.5)
@@ -119,29 +105,22 @@ public class Regionals extends LinearOpMode {
                 .build();
 
         TrajectorySequence topLevel = robot.trajectorySequenceBuilder(p == Path.Red ? ComplexAutoRed.end() : ComplexAutoBlue.end())
-                .waitSeconds(0.5)
                 .forward(2) //test
+                .waitSeconds(1.5)
                 .addDisplacementMarker(() -> {
                     // Run your action in here!
-                    robot.storageunit.setTargetPosition(-4758);
+                    robot.storageunit.setTargetPosition(-5000);
                     robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.storageunit.setPower(1);
                 })
                 .build();
 
         waitForStart();
-        //test waiting
-        robot.setMotorPowers(0, 0, 0, 0);
-        sleep((int) numberOfSeconds*1000);
 
         //get the position of the shipping element
         ShippingElementDetector.ShippingElementLocation elementLocation = detector.getShippingElementLocation();
         telemetry.addData("element location:", elementLocation);
         telemetry.update();
-
-
-
-
 
         Pose2d startPose;
         if (p == Path.Red) {
@@ -166,23 +145,10 @@ public class Regionals extends LinearOpMode {
                 case LEFT: case UNKNOWN:
                     //bottom level - level 1 - RED
 
-                    //driving forward to reach the shipping hub RED
+                    //driving forward to reach the shipping hub + extend RED
                     if (!isStopRequested()){
                         robot.followTrajectorySequence(bottomLevel);
                     }
-                    //extend lift to the bottom level RED
-                    /*if(!robot.isBusy()){
-                        robot.storageunit.setTargetPosition(-900);
-                        robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                        robot.storageunit.setPower(1);
-                        while (robot.storageunit.isBusy()) {
-                            // Let the drive team see that we're waiting on the motor
-                            telemetry.addData("Status", robot.storageunit.getCurrentPosition());
-                            telemetry.update();
-                        }
-                        robot.storageunit.setPower(0);
-                    }
-                    */
 
 
 
@@ -276,11 +242,11 @@ public class Regionals extends LinearOpMode {
 
             //strafing left in the warehouse
             robot.setMotorPowers(1,-1,1,-1);
-            sleep(600);
+            sleep(900);
 
             //moving forward
             robot.setMotorPowers(0.7,0.7,0.7,0.7);
-            sleep(400);
+            sleep(700);
 
             robot.setMotorPowers(0,0,0,0);
             sleep(200);
@@ -406,7 +372,7 @@ public class Regionals extends LinearOpMode {
 
             //strafing right in the warehouse
             robot.setMotorPowers(-1, 1, -1, 1);
-            sleep(600);
+            sleep(900);
 
             robot.setMotorPowers(0, 0,0, 0);
             sleep(200);
@@ -414,7 +380,7 @@ public class Regionals extends LinearOpMode {
 
             //moving forward
             robot.setMotorPowers(0.7,0.7,0.7,0.7);
-            sleep(400);
+            sleep(700);
 
             robot.setMotorPowers(0,0,0,0);
             sleep(200);

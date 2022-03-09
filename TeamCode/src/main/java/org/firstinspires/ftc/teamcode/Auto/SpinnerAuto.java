@@ -28,11 +28,11 @@ public class SpinnerAuto extends LinearOpMode{
 
     }
     public void RunShortAuto(boolean red){
-        robot.frontleft.setPower(red ?  1f : 1f);
-        robot.backleft.setPower(red ?  1f : 1f);
-        robot.frontright.setPower(red ?  1f : 1f);
-        robot.backright.setPower(red ? 1f :  1f);
-        sleep(1500);
+        robot.frontleft.setPower(red ?  1f : -1f);
+        robot.backleft.setPower(red ?  1f : -1f);
+        robot.frontright.setPower(red ?  1f : -1f);
+        robot.backright.setPower(red ? 1f :  -1f);
+        sleep(900);
 
         robot.frontright.setPower(0);
         robot.frontleft.setPower(0);
@@ -44,7 +44,7 @@ public class SpinnerAuto extends LinearOpMode{
         robot.backleft.setPower(red ?  1f : -1f);
         robot.frontright.setPower(red ? 1f : -1f);
         robot.backright.setPower(red ? -1f :  1f);
-        sleep(1000);
+        sleep(800);
 
 
 
