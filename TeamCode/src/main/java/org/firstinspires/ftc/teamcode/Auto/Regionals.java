@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Projects.ProjectOdometryTest;
 import org.firstinspires.ftc.teamcode.Vision.ShippingElementDetector;
+import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -105,8 +106,10 @@ public class Regionals extends LinearOpMode {
                 .build();
 
         TrajectorySequence topLevel = robot.trajectorySequenceBuilder(p == Path.Red ? ComplexAutoRed.end() : ComplexAutoBlue.end())
-                .forward(2) //test
-                .waitSeconds(1.5)
+                .setVelConstraint(robot.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH ))
+                .waitSeconds(0.5)
+                .forward(3) //test
+                .waitSeconds(2)
                 .addDisplacementMarker(() -> {
                     // Run your action in here!
                     robot.storageunit.setTargetPosition(-5000);

@@ -130,7 +130,7 @@ public class MecanumDriveJiashu extends LinearOpMode {
             }
             //-1280 = able to close
 
-            //extend lift until reaches its limit (encoder count -5215)
+            //extend lift until reaches its limit (encoder count -5215) OR hits limit switch
             if(gamepad1.right_bumper && robot.storageunit.getCurrentPosition() > -5125 && !robot.slideSwitch.getState()){
                 //extend lift
                 robot.storageunit.setPower(-1);
