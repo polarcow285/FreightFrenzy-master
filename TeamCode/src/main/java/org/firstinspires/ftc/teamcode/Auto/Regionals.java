@@ -18,7 +18,7 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 
-@Autonomous(name = "Autonomous")
+@Autonomous(name = "autonomous")
 public class Regionals extends LinearOpMode {
     OpenCvWebcam webcam;
     ShippingElementDetector detector = new ShippingElementDetector(telemetry);
@@ -73,7 +73,7 @@ public class Regionals extends LinearOpMode {
                 .build();
 
         Trajectory retractLift = robot.trajectoryBuilder(p == Path.Red ? ComplexAutoRed.end() : ComplexAutoBlue.end())
-                .back(1)
+                .back(0.2)
                 .addDisplacementMarker(()->{
                     robot.storageunit.setTargetPosition(0);
                     robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -85,7 +85,7 @@ public class Regionals extends LinearOpMode {
         
         TrajectorySequence bottomLevel = robot.trajectorySequenceBuilder(p == Path.Red ? ComplexAutoRed.end() : ComplexAutoBlue.end())
                 .waitSeconds(0.5)
-                .forward(11.5)
+                .forward(12)
                 .addDisplacementMarker(() -> {
                     // Run your action in here!
                     robot.storageunit.setTargetPosition(-750);
@@ -96,7 +96,7 @@ public class Regionals extends LinearOpMode {
 
         TrajectorySequence middleLevel = robot.trajectorySequenceBuilder(p == Path.Red ? ComplexAutoRed.end() : ComplexAutoBlue.end())
                 .waitSeconds(0.5)
-                .forward(8) //test
+                .forward(9) //test
                 .addDisplacementMarker(() -> {
                     // Run your action in here!
                     robot.storageunit.setTargetPosition(-2350);
@@ -116,6 +116,16 @@ public class Regionals extends LinearOpMode {
                     robot.storageunit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.storageunit.setPower(1);
                 })
+                .build();
+        TrajectorySequence ComplexAutoRedTop = robot.trajectorySequenceBuilder(new Pose2d(7.5, -63, Math.toRadians(0)))
+                .waitSeconds(0.5)
+                .forward(20)
+                .turn(Math.toRadians(-90))
+                .build();
+        TrajectorySequence ComplexAutoBlueTop = robot.trajectorySequenceBuilder(new Pose2d(-7.5, -63, Math.toRadians(0)))
+                .waitSeconds(0.5)
+                .back(20)
+                .turn(Math.toRadians(-90))
                 .build();
 
         waitForStart();
@@ -140,8 +150,13 @@ public class Regionals extends LinearOpMode {
             telemetry.update();
             sleep(200);
 
-            if (!isStopRequested()){
-                robot.followTrajectorySequence(ComplexAutoRed);
+            if(!isStopRequested()){
+                if(elementLocation == ShippingElementDetector.ShippingElementLocation.RIGHT){
+                    robot.followTrajectorySequence(ComplexAutoRedTop);
+                }
+                else{
+                    robot.followTrajectorySequence(ComplexAutoRed);
+                }
             }
 
             switch (elementLocation) {
@@ -259,6 +274,13 @@ public class Regionals extends LinearOpMode {
             sleep(1200);
 
             robot.setMotorPowers(0,0,0,0);
+            sleep(200);
+
+            //moving backward
+            robot.setMotorPowers(-1, -1, -1, -1);
+            sleep(200);
+
+            robot.setMotorPowers(0,0,0,0);
 
 
         } else if (p == Path.Blue) {
@@ -273,8 +295,13 @@ public class Regionals extends LinearOpMode {
             robot.setMotorPowers(0, 0,0, 0);
             sleep(200);
 
-            if (!isStopRequested()){
-                robot.followTrajectorySequence(ComplexAutoBlue);
+            if(!isStopRequested()){
+                if(elementLocation == ShippingElementDetector.ShippingElementLocation.RIGHT){
+                    robot.followTrajectorySequence(ComplexAutoBlueTop);
+                }
+                else{
+                    robot.followTrajectorySequence(ComplexAutoBlue);
+                }
             }
 
             switch (elementLocation) {
@@ -393,6 +420,15 @@ public class Regionals extends LinearOpMode {
             sleep(1200);
 
             robot.setMotorPowers(0,0,0,0);
+            sleep(200);
+
+//            //moving backward
+//            robot.setMotorPowers(-1, -1, -1, -1);
+//            sleep(200);
+//
+//            robot.setMotorPowers(0,0,0,0);
+
+
 
         }
         robot.setMotorPowers(0,0,0,0);
