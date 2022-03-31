@@ -52,9 +52,9 @@ public class PracticeDetector extends OpenCvPipeline {
         double rightPercentage = Core.sumElems(right).val[0] / rightROI.area() / 255;
 
         //deallocates the Matrix data from the memory
-        left.release();
-        middle.release();
-        right.release();
+//        left.release();
+//        middle.release();
+//        right.release();
 
         telemetry.addData("left percentage", Math.round(leftPercentage * 100) + "%");
         telemetry.addData("middle percentage", Math.round(middlePercentage * 100) + "%");
