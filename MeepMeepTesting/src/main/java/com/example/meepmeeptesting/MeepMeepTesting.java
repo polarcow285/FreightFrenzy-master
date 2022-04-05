@@ -45,7 +45,18 @@ public class MeepMeepTesting {
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(new Pose2d(11.6, -58.7, Math.toRadians(0)))
-                                .strafeLeft(15)
+                                .strafeRight(7)
+                                .forward(39)
+                                .strafeLeft(12)
+                                .strafeTo(new Vector2d(28, 42))
+                                .lineToLinearHeading(new Pose2d(-54, -3, Math.toRadians(271)))
+                                .addDisplacementMarker(() -> {
+                                    // This marker runs after the first splineTo()
+
+                                    // Run your action in here!
+                                })
+                                .splineTo(new Vector2d(36,-22), Math.toRadians(89))
+                                .splineToLinearHeading(new Pose2d(21, 53, Math.toRadians(179)), Math.toRadians(0))
                                 .build()
                 );
 
