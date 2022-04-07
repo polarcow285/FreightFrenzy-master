@@ -414,15 +414,17 @@ public class Meet3 extends LinearOpMode{
                     //middle level - level 2 BLUE
                     //code to drop off at middle level BLUE
 
-                    robot.frontleft.setPower(1);
-                    robot.frontright.setPower(1);
-                    robot.backleft.setPower(1);
-                    robot.backright.setPower(1);
-                    sleep(400);
-                    robot.frontleft.setPower(0);
-                    robot.frontright.setPower(0);
-                    robot.backleft.setPower(0);
-                    robot.backright.setPower(0);
+                    moveForward(400, 1);
+//                    robot.frontleft.setPower(1);
+//                    robot.frontright.setPower(1);
+//                    robot.backleft.setPower(1);
+//                    robot.backright.setPower(1);
+//                    sleep(400);
+                    stopRobot(100);
+//                    robot.frontleft.setPower(0);
+//                    robot.frontright.setPower(0);
+//                    robot.backleft.setPower(0);
+//                    robot.backright.setPower(0);
 
                     //extend lift to the middle level
                     robot.storageunit.setTargetPosition(-3100);
@@ -564,14 +566,6 @@ public class Meet3 extends LinearOpMode{
 
     }
 
-    public void moveForwards(int time, double speed){
-        robot.frontleft.setPower(speed);
-        robot.frontright.setPower(speed);
-        robot.backleft.setPower(speed);
-        robot.backright.setPower(speed);
-        sleep(time);
-    }
-
     public void moveRight(int time, double speed){
         robot.frontleft.setPower(-speed);
         robot.frontright.setPower(speed);
@@ -609,6 +603,22 @@ public class Meet3 extends LinearOpMode{
         robot.frontright.setPower(speed);
         robot.backleft.setPower(-speed);
         robot.backright.setPower(speed);
+        sleep(time);
+    }
+
+    public void moveForward(int time, double speed){
+        robot.frontleft.setPower(speed);
+        robot.frontright.setPower(speed);
+        robot.backleft.setPower(speed);
+        robot.backright.setPower(speed);
+        sleep(time);
+    }
+
+    public void stopRobot(int time) {
+        robot.frontleft.setPower(0);
+        robot.frontright.setPower(0);
+        robot.backleft.setPower(0);
+        robot.backright.setPower(0);
         sleep(time);
     }
 

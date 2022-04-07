@@ -40,23 +40,21 @@ public class MeepMeepTesting {
                                 .build()
                 );
         RoadRunnerBotEntity myFirstBot = new DefaultBotBuilder(meepMeep)
-                // We set this bot to be blue
+                // We set this bot to be red
                 .setColorScheme(new ColorSchemeRedDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(new Pose2d(11.6, -58.7, Math.toRadians(0)))
+                        drive.trajectorySequenceBuilder(new Pose2d(-24, 60, Math.toRadians(0)))
                                 .strafeRight(7)
-                                .forward(39)
-                                .strafeLeft(12)
-                                .strafeTo(new Vector2d(28, 42))
-                                .lineToLinearHeading(new Pose2d(-54, -3, Math.toRadians(271)))
+//                                .forward(40)
+//                                .strafeLeft(20)
+                                .strafeTo(new Vector2d(30, -10))
+                                .lineToLinearHeading(new Pose2d(-20, -30, Math.toRadians(90)))
                                 .addDisplacementMarker(() -> {
-                                    // This marker runs after the first splineTo()
-
                                     // Run your action in here!
+                                    // Drop servo, start motor, whatever
                                 })
-                                .splineTo(new Vector2d(36,-22), Math.toRadians(89))
-                                .splineToLinearHeading(new Pose2d(21, 53, Math.toRadians(179)), Math.toRadians(0))
+                                .splineTo(new Vector2d(30, 50), Math.toRadians(0))
                                 .build()
                 );
 
