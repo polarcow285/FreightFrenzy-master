@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -14,6 +15,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
 import org.firstinspires.ftc.teamcode.Projects.ProjectOdometryTest;
 
 
+/*
 public class ringDetectorACE {
     @Autonomous(name = "ringDetectorACE")
     public class ringDetectorACE extends LinearOpMode{
@@ -39,28 +41,6 @@ public class ringDetectorACE {
                     webcam.startStreaming(1920, 1080, OpenCvCameraRotation.UPRIGHT);
                 }
                 @Override
-                public void onError(int errorCode)
-                {
-                    /*
-                     * This will be called if the camera could not be opened
-                     */
-                }
-            });
-
-            Path p = Path.Red;
-
-            while(!isStarted()) {
-                if (gamepad1.b) {
-                    p = Path.Red;
-                }
-                if (gamepad1.x) {
-                    p = Path.Blue;
-                }
-                telemetry.addData("Path: ", p);
-                telemetry.update();
-            }
-
-            waitForStart();
 
 
 
@@ -69,4 +49,6 @@ public class ringDetectorACE {
 
 
 
-}
+
+
+*/
