@@ -13,6 +13,18 @@ public class ACE extends OpenCvPipeline {
 
     Mat mat = new Mat();
 
+    //created an enum containing the different possible numbers of rings
+    public enum NumberOfRings {
+        ZERO,
+        ONE,
+        FOUR,
+        UNKNOWN
+    }
+
+    private NumberOfRings ringNumber;
+
+
+    // defined the region of interest
     static final Rect mainROI = new Rect(
             new Point( 122, 100),
             new Point(189, 149)
@@ -37,14 +49,27 @@ public class ACE extends OpenCvPipeline {
         //submat = sub-mat, a portion of the original
         Mat main = mat.submat(mainROI);
 
-
+        //calculate what percentage of the ROI became white
+        //(add all the pixels together, divide by its area, divide by 255)
         double mainPercentage = Core.sumElems(main).val[0] / mainROI.area() / 255;
 
 
         //deallocates the Matrix data from the memory
-//        left.release();
-//        middle.release();
-//        right.release();
+        main.release();
+
+        //create if else statements declaring the number of rings based on the percentage of white
+        if(mainPercentage > 0 && mainPercentage < 0.05){
+            ringNumber = NumberOfRings.ZERO;
+        }
+        else if (mainPercentage > 0.05 && mainPercentage < 0.40) {
+            ringNumber = NumberOfRings.ONE;
+        }
+        else if(mainPercentage > 0.40 && mainPercentage < 1){
+            ringNumber = NumberOfRings.FOUR;
+        }
+        else {
+            ringNumber = NumberOfRings.UNKNOWN;
+        }
 
         telemetry.addData("main percentage", Math.round(mainPercentage * 100) + "%");
 
@@ -52,5 +77,9 @@ public class ACE extends OpenCvPipeline {
         telemetry.update();
 
         return main;
+    }
+
+    public NumberOfRings getRingNumber() {
+        return ringNumber;
     }
 }
