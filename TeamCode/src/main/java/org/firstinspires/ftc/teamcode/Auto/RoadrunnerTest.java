@@ -21,32 +21,35 @@ public class RoadrunnerTest extends LinearOpMode{
         SampleMecanumDrive robot = new SampleMecanumDrive(hardwareMap);
 
         //initialize trajectories
-        Trajectory exampleTrajectory = robot.trajectoryBuilder(new Pose2d(45, 25, 180))
+        Trajectory exampleTrajectory = robot.trajectoryBuilder(new Pose2d(2,2,Math.toRadians(0)))
                 .forward(20)
                 .strafeLeft(10)
                 .build();
 
-        Trajectory O = robot.trajectoryBuilder(exampleTrajectory.end())
-                .strafeLeft(39)
-                .splineTo(new Vector2d(-53, 12), Math.toRadians(134))
+        Trajectory trajectory1 = robot.trajectoryBuilder(exampleTrajectory.end())
+                .forward(5)
+                .strafeRight(9)
                 .build();
 
-        TrajectorySequence sequencewow = robot.trajectorySequenceBuilder(O.end())
-                .turn(Math.toRadians(72))
-                .waitSeconds(8)
+        TrajectorySequence mySequence = robot.trajectorySequenceBuilder(trajectory1.end())
+                .turn(Math.toRadians(90))
+                .waitSeconds(3)
                 .build();
 
-        Pose2d startPose = new Pose2d(49, 23, Math.toRadians(26));
+        Pose2d startPose = new Pose2d(2,2,Math.toRadians(0));
+
 
         waitForStart();
         //initialize start pose
         robot.setPoseEstimate(startPose);
 
         //write autonomous path
-        if(!isStopRequested()) {
-            robot.followTrajectory(O);
+        if(!isStopRequested()){
             robot.followTrajectory(exampleTrajectory);
-            robot.followTrajectorySequence(sequencewow);
+            robot.followTrajectory(trajectory1);
+            robot.followTrajectorySequence(mySequence);
         }
+
+
     }
 }
