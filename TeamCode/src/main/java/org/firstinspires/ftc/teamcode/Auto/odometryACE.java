@@ -72,8 +72,8 @@ public class odometryACE extends LinearOpMode{
                 .lineToLinearHeading(new Pose2d(12,-34, Math.toRadians(0)))
                 .build();
 
-        TrajectorySequence redOne = robot.trajectorySequenceBuilder(new Pose2d(-63, -47, Math.toRadians(0)))
-                //drive to box
+        TrajectorySequence redONE = robot.trajectorySequenceBuilder(new Pose2d(-63, -47, Math.toRadians(0)))
+                //drive to box KJSDNF
                 .lineToLinearHeading(new Pose2d(12,-59, Math.toRadians(0)))
                 .lineToLinearHeading(new Pose2d(20,-34.5, Math.toRadians(0)))
                 //robot.dropoffwobblegoal();
