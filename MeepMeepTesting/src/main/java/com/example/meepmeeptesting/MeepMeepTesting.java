@@ -20,24 +20,13 @@ public class MeepMeepTesting {
                 // Option: Set theme. Default = ColorSchemeRedDark()
                 .setColorScheme(new ColorSchemeBlueDark())
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(new Pose2d(11.6, 58.7, Math.toRadians(180)))
-                                .waitSeconds(1.5)
-                                //.strafeLeft(5)
-                                .splineTo(new Vector2d(-12, 40), Math.toRadians(90))
-                                .addDisplacementMarker(() -> {
-                                    /* Everything in the marker callback should be commented out */
-
-                                    // bot.shooter.shoot()
-                                    // bot.wobbleArm.lower()
-                                })
-                                .waitSeconds(1.5)
-                                .splineTo(new Vector2d(11.1,62), Math.toRadians(180))
-                                //.waitSeconds(3)
-                                //.splineTo(new Vector2d(11.6, 58.2), 0)
-                                //.turn(Math.toRadians(90))
-                                //.forward(30)
-                                //.strafeRight(10)
+                        drive.trajectorySequenceBuilder(new Pose2d(-61, 48, Math.toRadians(0)))
+                                .lineToLinearHeading(new Pose2d(-4, 58.5, Math.toRadians(0)))
+                                .lineToLinearHeading(new Pose2d(-4, 35, Math.toRadians(0)))
+                                .lineToLinearHeading(new Pose2d(11.5, 35, Math.toRadians(0)))
                                 .build()
+
+
                 );
         RoadRunnerBotEntity myFirstBot = new DefaultBotBuilder(meepMeep)
                 // We set this bot to be blue
@@ -61,7 +50,7 @@ public class MeepMeepTesting {
                 );
 
         // Set field image
-        meepMeep.setBackground(MeepMeep.Background.FIELD_FREIGHTFRENZY_ADI_DARK)
+        meepMeep.setBackground(MeepMeep.Background.FIELD_ULTIMATEGOAL_INNOV8RZ_DARK)
                 .setDarkMode(true)
                 // Background opacity from 0-1
                 .setBackgroundAlpha(0.95f)
