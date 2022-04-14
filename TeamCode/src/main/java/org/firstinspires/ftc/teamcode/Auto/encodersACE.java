@@ -23,6 +23,8 @@ import org.firstinspires.ftc.teamcode.Projects.ProjectOdometryTest;
         @Override
         public void runOpMode() throws InterruptedException {
             robot.init(hardwareMap);
+            robot.frontright.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.frontleft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
             int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
             webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "webcam"), cameraMonitorViewId);
@@ -67,92 +69,110 @@ import org.firstinspires.ftc.teamcode.Projects.ProjectOdometryTest;
             if(p == Path.Red) {
                 switch(ringNumber) {
                     case ZERO: case UNKNOWN:
-                        moveRight(500, 1);
-                        moveForwards(2000, 1);
-                        //robot.dropWobbleGoal
+                        //turn 90 degrees to the right
+                        encoderDrive(1,150,-150);
+                        sleep(500);
 
-                        //park on the white line
-                        moveLeft(500, 1);
-                        moveForwards(500, 1);
-                        stopRobot(1000);
+                        //go straight for half a square
+                        encoderDrive(1,100,100);
+                        sleep(500);
+
+                        //turn 90 degrees to the left
+                        encoderDrive(1,-150,150);
+
+                        //go straight for 2 and a half squares
+                        encoderDrive(1, 500, 500);
+
+                        //robot.dropoffwobblegoal();
+
+                        //turn 90 degrees to the left
+                        encoderDrive(1,-150,150);
+
+                        //go straight one square
+                        encoderDrive(1,200,200);
+
+                        //turn 90 degrees to the right
+                        encoderDrive(1, 150,-150);
+
+                        //go straight for half a square
+                        encoderDrive(1,100,100);
                         break;
-                    case ONE:
-                        moveRight(500, 1);
-                        moveForwards(2000, 1);
-                        moveLeft(500, 1);
-                        moveForwards(500, 1);
-                        //robot.dropWobbleGoal
 
-                        //park on the white line
-                        moveBackwards(500,1);
-                        stopRobot(1000);
+                    case ONE:
+                        //turn 90 degrees to the right
+                        encoderDrive(1,150,-150);
+
+                        //go straight for half a square
+                        encoderDrive(1,100,100);
+
+                        //turn 90 degrees to the left
+                        encoderDrive(1,-150,150);
+
+                        //go straight for 4 squares
+                        encoderDrive(1, 800, 800);
+
+                        //turn 90 degrees to the left
+                        encoderDrive(1,-150,150);
+
+                        //go straight for half a square
+                        encoderDrive(1,100,100);
+
+                        //robot.dropoffwobblegoal();
+
+                        //go backwards half a square
+                        encoderDrive(1,-100,-100);
+
+                        //turn 90 degrees to the left
+                        encoderDrive(1, -150,150);
+
+                        //go straight 1 square
+                        encoderDrive(1, 200, 200);
                         break;
                     case FOUR:
-                        moveRight(500,1);
-                        moveForwards(2500,1);
-                        //robot.dropWobbleGoal
+                        //turn 90 degrees to the right
+                        encoderDrive(1,150,-150);
 
-                        //park on the white line
-                        moveBackwards(750, 1);
-                        stopRobot(1000);
+                        //go straight for half a square
+                        encoderDrive(1,100,100);
+
+                        //turn 90 degrees to the left
+                        encoderDrive(1,-150,150);
+
+                        //go straight for 4 and a half squares
+                        encoderDrive(1, 900, 900);
+
+                        //robot.dropoffwobblegoal();
+
+                        //go backwards 1 and a half square
+                        encoderDrive(1,-300,-300);
                         break;
                 }
             }
 
         }
-        public void moveForwards(int time, double speed) {
-            robot.frontleft.setPower(speed);
-            robot.frontright.setPower(speed);
-            robot.backleft.setPower(speed);
-            robot.backright.setPower(speed);
-            sleep(time);
-        }
+        public void encoderDrive(double speed, double leftCounts, double rightCounts) {
 
-        public void moveRight(int time, double speed) {
-            robot.frontleft.setPower(-speed);
-            robot.frontright.setPower(speed);
-            robot.backleft.setPower(speed);
-            robot.backright.setPower(-speed);
-            sleep(time);
-        }
+            int newLeftTarget;
+            int newRightTarget;
 
-        public void moveLeft(int time, double speed) {
-            robot.frontleft.setPower(speed);
-            robot.frontright.setPower(-speed);
-            robot.backleft.setPower(-speed);
-            robot.backright.setPower(speed);
-            sleep(time);
-        }
+            if (opModeIsActive()) {
+                //determining new target position
+                newLeftTarget = robot.frontleft.getCurrentPosition() + (int) (leftCounts);
+                newRightTarget = robot.frontright.getCurrentPosition() + (int) (rightCounts);
+                robot.frontleft.setTargetPosition(newLeftTarget);
+                robot.frontright.setTargetPosition(newRightTarget);
 
-        public void moveBackwards(int time, double speed) {
-            robot.frontleft.setPower(-speed);
-            robot.frontright.setPower(-speed);
-            robot.backleft.setPower(-speed);
-            robot.backright.setPower(-speed);
-            sleep(time);
-        }
+                robot.frontleft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.frontright.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        public void turnRight(int time, double speed) {
-            robot.frontleft.setPower(speed);
-            robot.frontright.setPower(-speed);
-            robot.backleft.setPower(speed);
-            robot.backright.setPower(-speed);
-            sleep(time);
-        }
-
-        public void turnLeft(int time, double speed) {
-            robot.frontleft.setPower(-speed);
-            robot.frontright.setPower(speed);
-            robot.backleft.setPower(-speed);
-            robot.backright.setPower(speed);
-            sleep(time);
-        }
-
-        public void stopRobot(int time) {
+                robot.frontleft.setPower(Math.abs(speed));
+                robot.frontright.setPower(Math.abs(speed));
+            }
+            //stop robot
             robot.frontleft.setPower(0);
             robot.frontright.setPower(0);
-            robot.backleft.setPower(0);
-            robot.backright.setPower(0);
-            sleep(time);
+
+            robot.frontleft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.frontright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
 }
