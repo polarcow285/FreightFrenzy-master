@@ -3,8 +3,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.Projects.ProjectOdometryTest;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name = "SpinnerAuto")
-public class SpinnerAuto extends LinearOpMode{
+@Autonomous(name = "ForwardTest")
+public class ForwardTest extends LinearOpMode{
     public ProjectOdometryTest robot = new ProjectOdometryTest();
 
     public void runOpMode() throws InterruptedException {
@@ -28,10 +28,10 @@ public class SpinnerAuto extends LinearOpMode{
 
     }
     public void RunShortAuto(boolean red){
-        robot.frontleft.setPower(-0.5f);
+        robot.frontleft.setPower(0.5f);
         robot.backleft.setPower(0.5f);
         robot.frontright.setPower(0.5f);
-        robot.backright.setPower(-0.5f);
+        robot.backright.setPower(0.5f);
         sleep(2000);
 
         robot.frontright.setPower(0);
