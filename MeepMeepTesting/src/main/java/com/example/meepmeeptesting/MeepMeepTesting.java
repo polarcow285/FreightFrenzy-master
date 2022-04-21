@@ -20,10 +20,15 @@ public class MeepMeepTesting {
                 // Option: Set theme. Default = ColorSchemeRedDark()
                 .setColorScheme(new ColorSchemeBlueDark())
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(new Pose2d(-61, 48, Math.toRadians(0)))
-                                .lineToLinearHeading(new Pose2d(-4, 58.5, Math.toRadians(0)))
-                                .lineToLinearHeading(new Pose2d(-4, 35, Math.toRadians(0)))
-                                .lineToLinearHeading(new Pose2d(11.5, 35, Math.toRadians(0)))
+                        drive.trajectorySequenceBuilder(new Pose2d(-63, -47, Math.toRadians(0)))
+                                .lineToLinearHeading(new Pose2d(0,-59, Math.toRadians(0)))
+                                .addDisplacementMarker(() -> {
+                                    //robot.dropoffwobblegoal();
+                                })
+                                //robot.dropoffwobblegoal(); PUT A DISPLACEMENT MARKER OAEISJFO ISEJFLSDJ
+                                //park on launchline
+                                .lineToLinearHeading(new Pose2d(0,-34, Math.toRadians(0)))
+                                .lineToLinearHeading(new Pose2d(12,-34, Math.toRadians(0)))
                                 .build()
 
 
