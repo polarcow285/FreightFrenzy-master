@@ -90,7 +90,7 @@ public class ShippingElementDetector extends OpenCvPipeline {
             else if(rightPercentage > leftPercentage && rightPercentage > middlePercentage){
                 elementLocation = ShippingElementLocation.RIGHT;
             }
-            else{
+            else {
                 elementLocation = ShippingElementLocation.UNKNOWN;
             }
             telemetry.addData("left percentage", Math.round(leftPercentage * 100) + "%");
