@@ -22,6 +22,7 @@ import org.firstinspires.ftc.teamcode.Projects.ProjectOdometryTest;
 
         @Override
         public void runOpMode() throws InterruptedException {
+            //initializing hardware and setting up other
             robot.init(hardwareMap);
             robot.frontright.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.frontleft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -71,11 +72,9 @@ import org.firstinspires.ftc.teamcode.Projects.ProjectOdometryTest;
                     case ZERO: case UNKNOWN:
                         //turn 90 degrees to the right
                         encoderDrive(1,150,-150);
-                        sleep(500);
 
                         //go straight for half a square
                         encoderDrive(1,100,100);
-                        sleep(500);
 
                         //turn 90 degrees to the left
                         encoderDrive(1,-150,150);
@@ -168,6 +167,13 @@ import org.firstinspires.ftc.teamcode.Projects.ProjectOdometryTest;
                 robot.frontleft.setPower(Math.abs(speed));
                 robot.frontright.setPower(Math.abs(speed));
             }
+
+            while(robot.frontleft.isBusy() || robot.frontright.isBusy()) {
+                telemetry.addData("Status", robot.frontleft.getCurrentPosition());
+                telemetry.addData("Status", robot.frontright.getCurrentPosition());
+                telemetry.update();
+            }
+
             //stop robot
             robot.frontleft.setPower(0);
             robot.frontright.setPower(0);
