@@ -10,6 +10,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
+
 import org.firstinspires.ftc.teamcode.Projects.ProjectOdometryTest;
 
 @Autonomous(name = "RVATAuto")
@@ -54,11 +55,13 @@ public class RVATAuto extends LinearOpMode {
         switch (objectLocation) {
             case LOW:
 
+
                 break;
 
             case MIDDLE:
 
                 break;
+
 
             case HIGH:
 

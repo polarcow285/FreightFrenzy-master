@@ -21,52 +21,53 @@ public class RVATDetector extends OpenCvPipeline {
 
     //define regions of interest (ROI):
     static final Rect lowROI = new Rect(
-            new Point(0, 0),
-            new Point(1920, 360)
+            new Point(, ),
+            new Point(, )
     );
     static final Rect middleROI = new Rect(
-            new Point(0, 360),
-            new Point(1920, 720)
+            new Point(, ),
+            new Point(, )
     );
     static final Rect highROI = new Rect(
-            new Point(0, 720),
-            new Point(1920, 1080)
+            new Point(, ),
+            new Point(, )
     );
     private ObjectLocation objectLocation;
 
     @Override
     public Mat processFrame(Mat input) {
         //turn into HSV (hue(color), saturation(intensity), value (brightness))
+        //HSV = hue(color), saturation(intensity), value (brightness)
 
 
         //define HSV range to identify the color yellow
 
 
-
         //applies a threshold (everything that is yellow will be white,
-        //everything else will be black)
+        // everything else will be black)
         //returns a new mat with this threshold
-
-
 
 
         //extract regions of interest from camera frame:
         //submat = sub-matrix, a portion of the original
 
 
-        //deallocates the Matrix data from the memory
-        _______.release();
-        -------.release();
-        -------.release();
+
 
         //calculate what percentage of the ROI became white:
         //(add all the pixels together, divide by its area, divide by 255)
-        double lowPercentage = Core.sumElems(-------).val[0] / lowROI.area() / 255;
-        double middlePercentage = Core.sumElems(-------).val[0] / middleROI.area() / 255;
-        double highPercentage = Core.sumElems(-------).val[0] / highROI.area() / 255;
+        double lowPercentage = Core.sumElems(------).val[0] / lowROI.area() / 255;
+        double middlePercentage = Core.sumElems(------).val[0] / middleROI.area() / 255;
+        double highPercentage = Core.sumElems(------).val[0] / highROI.area() / 255;
 
-        //control flow to determine which ROI has the shipping element:
+        //deallocates the Matrix data from the memory
+        ------.release();
+        ------.release();
+        ------.release();
 
+
+
+        //control flow/if statements to determine which ROI has the shipping element:
 
         return mat;
 
