@@ -33,12 +33,16 @@ public class PracticeDetector extends OpenCvPipeline {
         //mat.convertTo(destMat, -1, 50, 100);
         Imgproc.cvtColor(input, mat, Imgproc.COLOR_RGB2HSV);
 
-        //define HSV range to identify the color yellow
-        Scalar lowHSV = new Scalar (3, 80, 80);
-        Scalar highHSV = new Scalar(30, 255, 255);
+        //define HSV range to identify the color orange
+        Scalar lowHSV = new Scalar (10, 100, 140);
+        Scalar highHSV = new Scalar(20, 255, 255);
 
         //applies a threshold (everything that is yellow will be white, everything else will be black)
         //returns a new mat with this threshold
+
+        telemetry.addData("columns", input.cols());
+        telemetry.addData("rows", input.rows());
+        telemetry.update();
         Core.inRange(mat,lowHSV, highHSV, mat);
 
         //extract regions of interest from camera frame
@@ -60,8 +64,8 @@ public class PracticeDetector extends OpenCvPipeline {
         telemetry.addData("middle percentage", Math.round(middlePercentage * 100) + "%");
         telemetry.addData("right percentage", Math.round(rightPercentage * 100) + "%");
 
-        telemetry.update();
+        //telemetry.update();
 
-        return mat;
+        return right;
     }
 }
