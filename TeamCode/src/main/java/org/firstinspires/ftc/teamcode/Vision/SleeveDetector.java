@@ -40,7 +40,7 @@ public class SleeveDetector extends OpenCvPipeline {
 
         //HSV = hue(color), saturation(intensity), value (brightness)
         Imgproc.cvtColor(input, mat, Imgproc.COLOR_RGB2HSV);
-
+/*
         //define HSV range to identify the color green
         Scalar greenLowHSV = new Scalar(40, 100, 100);
         Scalar greenHighHSV = new Scalar(80, 255, 255);
