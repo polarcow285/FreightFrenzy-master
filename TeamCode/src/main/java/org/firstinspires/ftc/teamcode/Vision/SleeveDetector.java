@@ -20,12 +20,13 @@ public class SleeveDetector extends OpenCvPipeline {
         UNKNOWN
     }
 
+    private SleeveColor color;
+
     static final Rect ROI = new Rect(
             new Point(0,0),
             new Point(1080,720)
     );
 
-    private SleeveColor color;
 
 
     public SleeveDetector(Telemetry t) { telemetry = t; }
