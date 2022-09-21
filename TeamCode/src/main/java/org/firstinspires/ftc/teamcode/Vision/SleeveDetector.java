@@ -24,7 +24,7 @@ public class SleeveDetector extends OpenCvPipeline {
 
     static final Rect ROI = new Rect(
             new Point(0,0),
-            new Point(1080,720)
+            new Point(320,178)
     );
 
 
@@ -40,9 +40,9 @@ public class SleeveDetector extends OpenCvPipeline {
 
         //HSV = hue(color), saturation(intensity), value (brightness)
         Imgproc.cvtColor(input, mat, Imgproc.COLOR_RGB2HSV);
-/*
+
         //define HSV range to identify the color green
-        Scalar greenLowHSV = new Scalar(40, 100, 100);
+        Scalar greenLowHSV = new Scalar(40, 30, 100);
         Scalar greenHighHSV = new Scalar(80, 255, 255);
 
         //define HSV range to identify the color yellow
@@ -62,6 +62,9 @@ public class SleeveDetector extends OpenCvPipeline {
         //(add all the pixels together, divide by its area, divide by 255)
         double greenPercentage = Core.sumElems(mat).val[0] / ROI.area() / 255;
 
+        telemetry.addData("green percentage", Math.round(greenPercentage * 100) + "%");
+
+
         //deallocates the Matrix data from memory
         //mat.release();
 
@@ -75,11 +78,14 @@ public class SleeveDetector extends OpenCvPipeline {
         //calculate what percentage of the ROI became white
         //(add all the pixels together, divide by its area, divide by 255)
         double yellowPercentage = Core.sumElems(mat).val[0] / ROI.area() / 255;
+        telemetry.addData("yellow percentage", Math.round(yellowPercentage * 100) + "%");
+
+        telemetry.update();
 
         //deallocates the Matrix data from memory
         //mat.release();
-
         */
+
 
 
         /*
