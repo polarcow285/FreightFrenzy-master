@@ -14,7 +14,8 @@ public class DeclanToggleTest extends LinearOpMode {
     Gamepad previousGamepad1 = new Gamepad();
     Gamepad previousGamepad2 = new Gamepad();
 
-    boolean intakeToggle = false;
+    boolean forwardIntake = false;
+    boolean backwardIntake = false;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -32,13 +33,17 @@ public class DeclanToggleTest extends LinearOpMode {
 
             }
             if (currentGamepad1.y && !previousGamepad1.y) {
-                intakeToggle = !intakeToggle;
+                forwardIntake = !forwardIntake;
             }
-
-            if (intakeToggle) {
+            if (currentGamepad1.a && !previousGamepad1.a) {
+                backwardIntake = !backwardIntake;
+            }
+            if (forwardIntake) {
                 robot.intake.setPower(-1);
             }
-
+            else if (backwardIntake) {
+                robot.intake.setPower(1);
+            }
             else {
                 robot.intake.setPower(0);
             }

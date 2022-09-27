@@ -37,6 +37,7 @@ public class MecanumDriveJiashuTwoPlayer extends LinearOpMode {
             //back and forth movement using triggers
             if(gamepad1.right_trigger > 0){
                 y = gamepad1.right_trigger;
+
                 x = 0;
             }
             else if(gamepad1.left_trigger > 0){
