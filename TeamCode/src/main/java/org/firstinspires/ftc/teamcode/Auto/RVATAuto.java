@@ -54,17 +54,26 @@ public class RVATAuto extends LinearOpMode {
         //switch cases:
         switch (objectLocation) {
             case LOW:
-
+                robot.frontleft.setPower(1);
+                robot.frontright.setPower(1);
+                robot.backleft.setPower(1);
+                robot.backright.setPower(1);
 
                 break;
 
             case MIDDLE:
-
+                robot.frontleft.setPower(1);
+                robot.frontright.setPower(-1);
+                robot.backleft.setPower(1);
+                robot.backright.setPower(-1);
                 break;
 
 
             case HIGH:
-
+                robot.frontleft.setPower(-1);
+                robot.frontright.setPower(-1);
+                robot.backleft.setPower(-1);
+                robot.backright.setPower(-1);
                 break;
         }
 

@@ -19,6 +19,7 @@ public class RVATDetector extends OpenCvPipeline {
         LOW,
         MIDDLE,
         HIGH,
+        UNKNOWN
     }
 
     //define regions of interest (ROI):
@@ -52,6 +53,7 @@ public class RVATDetector extends OpenCvPipeline {
         //returns a new mat with this threshold
         Core.inRange(mat, lowHSV, highHSV, mat);
 
+        Core.inRange(mat, lowHSV, highHSV, mat);
 
         //extract regions of interest from camera frame:
         //submat = sub-matrix, a portion of the original
@@ -73,7 +75,18 @@ public class RVATDetector extends OpenCvPipeline {
 
 
         //control flow/if statements to determine which ROI has the shipping element:
-
+        if(lowPercentage > middlePercentage && lowPercentage > highPercentage){
+            objectLocation = RVATDetector.ObjectLocation.LOW;
+        }
+        else if(middlePercentage > lowPercentage && middlePercentage > highPercentage){
+            objectLocation = RVATDetector.ObjectLocation.MIDDLE;
+        }
+        else if(highPercentage > lowPercentage && highPercentage > middlePercentage){
+            objectLocation = RVATDetector.ObjectLocation.HIGH;
+        }
+        else{
+            objectLocation = RVATDetector.ObjectLocation.UNKNOWN;
+        }
         return mat;
 
 
