@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Vision;
+/*package org.firstinspires.ftc.teamcode.Vision;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -132,7 +132,7 @@ public class SleeveDetector extends OpenCvPipeline {
 
         telemetry.update();
 
-         */
+
         telemetry.addData("average green pixel value", greenAvg);
         telemetry.addData("average yellow pixel value", yellowAvg);
         //telemetry.addData("average purple pixel value", purpleAvg);
@@ -145,3 +145,4 @@ public class SleeveDetector extends OpenCvPipeline {
         return color;
     }
 }
+*/
