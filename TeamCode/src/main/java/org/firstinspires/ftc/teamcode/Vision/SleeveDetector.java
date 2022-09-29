@@ -11,7 +11,9 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class SleeveDetector extends OpenCvPipeline {
     Telemetry telemetry;
 
-    Mat mat = new Mat();
+    Mat greenMat = new Mat();
+    Mat yellowMat = new Mat();
+    Mat purpleMat = new Mat();
 
     public enum SleeveColor {
         GREEN,
@@ -22,10 +24,7 @@ public class SleeveDetector extends OpenCvPipeline {
 
     private SleeveColor color;
 
-    static final Rect ROI = new Rect(
-            new Point(0,0),
-            new Point(320,178)
-    );
+
 
 
 
@@ -36,6 +35,11 @@ public class SleeveDetector extends OpenCvPipeline {
 
     @Override
     public Mat processFrame(Mat input) {
+        Rect ROI = new Rect(
+                new Point(input.cols()/3,input.rows()/2),
+                new Point(input.cols()/3*2,input.rows())
+        );
+
         //image processing code
 
         //HSV = hue(color), saturation(intensity), value (brightness)
@@ -50,57 +54,64 @@ public class SleeveDetector extends OpenCvPipeline {
         Scalar yellowHighHSV = new Scalar(30, 255, 255);
 
         //define HSV range to identify the color purple
-        Scalar purpleLowHSV = new Scalar(140, 100, 100);
-        Scalar purpleHighHSV = new Scalar(160, 255, 255);
+        Scalar purpleLowHSV = new Scalar(135, 100, 100);
+        Scalar purpleHighHSV = new Scalar(172, 255, 255);
 
         //applies a threshold (everything that is green will be white,
         // everything else will be black)
         //returns a new mat with this threshold
-        Core.inRange(mat, greenLowHSV, greenHighHSV, mat);
+        Core.inRange(greenMat, greenLowHSV, greenHighHSV, greenMat);
+        Mat greenSubmat = greenMat.submat(ROI);
+
+
+        int greenAvg = (int) Core.mean(greenSubmat).val[0];
+
 
         //calculate what percentage of the ROI became white
         //(add all the pixels together, divide by its area, divide by 255)
-        double greenPercentage = Core.sumElems(mat).val[0] / ROI.area() / 255;
+        //double greenPercentage = Core.sumElems(mat).val[0] / ROI.area() / 255;
 
-        telemetry.addData("green percentage", Math.round(greenPercentage * 100) + "%");
+
+        //telemetry.addData("green percentage", Math.round(greenPercentage * 100) + "%");
 
 
         //deallocates the Matrix data from memory
         //mat.release();
 
 
-        /*
+
         //applies a threshold (everything that is yellow will be white,
         // everything else will be black)
         //returns a new mat with this threshold
-        Core.inRange(mat, yellowLowHSV, yellowHighHSV, mat);
+        Core.inRange(yellowMat, yellowLowHSV, yellowHighHSV, yellowMat);
+        Mat yellowSubmat = yellowMat.submat(ROI);
+
+        int yellowAvg = (int) Core.mean(yellowSubmat).val[0];
 
         //calculate what percentage of the ROI became white
         //(add all the pixels together, divide by its area, divide by 255)
-        double yellowPercentage = Core.sumElems(mat).val[0] / ROI.area() / 255;
-        telemetry.addData("yellow percentage", Math.round(yellowPercentage * 100) + "%");
+        //double yellowPercentage = Core.sumElems(mat).val[0] / ROI.area() / 255;
 
-        telemetry.update();
 
         //deallocates the Matrix data from memory
         //mat.release();
-        */
 
 
 
-        /*
         //applies a threshold (everything that is purple will be white,
         // everything else will be black)
         //returns a new mat with this threshold
-        Core.inRange(mat, purpleLowHSV, purpleHighHSV, mat);
+        //Core.inRange(mat, purpleLowHSV, purpleHighHSV, mat);
+        //int purpleAvg = (int) Core.mean(submat).val[0];
 
         //calculate what percentage of the ROI became white
         //(add all the pixels together, divide by its area, divide by 255)
-        double purplePercentage = Core.sumElems(mat).val[0] / ROI.area() / 255;
+        //double purplePercentage = Core.sumElems(mat).val[0] / ROI.area() / 255;
+
 
         //deallocates the Matrix data from memory
         //mat.release();
-        */
+
 
         /*
         if(greenPercentage > yellowPercentage && greenPercentage > purplePercentage){
@@ -122,6 +133,11 @@ public class SleeveDetector extends OpenCvPipeline {
         telemetry.update();
 
          */
+        telemetry.addData("average green pixel value", greenAvg);
+        telemetry.addData("average yellow pixel value", yellowAvg);
+        //telemetry.addData("average purple pixel value", purpleAvg);
+
+        telemetry.update();
 
         return mat;
     }
