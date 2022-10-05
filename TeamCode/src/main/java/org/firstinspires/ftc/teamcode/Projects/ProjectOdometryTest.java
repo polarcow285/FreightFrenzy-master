@@ -65,7 +65,7 @@ public class ProjectOdometryTest extends Project{
 
         intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //carousel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        storageunit.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //storageunit.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         frontright.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontleft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
