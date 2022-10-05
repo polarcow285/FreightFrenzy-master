@@ -79,7 +79,7 @@ public class MecanumDriveJiashuTwoPlayer extends LinearOpMode {
             }
 
              */
-            if(gamepad1.a){
+            if(gamepad2.a){
                 if(aPressed == false){
                     aPressed = true;
                     isIntakeSpinning = !isIntakeSpinning;
@@ -91,11 +91,11 @@ public class MecanumDriveJiashuTwoPlayer extends LinearOpMode {
                     }
                 }
             }
-            else if(gamepad1.x == true && isIntakeSpinning == false){
+            else if(gamepad2.x == true && isIntakeSpinning == false){
                 robot.intake.setPower(-1);
                 aPressed = false;
             }
-            else if(gamepad1.x == false && isIntakeSpinning == false){
+            else if(gamepad2.x == false && isIntakeSpinning == false){
                 robot.intake.setPower(0);
                 aPressed = false;
             }

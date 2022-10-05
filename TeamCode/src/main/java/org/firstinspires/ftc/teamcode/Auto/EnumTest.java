@@ -24,6 +24,10 @@ public class EnumTest extends LinearOpMode {
         ParkingLocation l = ParkingLocation.Substation;
         TileLocation t = TileLocation.Left;
 
+        boolean isPathRed = true;
+        boolean isSubstation = true;
+        boolean isRightTile = true;
+
         while(!isStarted()) {
             try {
                 previousGamepad1.copy(currentGamepad1);
@@ -33,22 +37,42 @@ public class EnumTest extends LinearOpMode {
 
             }
             if (currentGamepad1.a && !previousGamepad1.a) {
-                p = Path.Red;
-            }
-            if (currentGamepad1.a && previousGamepad1.a) {
-                p = Path.Blue;
+                isPathRed = !isPathRed;
+                //p = Path.Red;
             }
             if (currentGamepad1.b && !previousGamepad1.b) {
-                l = ParkingLocation.Substation;
-            }
-            if (currentGamepad1.b && previousGamepad1.b) {
-                l = ParkingLocation.Terminal;
+                isSubstation = !isSubstation;
+                //p = Path.Red;
             }
             if (currentGamepad1.y && !previousGamepad1.y) {
+                isRightTile = !isRightTile;
+                //p = Path.Red;
+            }
+
+            /*if (currentGamepad1.y && !previousGamepad1.y) {
                 t = TileLocation.Right;
             }
             if (currentGamepad1.y && previousGamepad1.y) {
                 t = TileLocation.Left;
+            }
+            */
+            if (isPathRed) {
+                p = Path.Red;
+            }
+            else {
+                p = Path.Blue;
+            }
+            if (isSubstation) {
+                l = ParkingLocation.Substation;
+            }
+            else {
+                l = ParkingLocation.Terminal;
+            }
+            if (isRightTile) {
+                t = TileLocation.Right;
+            }
+            else {
+                t = TileLocation.Left;;
             }
             telemetry.addData("Path", p);
             telemetry.addData("Parking Location", l);
