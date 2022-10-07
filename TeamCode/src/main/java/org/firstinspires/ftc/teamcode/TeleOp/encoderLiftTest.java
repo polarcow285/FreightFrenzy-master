@@ -51,13 +51,14 @@ public class encoderLiftTest extends LinearOpMode {
         lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         // Set arm run mode
+        //lift.setTargetPosition(0);
         lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         // Zero Power Behavior
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Setup Telemetry, will not clear after cycle, setup reusable items for output
-        telemetry.setAutoClear(false);
+        telemetry.setAutoClear(true);
         telemetry.addData("Lift Position", lift.getCurrentPosition());
 
 
@@ -89,17 +90,37 @@ public class encoderLiftTest extends LinearOpMode {
              * !!! concerned about reliability of encoder count as it doesn't seem to be tracking accurately
              **/
 
-            if (gamepad1.a){ // Arm UP
+            if (lift.getCurrentPosition()>-2000 && gamepad1.x) { // Arm UP
                 liftTarget = -2000;
                 liftSpeed = 0.98;
                 liftCurrentDirection = "up";
 
                 lift.setPower(liftSpeed);
                 lift.setTargetPosition(liftTarget);
+            }else if (lift.getCurrentPosition()<-2000 && gamepad1.x) { // Arm UP
+                    liftTarget = -2000;
+                    liftSpeed = -0.98;
+                    liftCurrentDirection = "down";
 
+                    lift.setPower(liftSpeed);
+                    lift.setTargetPosition(liftTarget);
+            }else if (lift.getCurrentPosition()>-3500 && gamepad1.a) { // Arm UP
+                liftTarget = -3500;
+                liftSpeed = 0.98;
+                liftCurrentDirection = "up";
+
+                lift.setPower(liftSpeed);
+                lift.setTargetPosition(liftTarget);
+            }else if (lift.getCurrentPosition()<-3500 && gamepad1.a) { // Arm UP
+                liftTarget = -3500;
+                liftSpeed = -0.98;
+                liftCurrentDirection = "down";
+
+                lift.setPower(liftSpeed);
+                lift.setTargetPosition(liftTarget);
             } else if (gamepad1.b){ // Arm DOWN
                 liftTarget = 0;
-                liftSpeed = 0.98;  // From my research, negative is ignore, so I don't understand why this *seemed* to work
+                liftSpeed = -0.98;  // From my research, negative is ignore, so I don't understand why this *seemed* to work
                 liftCurrentDirection = "down";
 
                 lift.setPower(liftSpeed);
@@ -107,10 +128,10 @@ public class encoderLiftTest extends LinearOpMode {
             }
 
             // Remove Power from the Arm Motor if motor is close to 0 position, arm should drop
-            if ( liftCurrentDirection == "down" && ( lift.getTargetPosition() < 5 ) ){
-                liftSpeed = 0;
-                lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            }
+//            if ( liftCurrentDirection == "down" && ( lift.getTargetPosition() < 5 ) ){
+//                liftSpeed = 0;
+//                lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//            }
 
             /** END ARM LIFT **/
 
