@@ -85,54 +85,101 @@ public class EnumTest extends LinearOpMode {
         if (p == Path.Red) {
             if (t == TileLocation.Left) {
                 if (l == ParkingLocation.Substation) {
-                    robot.intake.setPower(1);
-                    sleep(2000);
-                    robot.intake.setPower(0);
-
+                    robot.frontleft.setPower(-1);
+                    robot.frontright.setPower(1);
+                    robot.backleft.setPower(1);
+                    robot.backright.setPower(-1);
+                    sleep(1000);
+                    robot.frontleft.setPower(0);
+                    robot.frontright.setPower(0);
+                    robot.backleft.setPower(0);
+                    robot.backright.setPower(0);
                 }
                 if (l == ParkingLocation.Terminal) {
-                    robot.intake.setPower(1);
-                    sleep(4000);
-                    robot.intake.setPower(0);
+                    robot.frontleft.setPower(1);
+                    robot.frontright.setPower(-1);
+                    robot.backleft.setPower(-1);
+                    robot.backright.setPower(1);
+                    sleep(1000);
+                    robot.frontleft.setPower(0);
+                    robot.frontright.setPower(0);
+                    robot.backleft.setPower(0);
+                    robot.backright.setPower(0);
                 }
             }
             if (t == TileLocation.Right) {
                 if (l == ParkingLocation.Substation) {
-                    robot.intake.setPower(1);
-                    sleep(2000);
-                    robot.intake.setPower(0);
+                    robot.frontleft.setPower(1);
+                    robot.frontright.setPower(-1);
+                    robot.backleft.setPower(-1);
+                    robot.backright.setPower(1);
+                    sleep(1000);
+                    robot.frontleft.setPower(0);
+                    robot.frontright.setPower(0);
+                    robot.backleft.setPower(0);
+                    robot.backright.setPower(0);
 
                 }
                 if (l == ParkingLocation.Terminal) {
-                    robot.intake.setPower(1);
-                    sleep(4000);
-                    robot.intake.setPower(0);
+                    robot.frontleft.setPower(-1);
+                    robot.frontright.setPower(1);
+                    robot.backleft.setPower(1);
+                    robot.backright.setPower(-1);
+                    sleep(1000);
+                    robot.frontleft.setPower(0);
+                    robot.frontright.setPower(0);
+                    robot.backleft.setPower(0);
+                    robot.backright.setPower(0);
                 }
             }
         }
         if (p == Path.Blue) {
             if (t == TileLocation.Left) {
                 if (l == ParkingLocation.Substation) {
-                    robot.intake.setPower(1);
-                    sleep(6000);
-                    robot.intake.setPower(0);
+                    robot.frontleft.setPower(-1);
+                    robot.frontright.setPower(1);
+                    robot.backleft.setPower(1);
+                    robot.backright.setPower(-1);
+                    sleep(1000);
+                    robot.frontleft.setPower(0);
+                    robot.frontright.setPower(0);
+                    robot.backleft.setPower(0);
+                    robot.backright.setPower(0);
                 }
                 if (l == ParkingLocation.Terminal) {
-                    robot.intake.setPower(1);
-                    sleep(8000);
-                    robot.intake.setPower(0);
+                    robot.frontleft.setPower(1);
+                    robot.frontright.setPower(-1);
+                    robot.backleft.setPower(-1);
+                    robot.backright.setPower(1);
+                    sleep(1000);
+                    robot.frontleft.setPower(0);
+                    robot.frontright.setPower(0);
+                    robot.backleft.setPower(0);
+                    robot.backright.setPower(0);
                 }
             }
             if (t == TileLocation.Right) {
                 if (l == ParkingLocation.Substation) {
-                    robot.intake.setPower(1);
-                    sleep(6000);
-                    robot.intake.setPower(0);
+                    robot.frontleft.setPower(1);
+                    robot.frontright.setPower(-1);
+                    robot.backleft.setPower(-1);
+                    robot.backright.setPower(1);
+                    sleep(1000);
+                    robot.frontleft.setPower(0);
+                    robot.frontright.setPower(0);
+                    robot.backleft.setPower(0);
+                    robot.backright.setPower(0);
                 }
                 if (l == ParkingLocation.Terminal) {
-                    robot.intake.setPower(1);
-                    sleep(8000);
-                    robot.intake.setPower(0);
+                    robot.frontleft.setPower(-1);
+                    robot.frontright.setPower(1);
+                    robot.backleft.setPower(1);
+                    robot.backright.setPower(-1);
+                    sleep(1000);
+                    robot.frontleft.setPower(0);
+                    robot.frontright.setPower(0);
+                    robot.backleft.setPower(0);
+                    robot.backright.setPower(0);
                 }
             }
         }
