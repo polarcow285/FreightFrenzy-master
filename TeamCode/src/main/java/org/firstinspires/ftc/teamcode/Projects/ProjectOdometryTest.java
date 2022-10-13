@@ -19,6 +19,7 @@ public class ProjectOdometryTest extends Project{
     public DcMotor backleft = null;
 
     public DigitalChannel slideSwitch = null;
+    public DigitalChannel intakeSwitch = null;
 
     public DcMotor intake = null;
     //public DcMotor carousel = null;
@@ -46,7 +47,8 @@ public class ProjectOdometryTest extends Project{
 
         trapdoor = hwMap.servo.get("trapdoor"); //port e0
 
-        slideSwitch = hwMap.digitalChannel.get("switch");
+        slideSwitch = hwMap.digitalChannel.get("slideSwitch");
+        intakeSwitch = hwMap.digitalChannel.get("intakeSwitch");
 
         //Setup Motor directions and Encoder settings
         frontright.setDirection(DcMotor.Direction.FORWARD);
