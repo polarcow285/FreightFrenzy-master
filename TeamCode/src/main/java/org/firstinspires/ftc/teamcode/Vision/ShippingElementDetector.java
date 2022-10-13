@@ -51,8 +51,8 @@ public class ShippingElementDetector extends OpenCvPipeline {
             Imgproc.cvtColor(input, mat, Imgproc.COLOR_RGB2HSV);
 
             //define HSV range to identify the color yellow
-            Scalar lowHSV = new Scalar (15, 100, 10);
-            Scalar highHSV = new Scalar(30, 255, 255);
+            Scalar lowHSV = new Scalar (30, 100, 10);
+            Scalar highHSV = new Scalar(80, 255, 255);
 
             //applies a threshold (everything that is yellow will be white,
             // everything else will be black)

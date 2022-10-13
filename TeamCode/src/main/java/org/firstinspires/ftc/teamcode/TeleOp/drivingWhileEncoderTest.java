@@ -120,12 +120,19 @@ public class drivingWhileEncoderTest extends LinearOpMode {
                 if(aPressed == false){
                     aPressed = true;
                     isIntakeSpinning = !isIntakeSpinning;
-                    if(isIntakeSpinning == true){
+                    //this while used to be if
+                    //WORK IN PROGRESS IT MIGHT BREAK ROBOT INTAKE D:
+                    while(isIntakeSpinning == true && !robot.intakeSwitch.getState()) {
                         robot.intake.setPower(1);
+
+                        if (robot.intakeSwitch.getState()) {
+                            robot.intake.setPower(0);
+                            isIntakeSpinning = false;
+                            aPressed = false;
+                        }
+
                     }
-                    else{
                         robot.intake.setPower(0);
-                    }
                 }
             }
             else if(gamepad1.x == true && isIntakeSpinning == false){
@@ -190,28 +197,28 @@ public class drivingWhileEncoderTest extends LinearOpMode {
              * !!! concerned about reliability of encoder count as it doesn't seem to be tracking accurately
              **/
 
-            if (lift.getCurrentPosition()>-2000 && gamepad2.x) { // Arm UP
+            if (lift.getCurrentPosition()>-2000 && gamepad2.x && !robot.slideSwitch.getState()) { // Arm UP
                 liftTarget = -2000;
                 liftSpeed = 0.98;
                 liftCurrentDirection = "up";
 
                 lift.setPower(liftSpeed);
                 lift.setTargetPosition(liftTarget);
-            }else if (lift.getCurrentPosition()<-2000 && gamepad2.x) { // Arm UP
+            }else if (lift.getCurrentPosition()<-2000 && gamepad2.x && !robot.slideSwitch.getState()) { // Arm UP
                 liftTarget = -2000;
                 liftSpeed = -0.98;
                 liftCurrentDirection = "down";
 
                 lift.setPower(liftSpeed);
                 lift.setTargetPosition(liftTarget);
-            }else if (lift.getCurrentPosition()>-3500 && gamepad2.a) { // Arm UP
+            }else if (lift.getCurrentPosition()>-3500 && gamepad2.a && !robot.slideSwitch.getState()) { // Arm UP
                 liftTarget = -3500;
                 liftSpeed = 0.98;
                 liftCurrentDirection = "up";
 
                 lift.setPower(liftSpeed);
                 lift.setTargetPosition(liftTarget);
-            }else if (lift.getCurrentPosition()<-3500 && gamepad2.a) { // Arm UP
+            }else if (lift.getCurrentPosition()<-3500 && gamepad2.a && !robot.slideSwitch.getState()) { // Arm UP
                 liftTarget = -3500;
                 liftSpeed = -0.98;
                 liftCurrentDirection = "down";
@@ -225,7 +232,13 @@ public class drivingWhileEncoderTest extends LinearOpMode {
 
                 lift.setPower(liftSpeed);
                 lift.setTargetPosition(liftTarget);
+            } else if (robot.slideSwitch.getState()){
+                lift.setPower(0);
             }
+
+
+
+
 
             // Remove Power from the Arm Motor if motor is close to 0 position, arm should drop
 //            if ( liftCurrentDirection == "down" && ( lift.getTargetPosition() < 5 ) ){
