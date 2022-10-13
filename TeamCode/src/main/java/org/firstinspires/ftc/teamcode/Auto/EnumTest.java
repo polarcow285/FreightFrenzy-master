@@ -19,7 +19,7 @@ public class EnumTest extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         //initialize hardware map
         robot.init(hardwareMap);
-
+        // :D
         Path p = Path.Red;
         ParkingLocation l = ParkingLocation.Substation;
         TileLocation t = TileLocation.Left;
